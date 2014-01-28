@@ -1,26 +1,34 @@
 package es.nervion.maps.activity;
 
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.google.android.gms.maps.GoogleMap;
 
 import es.nervion.maps.activity.R;
 import es.nervion.maps.adapter.SectionsPagerAdapter;
+import es.nervion.maps.async.ServicioPosiciones;
 
 import es.nervion.maps.fragment.InicioFragment;
 import es.nervion.maps.fragment.MyMapFragment;
 import es.nervion.maps.fragment.PreferenciasFragment;
+import es.nervion.maps.listener.InicioLoadedListener;
+import es.nervion.maps.listener.MapLoadedListener;
 
+import android.content.Context;
+import android.location.Location;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
-public class TabsActivity extends FragmentActivity {
+public class TabsActivity extends FragmentActivity implements View.OnClickListener, MapLoadedListener, InicioLoadedListener {
 
 	
 	private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -37,14 +45,19 @@ public class TabsActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tabs);
 		
-		preferenciasFragment = new PreferenciasFragment();
-		inicioFragment = new InicioFragment();
 		myMapFragment = new MyMapFragment();
+		
+		myMapFragment.setMapLoadedListener(this);
+		preferenciasFragment = new PreferenciasFragment();
+		
+		inicioFragment = new InicioFragment();		
+		inicioFragment.setInicioLoadedListener(this);
 		
 		ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 		fragments.add(preferenciasFragment);
 		fragments.add(inicioFragment);
-		fragments.add(myMapFragment);
+		fragments.add(myMapFragment);		
+		
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -66,6 +79,34 @@ public class TabsActivity extends FragmentActivity {
 		getMenuInflater().inflate(R.menu.tabs, menu);
 		return true;
 	}
+	
+	
+	public void peticionPost(GoogleMap gm){
+
+		Location location = gm.getMyLocation();
+		Double latitud = location.getLatitude();
+		Double longitud = location.getLongitude();
+
+		System.out.println("Latitud: "+location.getLatitude()+", Longitud: "+location.getLongitude()+
+				"\n ");
+
+		//Obtenemos la MAC del dispositivo a traves del objeto WifiManager
+		WifiManager manager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+		WifiInfo info = manager.getConnectionInfo();
+		String macAddress = info.getMacAddress();
+		
+		//Indicamos la url del servicio
+		String urlPath = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress.hashCode()+"&latitud="+latitud+"&longitud="+longitud+"&radio=10&fecha=2000-10-10&nombre="+macAddress.hashCode()+"&mensaje=hola&guardar=1&obtener=1";
+		Map<String, String> parametros = new HashMap<String, String>();
+		
+		//Le pasamos los parámetros al Map
+		parametros.put("host", urlPath);
+		parametros.put("latitud", latitud.toString());
+		parametros.put("longitud", longitud.toString());
+		
+		//Ejecutamos el servicio-obtener-posiciones
+		new ServicioPosiciones(gm).execute(parametros);
+	}
 
 	
 	
@@ -76,6 +117,40 @@ public class TabsActivity extends FragmentActivity {
 	
 	public InicioFragment getInicioFragment() {
 		return inicioFragment;
+	}
+	
+	
+	/* Implementamos el método onMapLoaded recibido de MyMapFragment */
+	@Override
+	public void onMapLoaded(GoogleMap gm) {
+		peticionPost(gm);
+	}
+	
+	
+	/* Implementamos el método onInicioLoaded recibido de MyMapFragment */
+	@Override
+	public void onInicioLoaded(Button btn) {
+		
+		btn.setOnClickListener(this);
+		
+	}
+	
+	
+	/* Implementamos el método onClick */
+	@Override
+	public void onClick(View v) {
+		
+		switch (v.getId()) {
+		case R.id.btnPeticion:
+			if(myMapFragment.getMap()!=null){
+				peticionPost(myMapFragment.getMap());
+			}			
+			break;
+
+		default:
+			break;
+		}
+		
 	}
 
 

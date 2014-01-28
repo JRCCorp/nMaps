@@ -11,7 +11,7 @@ import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
-import es.nervion.maps.activity.TabsActivity;
+import es.nervion.maps.listener.MapLoadedListener;
 
 
 public class MyMapFragment extends SupportMapFragment implements OnMapLoadedCallback {
@@ -19,10 +19,9 @@ public class MyMapFragment extends SupportMapFragment implements OnMapLoadedCall
 	 * The fragment argument representing the section number for this
 	 * fragment.
 	 */
-
-	public MyMapFragment() {
-
-	}
+	
+	private MapLoadedListener mapLoadedListener;
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +40,8 @@ public class MyMapFragment extends SupportMapFragment implements OnMapLoadedCall
 	   
 
 	}
-
+	
+	/* Implementacion de onMapLoadedCallback */
 	@Override
 	public void onMapLoaded() {
 		
@@ -54,10 +54,17 @@ public class MyMapFragment extends SupportMapFragment implements OnMapLoadedCall
 	        getMap().animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,  12.0f));
 	        
 	        
-	    }		
+	    }
+		
+		mapLoadedListener.onMapLoaded(this.getMap());
 		
 		
 		
+	}
+	
+	/* Setter de MapLoadedListener */
+	public void setMapLoadedListener(MapLoadedListener mll){
+		this.mapLoadedListener = mll;
 	}
 
 
