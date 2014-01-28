@@ -44,7 +44,8 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
 	private TextView txtInicio;
 	private JSONArray jsonPosiciones;
 	private GoogleMap gm;
-
+	
+	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment		
@@ -67,7 +68,7 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
 	public void onClick(View v) {
 
 		switch (v.getId()) {
-		case R.id.btnPeticion:			
+		case R.id.btnPeticion:
 			
 			MyMapFragment mf = ((TabsActivity)this.getActivity()).getMyMapFragment();
 			Location location = null;
@@ -81,13 +82,13 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
 			}
 			
 			peticionPost(location.getLatitude(), location.getLongitude());
-
+			
 			break;
-
+			
 		default:
 			break;
 		}
-
+		
 	}
 	
 	
@@ -95,16 +96,16 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
 		WifiManager manager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
 		WifiInfo info = manager.getConnectionInfo();
 		String macAddress = info.getMacAddress();
-		String urlPath = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress.hashCode()+"&latitud="+latitud+"&longitud="+longitud+"&fecha=2000-10-10&nombre="+macAddress.hashCode()+"&mensaje=hola&guardar=1&obtener=1";
+		String urlPath = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress.hashCode()+"&latitud="+latitud+"&longitud="+longitud+"&radio=10&fecha=2000-10-10&nombre="+macAddress.hashCode()+"&mensaje=hola&guardar=1&obtener=1";
 		Map<String, String> parametros = new HashMap<String, String>();
 		parametros.put("host", urlPath);
 		parametros.put("latitud", latitud.toString());
 		parametros.put("longitud", longitud.toString());
-		new RequestTask().execute(parametros);
+		new ServicioPosiciones().execute(parametros);
 	}
 	
 	
-	class RequestTask extends AsyncTask<Map<String, String>, JSONArray, JSONArray>{
+	class ServicioPosiciones extends AsyncTask<Map<String, String>, JSONArray, JSONArray>{
 
 	    @Override
 	    protected JSONArray doInBackground(Map<String, String>... uri) {

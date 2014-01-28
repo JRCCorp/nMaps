@@ -11,6 +11,8 @@ import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import es.nervion.maps.activity.TabsActivity;
+
 
 public class MyMapFragment extends SupportMapFragment implements OnMapLoadedCallback {
 	/**
@@ -50,7 +52,11 @@ public class MyMapFragment extends SupportMapFragment implements OnMapLoadedCall
 	        myLocation = new LatLng(location.getLatitude(),
 	                location.getLongitude());
 	        getMap().animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,  12.0f));
-	    }
+	        
+	        
+	    }		
+		
+		
 		
 	}
 
