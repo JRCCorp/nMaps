@@ -27,14 +27,11 @@ public class InicioFragment extends Fragment{
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
+		setRetainInstance(true);
 		txtInicio = (TextView) this.getActivity().findViewById(R.id.txtInicio);
-
 		btnPeticion = (Button) this.getActivity().findViewById(R.id.btnPeticion);
-		
 		inicioLoadedListener.onInicioLoaded(btnPeticion);
-		
-		
+			
 	}
 	
 	//Setter de InicioLoadedListener

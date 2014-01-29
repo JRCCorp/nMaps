@@ -32,13 +32,10 @@ public class MyMapFragment extends SupportMapFragment implements OnMapLoadedCall
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		setRetainInstance(true);
 		getMap().setMyLocationEnabled(true);
-		
 		getMap().setOnMapLoadedCallback(this);
-
-		
-	   
-
+ 
 	}
 	
 	/* Implementacion de onMapLoadedCallback */
@@ -57,9 +54,7 @@ public class MyMapFragment extends SupportMapFragment implements OnMapLoadedCall
 	    }
 		
 		mapLoadedListener.onMapLoaded(this.getMap());
-		
-		
-		
+
 	}
 	
 	/* Setter de MapLoadedListener */

@@ -44,10 +44,10 @@ public class TabsActivity extends FragmentActivity implements View.OnClickListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tabs);
-		
-		myMapFragment = new MyMapFragment();
-		
+
+		myMapFragment = new MyMapFragment();	
 		myMapFragment.setMapLoadedListener(this);
+		
 		preferenciasFragment = new PreferenciasFragment();
 		
 		inicioFragment = new InicioFragment();		
@@ -59,12 +59,7 @@ public class TabsActivity extends FragmentActivity implements View.OnClickListen
 		fragments.add(myMapFragment);		
 		
 
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				this, getSupportFragmentManager(), fragments);
-
-		// Set up the ViewPager with the sections adapter.
+		mSectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(), fragments);
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		
@@ -129,10 +124,8 @@ public class TabsActivity extends FragmentActivity implements View.OnClickListen
 	
 	/* Implementamos el método onInicioLoaded recibido de MyMapFragment */
 	@Override
-	public void onInicioLoaded(Button btn) {
-		
+	public void onInicioLoaded(Button btn) {		
 		btn.setOnClickListener(this);
-		
 	}
 	
 	
@@ -152,6 +145,7 @@ public class TabsActivity extends FragmentActivity implements View.OnClickListen
 		}
 		
 	}
+	
 
 
 }
