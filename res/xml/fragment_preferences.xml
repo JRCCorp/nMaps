@@ -1,6 +1,6 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/tituloPreferenciaNombre" >
+    <PreferenceCategory android:title="@string/tituloPreferenciaNombre">
         <EditTextPreference
             android:key="pref_nombre"
             android:title="@string/pref_nombre" />
