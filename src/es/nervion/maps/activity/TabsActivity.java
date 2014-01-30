@@ -12,27 +12,30 @@ import es.nervion.maps.async.ServicioPosiciones;
 
 import es.nervion.maps.fragment.InicioFragment;
 import es.nervion.maps.fragment.MyMapFragment;
+import es.nervion.maps.fragment.PreferenciasFragment;
 import es.nervion.maps.listener.InicioListener;
 import es.nervion.maps.listener.MapLoadedListener;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.location.Location;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.preference.PreferenceFragment;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.widget.Button;
 
-public class TabsActivity extends FragmentActivity implements MapLoadedListener, InicioListener {
+public class TabsActivity extends Activity implements MapLoadedListener, InicioListener {
 
 	
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 
 	private ViewPager mViewPager;
 	
+	private PreferenciasFragment preferenciasFragment;
 	private InicioFragment inicioFragment;
 	private MyMapFragment myMapFragment;
 
@@ -41,6 +44,8 @@ public class TabsActivity extends FragmentActivity implements MapLoadedListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tabs);
+		
+		preferenciasFragment = new PreferenciasFragment();
 
 		myMapFragment = new MyMapFragment();	
 		myMapFragment.setMapLoadedListener(this);
@@ -49,11 +54,12 @@ public class TabsActivity extends FragmentActivity implements MapLoadedListener,
 		inicioFragment.setInicioLoadedListener(this);
 		
 		ArrayList<Fragment> fragments = new ArrayList<Fragment>();
+		fragments.add(preferenciasFragment);
 		fragments.add(inicioFragment);
-		fragments.add(myMapFragment);		
+		fragments.add(myMapFragment);
 		
 
-		mSectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(), fragments);
+		mSectionsPagerAdapter = new SectionsPagerAdapter(this, getFragmentManager(), fragments);
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		

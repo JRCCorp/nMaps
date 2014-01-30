@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.support.v13.app.FragmentPagerAdapter;
 import es.nervion.maps.activity.R;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -35,8 +35,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		Locale l = Locale.getDefault();
 		switch (position) {
 		case 0:
-			return activity.getString(R.string.titulo_inicio).toUpperCase(l);
+			return activity.getString(R.string.titulo_preferencias).toUpperCase(l);
 		case 1:
+			return activity.getString(R.string.titulo_inicio).toUpperCase(l);
+		case 2:
 			return activity.getString(R.string.titulo_mapa).toUpperCase(l);
 		}
 		return "Seccion";
