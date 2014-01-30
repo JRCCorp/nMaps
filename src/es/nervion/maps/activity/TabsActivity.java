@@ -59,7 +59,7 @@ public class TabsActivity extends FragmentActivity implements MapLoadedListener,
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		
-		mViewPager.setCurrentItem(0);		
+		mViewPager.setCurrentItem(1);		
 		
 
 	}
