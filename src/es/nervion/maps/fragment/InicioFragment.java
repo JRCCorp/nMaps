@@ -9,14 +9,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import es.nervion.maps.activity.R;
-import es.nervion.maps.listener.InicioLoadedListener;
+import es.nervion.maps.listener.InicioListener;
 
-public class InicioFragment extends Fragment{
+public class InicioFragment extends Fragment implements View.OnClickListener{
 
 	private Button btnPeticion;
 	private TextView txtInicio;
 	
-	private InicioLoadedListener inicioLoadedListener;
+	private InicioListener inicioLoadedListener;
 
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,13 +30,27 @@ public class InicioFragment extends Fragment{
 		setRetainInstance(true);
 		txtInicio = (TextView) this.getActivity().findViewById(R.id.txtInicio);
 		btnPeticion = (Button) this.getActivity().findViewById(R.id.btnPeticion);
-		inicioLoadedListener.onInicioLoaded(btnPeticion);
+		
 			
 	}
 	
 	//Setter de InicioLoadedListener
-	public void setInicioLoadedListener(InicioLoadedListener ill){
+	public void setInicioLoadedListener(InicioListener ill){
 		inicioLoadedListener = ill;
+	}
+
+	@Override
+	public void onClick(View v) {
+		
+		switch (v.getId()) {
+		case R.id.btnPeticion:
+			inicioLoadedListener.onInicioClick(btnPeticion);
+			break;
+
+		default:
+			break;
+		}
+		
 	}
 	
 

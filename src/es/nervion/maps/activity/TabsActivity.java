@@ -12,8 +12,7 @@ import es.nervion.maps.async.ServicioPosiciones;
 
 import es.nervion.maps.fragment.InicioFragment;
 import es.nervion.maps.fragment.MyMapFragment;
-import es.nervion.maps.fragment.PreferenciasFragment;
-import es.nervion.maps.listener.InicioLoadedListener;
+import es.nervion.maps.listener.InicioListener;
 import es.nervion.maps.listener.MapLoadedListener;
 
 import android.content.Context;
@@ -25,17 +24,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
-import android.view.View;
 import android.widget.Button;
 
-public class TabsActivity extends FragmentActivity implements View.OnClickListener, MapLoadedListener, InicioLoadedListener {
+public class TabsActivity extends FragmentActivity implements MapLoadedListener, InicioListener {
 
 	
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 
 	private ViewPager mViewPager;
 	
-	private PreferenciasFragment preferenciasFragment;
 	private InicioFragment inicioFragment;
 	private MyMapFragment myMapFragment;
 
@@ -48,13 +45,10 @@ public class TabsActivity extends FragmentActivity implements View.OnClickListen
 		myMapFragment = new MyMapFragment();	
 		myMapFragment.setMapLoadedListener(this);
 		
-		preferenciasFragment = new PreferenciasFragment();
-		
 		inicioFragment = new InicioFragment();		
 		inicioFragment.setInicioLoadedListener(this);
 		
 		ArrayList<Fragment> fragments = new ArrayList<Fragment>();
-		fragments.add(preferenciasFragment);
 		fragments.add(inicioFragment);
 		fragments.add(myMapFragment);		
 		
@@ -63,7 +57,7 @@ public class TabsActivity extends FragmentActivity implements View.OnClickListen
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		
-		mViewPager.setCurrentItem(1);		
+		mViewPager.setCurrentItem(0);		
 		
 
 	}
@@ -122,18 +116,11 @@ public class TabsActivity extends FragmentActivity implements View.OnClickListen
 	}
 	
 	
-	/* Implementamos el método onInicioLoaded recibido de MyMapFragment */
+	/* Implementamos el método onInicioClick recibido de MyMapFragment */
 	@Override
-	public void onInicioLoaded(Button btn) {		
-		btn.setOnClickListener(this);
-	}
-	
-	
-	/* Implementamos el método onClick */
-	@Override
-	public void onClick(View v) {
-		
-		switch (v.getId()) {
+	public void onInicioClick(Button btn) {		
+
+		switch (btn.getId()) {
 		case R.id.btnPeticion:
 			if(myMapFragment.getMap()!=null){
 				peticionPost(myMapFragment.getMap());
