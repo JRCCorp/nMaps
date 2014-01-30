@@ -6,6 +6,7 @@ import java.util.Map;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -78,9 +79,9 @@ public class TabsActivity extends FragmentActivity implements MapLoadedListener,
 		Location location = gm.getMyLocation();
 		Double latitud = location.getLatitude();
 		Double longitud = location.getLongitude();
-
-		System.out.println("Latitud: "+location.getLatitude()+", Longitud: "+location.getLongitude()+
-				"\n ");
+		String nombre = recuperarPreferenciaTexto("nombre");
+		String mensaje = recuperarPreferenciaTexto("mensaje");
+		System.out.println("Latitud: "+location.getLatitude()+", Longitud: "+location.getLongitude()+"\n ");
 
 		//Obtenemos la MAC del dispositivo a traves del objeto WifiManager
 		WifiManager manager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
@@ -88,7 +89,7 @@ public class TabsActivity extends FragmentActivity implements MapLoadedListener,
 		String macAddress = info.getMacAddress();
 		
 		//Indicamos la url del servicio
-		String urlPath = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress.hashCode()+"&latitud="+latitud+"&longitud="+longitud+"&radio=10&fecha=2000-10-10&nombre="+macAddress.hashCode()+"&mensaje=hola&guardar=1&obtener=1";
+		String urlPath = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress.hashCode()+"&latitud="+latitud+"&longitud="+longitud+"&radio=10&fecha=2000-10-10&nombre="+nombre+"&mensaje="+mensaje+"&guardar=1&obtener=1";
 		Map<String, String> parametros = new HashMap<String, String>();
 		
 		//Le pasamos los parámetros al Map
@@ -100,6 +101,11 @@ public class TabsActivity extends FragmentActivity implements MapLoadedListener,
 		new ServicioPosiciones(gm).execute(parametros);
 	}
 
+	
+	public String recuperarPreferenciaTexto(String campo){
+		SharedPreferences prefs = getSharedPreferences("es.nervion.maps.activity_preferences",Context.MODE_PRIVATE);
+		return String.valueOf(prefs.getString("pref_"+campo, ""));
+	}
 	
 	
 	

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -50,7 +51,7 @@ public class MyMapFragment extends MapFragment implements OnMapLoadedCallback {
 	                location.getLongitude());
 	        getMap().animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,  12.0f));
 	        
-	        
+	        getMap().setMapType(GoogleMap.MAP_TYPE_HYBRID);
 	    }
 		
 		mapLoadedListener.onMapLoaded(this.getMap());

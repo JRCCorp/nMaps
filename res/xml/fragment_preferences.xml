@@ -1,6 +1,6 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="@string/tituloPreferenciaNombre">
+    <PreferenceCategory android:title="@string/tituloPreferenciaNombre" >
         <EditTextPreference
             android:key="pref_nombre"
             android:title="@string/pref_nombre" />
@@ -8,14 +8,22 @@
             android:key="pref_mensaje"
             android:title="@string/pref_mensaje" />
     </PreferenceCategory>
-     <PreferenceCategory android:title="@string/tituloPreferenciaServicio" >
+    <PreferenceCategory android:title="@string/tituloPreferenciaServicio" >
         <SwitchPreference
-            android:key="pref_servicio"
             android:defaultValue="true"
-            android:summaryOn="Activado"
-            android:summaryOff="Desactivado"></SwitchPreference>
+            android:key="pref_servicio"
+            android:summaryOff="Desactivado"
+            android:summaryOn="Activado" >
+        </SwitchPreference>
     </PreferenceCategory>
     <PreferenceCategory android:title="Otro" >
+   <es.nervion.maps.adapter.SeekBarPreference
+            android:defaultValue="10"
+            android:key="pref_radio"
+            android:max="1000"
+            android:summary="Radio actual:"
+            android:title="Radio"/>
+
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="prefSendReport"
