@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Maps</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_tabs">Tabs</string>
+    <string name="app_name">WorstMap</string>
     
+    <string name="title_activity_tabs">Tabs</string>  
     <string name="titulo_preferencias">Preferencias</string>
     <string name="titulo_inicio">Inicio</string>
-    <string name="titulo_mapa">Mapa</string>
-    
+    <string name="titulo_mapa">Mapa</string>  
     <string name="peticion">Peticion</string>
+    
+    <!--  ACTION BAR  -->
+    <string name="action_settings">Opciones</string>
+    <string name="action_preferencias">Preferencias</string>
 
 </resources>
