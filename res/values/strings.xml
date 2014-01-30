@@ -5,9 +5,11 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_tabs">Tabs</string>
-    <string name="title_section1">Preferencias</string>
-    <string name="title_section2">Inicio</string>
-    <string name="title_section3">Mapa</string>
+    
+    <string name="titulo_preferencias">Preferencias</string>
+    <string name="titulo_inicio">Inicio</string>
+    <string name="titulo_mapa">Mapa</string>
+    
     <string name="peticion">Peticion</string>
 
 </resources>

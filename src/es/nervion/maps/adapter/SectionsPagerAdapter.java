@@ -34,10 +34,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 	public CharSequence getPageTitle(int position) {
 		Locale l = Locale.getDefault();
 		switch (position) {
+		case 0:
+			return activity.getString(R.string.titulo_inicio).toUpperCase(l);
 		case 1:
-			return activity.getString(R.string.title_section2).toUpperCase(l);
-		case 2:
-			return activity.getString(R.string.title_section3).toUpperCase(l);
+			return activity.getString(R.string.titulo_mapa).toUpperCase(l);
 		}
 		return "Seccion";
 	}
