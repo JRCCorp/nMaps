@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import es.nervion.maps.listener.MapLoadedListener;
 
 
-public class MyMapFragment extends SupportMapFragment implements OnMapLoadedCallback {
+public class MyMapFragment extends MapFragment implements OnMapLoadedCallback {
 	/**
 	 * The fragment argument representing the section number for this
 	 * fragment.
