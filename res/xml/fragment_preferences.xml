@@ -1,14 +1,34 @@
-<PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory
-            android:title="Nombre">
-
+    <PreferenceCategory android:title="@string/tituloPreferenciaNombre" >
+        <EditTextPreference
+            android:key="pref_nombre"
+            android:title="@string/pref_nombre" />
+        <EditTextPreference
+            android:key="pref_mensaje"
+            android:title="@string/pref_mensaje" />
+    </PreferenceCategory>
+     <PreferenceCategory android:title="@string/tituloPreferenciaServicio" >
+        <SwitchPreference
+            android:key="pref_servicio"
+            android:defaultValue="true"
+            android:summaryOn="Activado"
+            android:summaryOff="Desactivado"></SwitchPreference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Otro" >
         <CheckBoxPreference
-                android:key="checkbox_preference"
-                android:title="Titulo check"
-                android:summary="Sumario check" />
+            android:defaultValue="false"
+            android:key="prefSendReport"
+            android:summary="Tamaño máximo 20mb"
+            android:title="Enviar datos" >
+        </CheckBoxPreference>
 
+        <ListPreference
+            android:entries="@array/radio"
+            android:entryValues="@array/radioValor"
+            android:key="prefSyncFrequency"
+            android:summary="Sumario"
+            android:title="Lista" />
     </PreferenceCategory>
 
 </PreferenceScreen>

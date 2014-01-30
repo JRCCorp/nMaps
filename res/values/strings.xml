@@ -12,5 +12,25 @@
     <!--  ACTION BAR  -->
     <string name="action_settings">Opciones</string>
     <string name="action_preferencias">Preferencias</string>
-
+    
+    <!--  PREFERENCIAS  -->
+    <string name="tituloPreferenciaNombre">Usuario</string>
+    <string name="tituloPreferenciaServicio">Servicio</string>
+	<string name="pref_nombre">Nombre</string>
+	<string name="pref_mensaje">Mensaje</string>
+	 <string-array name="radio">
+        <item name="r10">10 metros</item>
+        <item name="r25">25 metros</item>
+        <item name="r50">50 metros</item>
+        <item name="r500">500 metros</item>
+        <item name="r1000">1000 metros</item>
+    </string-array>
+    <string-array name="radioValor">
+		<item name="r10">10</item>
+        <item name="r25">25</item>
+        <item name="r50">50</item>
+        <item name="r500">500</item>
+        <item name="r1000">1000 metros</item>
+    </string-array>
+    
 </resources>
