@@ -7,11 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-public class PreferenciasFragment extends Fragment implements View.OnClickListener {
+public class PreferenciasFragment extends Fragment {
 
-	Button btn;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -21,18 +19,8 @@ public class PreferenciasFragment extends Fragment implements View.OnClickListen
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		btn = (Button) this.getActivity().findViewById(R.id.btnHola);
-		btn.setOnClickListener(this);
 
 	}
-
-	@Override
-	public void onClick(View v) {
-
-
-
-	}
-
 
 
 
