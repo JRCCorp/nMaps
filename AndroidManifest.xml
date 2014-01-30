@@ -53,14 +53,6 @@
             android:name="es.nervion.maps.activity.MainActivity"
             android:label="@string/title_activity_tabs" >
         </activity>
-        <activity
-            android:name="es.nervion.maps.activity.Preferencias"
-            android:label="@string/title_activity_preferencias"
-            android:parentActivityName="es.nervion.maps.activity.TabsActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="es.nervion.maps.activity.TabsActivity" />
-        </activity>
     </application>
 
 </manifest>

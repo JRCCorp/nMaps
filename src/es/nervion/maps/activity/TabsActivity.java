@@ -4,18 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.android.gms.maps.GoogleMap;
-
-import es.nervion.maps.activity.R;
-import es.nervion.maps.adapter.SectionsPagerAdapter;
-import es.nervion.maps.async.ServicioPosiciones;
-
-import es.nervion.maps.fragment.InicioFragment;
-import es.nervion.maps.fragment.MyMapFragment;
-import es.nervion.maps.listener.InicioListener;
-import es.nervion.maps.listener.MapLoadedListener;
-
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -24,7 +14,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
+
+import com.google.android.gms.maps.GoogleMap;
+
+import es.nervion.maps.adapter.SectionsPagerAdapter;
+import es.nervion.maps.async.ServicioPosiciones;
+import es.nervion.maps.fragment.InicioFragment;
+import es.nervion.maps.fragment.MyMapFragment;
+import es.nervion.maps.listener.InicioListener;
+import es.nervion.maps.listener.MapLoadedListener;
 
 public class TabsActivity extends FragmentActivity implements MapLoadedListener, InicioListener {
 
@@ -68,6 +68,7 @@ public class TabsActivity extends FragmentActivity implements MapLoadedListener,
 		getMenuInflater().inflate(R.menu.tabs, menu);
 		return true;
 	}
+
 	
 	
 	public void peticionPost(GoogleMap gm){
