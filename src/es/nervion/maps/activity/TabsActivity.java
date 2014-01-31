@@ -96,7 +96,7 @@ public class TabsActivity extends FragmentActivity implements MapLoadedListener,
 		 * @TODO
 		 */
 		String tiempoAhora = new SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(new Date());
-		String urlPath = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress.hashCode()+"&latitud="+latitud+"&longitud="+longitud+"&radio=10&fecha="+tiempoAhora+"&nombre="+nombre+"&mensaje="+mensaje+"&guardar=1&obtener=1";
+		String urlPath = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress+"&latitud="+latitud+"&longitud="+longitud+"&radio=10&fecha="+tiempoAhora+"&nombre="+nombre+"&mensaje="+mensaje+"&guardar=1&obtener=1";
 		Map<String, String> parametros = new HashMap<String, String>();
 		
 		//Le pasamos los parámetros al Map

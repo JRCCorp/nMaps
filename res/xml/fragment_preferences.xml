@@ -3,9 +3,11 @@
     <PreferenceCategory android:title="@string/tituloPreferenciaNombre" >
         <EditTextPreference
             android:key="pref_nombre"
+            android:defaultValue="wmaps"
             android:title="@string/pref_nombre" />
         <EditTextPreference
             android:key="pref_mensaje"
+            android:defaultValue="¡Estoy aquí!"
             android:title="@string/pref_mensaje" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/tituloPreferenciaServicio" >
