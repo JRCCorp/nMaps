@@ -44,7 +44,7 @@ public class ServicioPosiciones extends AsyncTask<Map<String, String>, JSONArray
 
 				BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 				String json = reader.readLine();
-				JSONTokener tokener = new JSONTokener(json);	                
+				JSONTokener tokener = new JSONTokener(json);         
 				try {
 					finalResult = new JSONArray(tokener);
 				} catch (JSONException e) {

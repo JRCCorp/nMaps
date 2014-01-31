@@ -11,6 +11,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -80,29 +81,27 @@ public class TabsActivity extends FragmentActivity implements MapLoadedListener,
 	public void peticionPost(GoogleMap gm){
 
 		Location location = gm.getMyLocation();
-		Double latitud = location.getLatitude();
-		Double longitud = location.getLongitude();
-		String nombre = recuperarPreferenciaTexto("nombre");
-		String mensaje = recuperarPreferenciaTexto("mensaje");
+		String latitud = Uri.encode(location.getLatitude()+"");
+		String longitud = Uri.encode(location.getLongitude()+"");
+		String nombre = Uri.encode(recuperarPreferenciaTexto("nombre"));
+		String mensaje = Uri.encode(recuperarPreferenciaTexto("mensaje"));
 		System.out.println("Latitud: "+location.getLatitude()+", Longitud: "+location.getLongitude()+"\n ");
 
 		//Obtenemos la MAC del dispositivo a traves del objeto WifiManager
 		WifiManager manager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
 		WifiInfo info = manager.getConnectionInfo();
-		String macAddress = info.getMacAddress();
+		String macAddress = Uri.encode(info.getMacAddress());
 		
 		//Indicamos la url del servicio
 		/***
 		 * @TODO
 		 */
-		String tiempoAhora = new SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(new Date());
-		String urlPath = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress+"&latitud="+latitud+"&longitud="+longitud+"&radio=10&fecha="+tiempoAhora+"&nombre="+nombre+"&mensaje="+mensaje+"&guardar=1&obtener=1";
+		String fecha = Uri.encode(new SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(new Date()));
+		String urlPath = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress+"&latitud="+latitud+"&longitud="+longitud+"&radio=10&fecha="+fecha+"&nombre="+nombre+"&mensaje="+mensaje+"&guardar=1&obtener=1";
 		Map<String, String> parametros = new HashMap<String, String>();
 		
 		//Le pasamos los parámetros al Map
 		parametros.put("host", urlPath);
-		parametros.put("latitud", latitud.toString());
-		parametros.put("longitud", longitud.toString());
 		
 		//Ejecutamos el servicio-obtener-posiciones
 		new ServicioPosiciones(gm).execute(parametros);
