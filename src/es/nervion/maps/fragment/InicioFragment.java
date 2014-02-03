@@ -18,7 +18,7 @@ import es.nervion.maps.listener.InicioListener;
 public class InicioFragment extends Fragment implements View.OnClickListener{
 
 	private Button btnPeticion;
-	private ImageView imgCarga;
+	private ImageView imgCarga, imgCarga2;
 	
 	private InicioListener inicioLoadedListener;
 
@@ -37,16 +37,18 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		btnPeticion.setOnClickListener(this);
 		
 		imgCarga = (ImageView) this.getActivity().findViewById(R.id.imgCarga);
+		imgCarga2 = (ImageView) this.getActivity().findViewById(R.id.imgCarga2);
 //		Animation escala = AnimationUtils.loadAnimation(getActivity(), R.drawable.prueba_imagen_carga);
 //		imgCarga.startAnimation(escala);
 		
-		//AnimationDrawable animacionCarga;
-		Animation girar = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_imagen);
+//		AnimationDrawable animacionCarga;
+		Animation giraAumenta = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_aumenta_imagen);
 //		imgCarga.setBackgroundResource(R.anim.cambio_imagen_carga);
 //		animacionCarga = (AnimationDrawable) imgCarga.getBackground();
 //		animacionCarga.start();
-		imgCarga.setAnimation(girar);
-		
+		imgCarga.setAnimation(giraAumenta);
+		Animation gira = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_imagen);
+		imgCarga2.setAnimation(gira);
 			
 	}
 	

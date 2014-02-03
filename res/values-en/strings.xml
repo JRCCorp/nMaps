@@ -13,6 +13,9 @@
     <string name="action_settings">Options</string>
     <string name="action_preferencias">Preferents</string>
     
+    <!--	INICIO	 -->
+     <string name="lblServicio1">Service 1</string>
+     <string name="lblServicio2">Service 2</string>
      <!--  PREFERENCIAS  -->
     <string name="tituloPreferenciaNombre">User</string>
     <string name="tituloPreferenciaServicio">Service</string>

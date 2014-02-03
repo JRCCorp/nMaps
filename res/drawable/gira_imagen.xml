@@ -12,31 +12,6 @@
         android:toDegrees="360"
         android:visible="true" >
     </rotate>
-    
-      <scale
-        android:duration="5000"
-        android:fromXScale="1"
-        android:fromYScale="1"
-        android:pivotX="50%"
-        android:pivotY="50%"
-        android:repeatCount="infinite"
-        android:repeatMode="restart"
-        android:toXScale="3"
-        android:toYScale="3"
-        android:visible="true" >
-    </scale>
-    
-       <scale
-        android:duration="5000"
-        android:fromXScale="3"
-        android:fromYScale="3"
-        android:pivotX="50%"
-        android:pivotY="50%"
-        android:repeatCount="infinite"
-        android:repeatMode="restart"
-        android:toXScale="1"
-        android:toYScale="1"
-        android:visible="true" >
-    </scale>
+   
 
 </set>

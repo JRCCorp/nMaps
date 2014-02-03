@@ -1,22 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo3" >
 
-    <ImageView
-        android:id="@+id/imgCarga"
-        android:src="@drawable/carga"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bordes_rectos"
+        android:layout_marginTop="75dp"
+        android:layout_marginBottom="-4dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginLeft="45dp">
 
-    <Button
-        android:id="@+id/btnPeticion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/peticion" />
+        <Button
+            android:id="@+id/btnPeticion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/imgCarga2"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="34dp"
+            android:text="@string/peticion" />
+
+        <ImageView
+            android:id="@+id/imgCarga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imgCarga2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="22dp"
+            android:src="@drawable/carga0" />
+
+        <ImageView
+            android:id="@+id/imgCarga2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/marca" />
+
+        <ToggleButton
+            android:id="@+id/btnServicio1"
+            android:background="@color/aguamarinaO"
+            android:textColor="@color/blanco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnPeticion"
+            android:layout_toLeftOf="@+id/imgCarga"/>
+
+        <ToggleButton
+            android:id="@+id/btnServicio2"
+            android:background="@color/aguamarinaO"
+             android:textColor="@color/blanco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/btnServicio1"
+            android:layout_toRightOf="@+id/imgCarga"/>
+
+        <TextView
+            android:id="@+id/lblServicio1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnServicio1"
+            android:layout_alignLeft="@+id/btnServicio1"
+            android:text="@string/lblServicio1" />
+
+        <TextView
+            android:id="@+id/lblServicio2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnServicio2"
+            android:layout_alignLeft="@+id/btnServicio2"
+            android:text="@string/lblServicio2" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
