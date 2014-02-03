@@ -20,6 +20,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.Toast;
@@ -37,7 +38,7 @@ import es.nervion.maps.service.PosicionesBroadcastReceiver;
 import es.nervion.maps.service.PosicionesIntentService;
 import es.nervion.maps.service.ServicioPosiciones;
 
-public class TabsActivity extends Activity implements MapLoadedListener, InicioListener, PreferencesListener {
+public class TabsActivity extends Activity implements MapLoadedListener, InicioListener, PreferencesListener, OnPageChangeListener {
 
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -52,6 +53,13 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tabs);
+
+		/* Registrar acciones de servicio y broadcastReceiver */
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(PosicionesIntentService.ACTION_ACTIVO);
+		filter.addAction(PosicionesIntentService.ACTION_FIN);
+		PosicionesBroadcastReceiver broadcastReceiver = new PosicionesBroadcastReceiver(this);
+		registerReceiver(broadcastReceiver, filter);
 
 		preferenciasFragment = new PreferenciasFragment();
 		preferenciasFragment.setPreferencesListener(this);
@@ -73,14 +81,8 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
 		mViewPager.setCurrentItem(1);
-		
-		
-		/* Registrar acciones de servicio y broadcastReceiver */
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(PosicionesIntentService.ACTION_ACTIVO);
-		filter.addAction(PosicionesIntentService.ACTION_FIN);
-		PosicionesBroadcastReceiver broadcastReceiver = new PosicionesBroadcastReceiver(this);
-		registerReceiver(broadcastReceiver, filter);
+
+		mViewPager.setOnPageChangeListener(this);
 
 
 	}
@@ -134,7 +136,7 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 		SharedPreferences prefs = getSharedPreferences("es.nervion.maps.activity_preferences",Context.MODE_PRIVATE);
 		return prefs.getInt("pref_"+campo, 500);
 	}
-	
+
 	public boolean recuperarPreferenciaBoolean(String campo){
 		SharedPreferences prefs = getSharedPreferences("es.nervion.maps.activity_preferences",Context.MODE_PRIVATE);
 		return prefs.getBoolean("pref_"+campo, false);
@@ -162,22 +164,55 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 	@Override
 	public void onInicioClick(Button btn) {		
 
-//		if(myMapFragment.getMap()!=null){
-//			peticionPost(myMapFragment);
-//		}
+		//		if(myMapFragment.getMap()!=null){
+		//			peticionPost(myMapFragment);
+		//		}
+
+
+
+	}
+
+	/* Implementamos el método onPreferencesChange recibido desde PreferenciasFragment */
+	@Override
+	public void onPreferencesChange() {
+
+		//		if(recuperarPreferenciaBoolean("servicio")){
+		//			Intent msgIntent = new Intent(this, PosicionesIntentService.class);
+		//			msgIntent.putExtra("vivo", recuperarPreferenciaBoolean("servicio"));
+		//			msgIntent.putExtra("refresco", 120000);
+		//	        startService(msgIntent);
+		//		}
 
 	}
 
 	@Override
-	public void onPreferencesChange() {
-		
-		if(recuperarPreferenciaBoolean("servicio")){
-			Intent msgIntent = new Intent(this, PosicionesIntentService.class);
-			msgIntent.putExtra("vivo", recuperarPreferenciaBoolean("servicio"));
-			msgIntent.putExtra("refresco", 5000);
-	        startService(msgIntent);
-		}		
-		
+	public void onPageScrollStateChanged(int arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onPageSelected(int position) {
+
+		System.out.println("Cambiado a "+position);
+		if(position==2 && !PosicionesIntentService.vivo){
+			if(this.recuperarPreferenciaBoolean("servicio")){
+				Intent msgIntent = new Intent(this, PosicionesIntentService.class);
+				msgIntent.putExtra("vivo", this.recuperarPreferenciaBoolean("servicio"));
+				msgIntent.putExtra("refresco", 5000);
+				this.startService(msgIntent);
+			}
+		}else if(PosicionesIntentService.vivo){
+			PosicionesIntentService.vivo = false;
+		}
+
+
 	}
 
 

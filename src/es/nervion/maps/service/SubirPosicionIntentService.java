@@ -3,19 +3,23 @@ package es.nervion.maps.service;
 import android.app.IntentService;
 import android.content.Intent;
 
-public class PosicionesIntentService extends IntentService {
-
+public class SubirPosicionIntentService extends IntentService {
+	
+	/*
+	 * @TODO
+	 * */
+	
 	public static final String ACTION_ACTIVO =
-			"net.sgoliver.intent.action.ACTIVO";
+			"net.sgoliver.intent.action.SUBIR_ACTIVO";
 	public static final String ACTION_FIN =
-			"net.sgoliver.intent.action.FIN";
+			"net.sgoliver.intent.action.SUBIR_FIN";
 	
 	public static boolean vivo = false;
 
 	private int refresco;
 
-	public PosicionesIntentService() {
-		super("Servicio de Posiciones");
+	public SubirPosicionIntentService() {
+		super("Servicio subir posicion");
 	}
 
 	@Override
@@ -42,8 +46,5 @@ public class PosicionesIntentService extends IntentService {
 		sendBroadcast(bcIntent);
 
 	}
-
-
-
 
 }

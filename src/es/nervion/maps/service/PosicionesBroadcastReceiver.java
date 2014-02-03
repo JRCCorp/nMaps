@@ -23,6 +23,7 @@ public class PosicionesBroadcastReceiver extends BroadcastReceiver {
 		else if(intent.getAction().equals(PosicionesIntentService.ACTION_FIN)) {
 			Toast.makeText(activity, "Servicio de posiciones parado", Toast.LENGTH_SHORT).show();
 		}
+		
 	}
 
 
