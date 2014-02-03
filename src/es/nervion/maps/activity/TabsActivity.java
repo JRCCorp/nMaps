@@ -102,7 +102,7 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 		String latitud = Uri.encode(location.getLatitude()+"");
 		String longitud = Uri.encode(location.getLongitude()+"");
 		String nombre = Uri.encode(recuperarPreferenciaString("nombre"));
-		String mensaje = Uri.encode(recuperarPreferenciaString("mensaje"));
+		String mensaje = Uri.encode(recuperarPreferenciaString("estado"));
 		String radio = Uri.encode((recuperarPreferenciaInteger("radio")/1000)+"");
 		System.out.println("Latitud: "+location.getLatitude()+", Longitud: "+location.getLongitude()+"\n ");
 
@@ -118,7 +118,7 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 		String fecha = Uri.encode(new SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(new Date()));
 		String urlPath = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress+"&latitud="+latitud+"&longitud="+longitud+"&radio="+radio+"&fecha="+fecha+"&nombre="+nombre+"&mensaje="+mensaje+"&guardar=1&obtener=1";
 		Map<String, String> parametros = new HashMap<String, String>();
-
+		
 		//Le pasamos los parámetros al Map
 		parametros.put("host", urlPath);
 
