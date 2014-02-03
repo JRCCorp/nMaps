@@ -2,6 +2,7 @@ package es.nervion.maps.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		setRetainInstance(true);
 		txtInicio = (TextView) this.getActivity().findViewById(R.id.txtInicio);
 		btnPeticion = (Button) this.getActivity().findViewById(R.id.btnPeticion);
+		btnPeticion.setOnClickListener(this);
 		
 			
 	}
@@ -44,6 +46,7 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		
 		switch (v.getId()) {
 		case R.id.btnPeticion:
+			Log.d("InicioFragment", "onClick btnPeticion");
 			inicioLoadedListener.onInicioClick(btnPeticion);
 			break;
 

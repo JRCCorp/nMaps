@@ -20,11 +20,11 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
     private final String TAG = getClass().getName(); 
     private static final String ATRIBUTO1="es.nervion.maps.atributo1";
     private static final String ATRIBUTO2="es.nervion.maps.atributo2";
-    private static final int DEFAULT_VALUE = 10;
+    private static final int DEFAULT_VALUE = 500;
     
-    private int mMaxValue      = 1000;
-    private int mMinValue      = 10;
-    private int mInterval      = 50;
+    private int mMaxValue      = 10000;
+    private int mMinValue      = 500;
+    private int mInterval      = 500;
     private int mCurrentValue;
     private String mUnitsLeft  = "";
     private String mUnitsRight = "";
@@ -50,8 +50,8 @@ public class SeekBarPreference extends Preference implements OnSeekBarChangeList
     }
     
     private void setValuesFromXml(AttributeSet attrs) {
-        mMaxValue = attrs.getAttributeIntValue(ATRIBUTO1, "max", 1000);
-        mMinValue = attrs.getAttributeIntValue(ATRIBUTO2, "min", 10);
+        mMaxValue = attrs.getAttributeIntValue(ATRIBUTO1, "max", 10000);
+        mMinValue = attrs.getAttributeIntValue(ATRIBUTO2, "min", 500);
         
         mUnitsLeft = getAttributeStringValue(attrs, ATRIBUTO2, "unitsLeft", "");
         String units = getAttributeStringValue(attrs, ATRIBUTO2, "units", "");

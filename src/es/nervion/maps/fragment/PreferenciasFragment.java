@@ -18,6 +18,7 @@ public class PreferenciasFragment extends PreferenceFragment implements OnShared
 		for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++) {
 			iniciarSumario(getPreferenceScreen().getPreference(i));
 		}
+		
 	}
 
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,

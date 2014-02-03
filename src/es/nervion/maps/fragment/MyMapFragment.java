@@ -1,5 +1,7 @@
 package es.nervion.maps.fragment;
 
+import java.util.ArrayList;
+
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,17 +13,15 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 import es.nervion.maps.listener.MapLoadedListener;
 
 
 public class MyMapFragment extends MapFragment implements OnMapLoadedCallback {
-	/**
-	 * The fragment argument representing the section number for this
-	 * fragment.
-	 */
 	
 	private MapLoadedListener mapLoadedListener;
+	private ArrayList<Marker> marcadores;
 	
 
 	@Override
@@ -32,8 +32,11 @@ public class MyMapFragment extends MapFragment implements OnMapLoadedCallback {
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
+		
 		setRetainInstance(true);
+		
+		marcadores = new ArrayList<Marker>();
+		
 		getMap().setMyLocationEnabled(true);
 		getMap().setOnMapLoadedCallback(this);
  
@@ -61,6 +64,22 @@ public class MyMapFragment extends MapFragment implements OnMapLoadedCallback {
 	/* Setter de MapLoadedListener */
 	public void setMapLoadedListener(MapLoadedListener mll){
 		this.mapLoadedListener = mll;
+	}
+	
+	
+	public void eliminarMarcadores(){
+		synchronized (marcadores) {
+			for(Marker m: marcadores){
+				m.remove();
+			}
+		}
+	}
+	
+	
+	public void anadirMarcador(Marker m){
+		synchronized (marcadores) {
+			marcadores.add(m);
+		}
 	}
 
 

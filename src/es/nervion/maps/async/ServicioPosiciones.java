@@ -21,15 +21,18 @@ import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import es.nervion.maps.fragment.MyMapFragment;
 
 public class ServicioPosiciones extends AsyncTask<Map<String, String>, JSONArray, JSONArray>{
 
-	private GoogleMap gm;		
+	private MyMapFragment mmf;
 
-	public ServicioPosiciones(GoogleMap gm){
+	public ServicioPosiciones(MyMapFragment mmf){
 		super();
-		this.gm = gm;
+		this.mmf = mmf;
 	}
 
 	@Override
@@ -70,12 +73,17 @@ public class ServicioPosiciones extends AsyncTask<Map<String, String>, JSONArray
 		super.onPostExecute(result);
 		//Do anything with response..
 		try {
-			for(int i=0; i<result.length(); i++){
-				System.out.println(result.getString(i));
-				gm.addMarker(new MarkerOptions()
-				.position(new LatLng(result.getJSONArray(i).getDouble(2), result.getJSONArray(i).getDouble(3)))
-				.title(result.getJSONArray(i).getString(5))
-				.snippet(result.getJSONArray(i).getString(6)));
+			mmf.eliminarMarcadores();
+			mmf.getMap().clear();
+			if(result!=null){				
+				for(int i=0; i<result.length(); i++){
+					Log.d("ServicioPosiciones", result.getString(i));
+					Marker m = mmf.getMap().addMarker(new MarkerOptions()
+					.position(new LatLng(result.getJSONArray(i).getDouble(2), result.getJSONArray(i).getDouble(3)))
+					.title(result.getJSONArray(i).getString(5))
+					.snippet(result.getJSONArray(i).getString(6)));
+					mmf.anadirMarcador(m);
+				}
 			}
 		} catch (JSONException e) {
 			Log.d("AsyncPost", e.getMessage());

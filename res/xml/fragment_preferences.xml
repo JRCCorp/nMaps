@@ -20,9 +20,9 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="Otro" >
    <es.nervion.maps.adapter.SeekBarPreference
-            android:defaultValue="10"
+            android:defaultValue="500"
             android:key="pref_radio"
-            android:max="1000"
+            android:max="10000"
             android:summary="Radio actual:"
             android:title="Radio"/>
 
