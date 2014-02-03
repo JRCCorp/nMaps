@@ -3,7 +3,7 @@ package es.nervion.maps.service;
 import android.app.IntentService;
 import android.content.Intent;
 
-public class PosicionesIntentService extends IntentService {
+public class ObtenerPosicionesIntentService extends IntentService {
 
 	public static final String ACTION_ACTIVO =
 			"net.sgoliver.intent.action.ACTIVO";
@@ -14,7 +14,7 @@ public class PosicionesIntentService extends IntentService {
 
 	private int refresco;
 
-	public PosicionesIntentService() {
+	public ObtenerPosicionesIntentService() {
 		super("Servicio de Posiciones");
 	}
 

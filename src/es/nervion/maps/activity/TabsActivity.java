@@ -35,7 +35,7 @@ import es.nervion.maps.listener.InicioListener;
 import es.nervion.maps.listener.MapLoadedListener;
 import es.nervion.maps.listener.PreferencesListener;
 import es.nervion.maps.service.PosicionesBroadcastReceiver;
-import es.nervion.maps.service.PosicionesIntentService;
+import es.nervion.maps.service.ObtenerPosicionesIntentService;
 import es.nervion.maps.service.ServicioPosiciones;
 
 public class TabsActivity extends Activity implements MapLoadedListener, InicioListener, PreferencesListener, OnPageChangeListener {
@@ -56,8 +56,8 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 
 		/* Registrar acciones de servicio y broadcastReceiver */
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(PosicionesIntentService.ACTION_ACTIVO);
-		filter.addAction(PosicionesIntentService.ACTION_FIN);
+		filter.addAction(ObtenerPosicionesIntentService.ACTION_ACTIVO);
+		filter.addAction(ObtenerPosicionesIntentService.ACTION_FIN);
 		PosicionesBroadcastReceiver broadcastReceiver = new PosicionesBroadcastReceiver(this);
 		registerReceiver(broadcastReceiver, filter);
 
@@ -201,15 +201,15 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 	public void onPageSelected(int position) {
 
 		System.out.println("Cambiado a "+position);
-		if(position==2 && !PosicionesIntentService.vivo){
+		if(position==2 && !ObtenerPosicionesIntentService.vivo){
 			if(this.recuperarPreferenciaBoolean("servicio")){
-				Intent msgIntent = new Intent(this, PosicionesIntentService.class);
+				Intent msgIntent = new Intent(this, ObtenerPosicionesIntentService.class);
 				msgIntent.putExtra("vivo", this.recuperarPreferenciaBoolean("servicio"));
-				msgIntent.putExtra("refresco", 5000);
+				msgIntent.putExtra("refresco", 20000);
 				this.startService(msgIntent);
 			}
-		}else if(PosicionesIntentService.vivo){
-			PosicionesIntentService.vivo = false;
+		}else if(ObtenerPosicionesIntentService.vivo){
+			ObtenerPosicionesIntentService.vivo = false;
 		}
 
 
