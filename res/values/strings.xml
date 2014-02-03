@@ -17,7 +17,7 @@
     <string name="tituloPreferenciaNombre">Usuario</string>
     <string name="tituloPreferenciaServicio">Servicio</string>
 	<string name="pref_nombre">Nombre</string>
-	<string name="pref_mensaje">Mensaje</string>
+	<string name="pref_estado">Estado</string>
 	 <string-array name="radio">
         <item name="r10">10 metros</item>
         <item name="r25">25 metros</item>

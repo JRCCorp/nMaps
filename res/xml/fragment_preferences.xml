@@ -6,9 +6,9 @@
             android:defaultValue="wmaps"
             android:title="@string/pref_nombre" />
         <EditTextPreference
-            android:key="pref_mensaje"
-            android:defaultValue="¡Estoy aquí!"
-            android:title="@string/pref_mensaje" />
+            android:key="pref_estado"
+            android:defaultValue="v1.0"
+            android:title="@string/pref_estado" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/tituloPreferenciaServicio" >
         <SwitchPreference
@@ -23,7 +23,7 @@
             android:defaultValue="500"
             android:key="pref_radio"
             android:max="10000"
-            android:summary="Radio actual:"
+            android:summary="Radio actual (en metros):"
             android:title="Radio"/>
 
         <CheckBoxPreference

@@ -1,21 +1,24 @@
 package es.nervion.maps.fragment;
 
 import android.app.Fragment;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 import es.nervion.maps.activity.R;
 import es.nervion.maps.listener.InicioListener;
 
 public class InicioFragment extends Fragment implements View.OnClickListener{
 
 	private Button btnPeticion;
-	private TextView txtInicio;
+	private ImageView imgCarga;
 	
 	private InicioListener inicioLoadedListener;
 
@@ -29,9 +32,20 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
-		txtInicio = (TextView) this.getActivity().findViewById(R.id.txtInicio);
+		
 		btnPeticion = (Button) this.getActivity().findViewById(R.id.btnPeticion);
 		btnPeticion.setOnClickListener(this);
+		
+		imgCarga = (ImageView) this.getActivity().findViewById(R.id.imgCarga);
+//		Animation escala = AnimationUtils.loadAnimation(getActivity(), R.drawable.prueba_imagen_carga);
+//		imgCarga.startAnimation(escala);
+		
+		//AnimationDrawable animacionCarga;
+		Animation girar = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_imagen);
+//		imgCarga.setBackgroundResource(R.anim.cambio_imagen_carga);
+//		animacionCarga = (AnimationDrawable) imgCarga.getBackground();
+//		animacionCarga.start();
+		imgCarga.setAnimation(girar);
 		
 			
 	}
