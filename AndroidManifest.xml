@@ -50,6 +50,8 @@
             android:name="es.nervion.maps.activity.MainActivity"
             android:label="@string/title_activity_tabs" >
         </activity>
+        
+        <service android:name="es.nervion.maps.service.PosicionesIntentService"></service>
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"

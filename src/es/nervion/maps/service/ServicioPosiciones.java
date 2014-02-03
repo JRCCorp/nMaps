@@ -1,4 +1,4 @@
-package es.nervion.maps.async;
+package es.nervion.maps.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,7 +19,6 @@ import org.json.JSONTokener;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;

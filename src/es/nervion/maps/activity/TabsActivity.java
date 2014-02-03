@@ -9,7 +9,10 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.Uri;
@@ -19,18 +22,22 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 
 import es.nervion.maps.adapter.SectionsPagerAdapter;
-import es.nervion.maps.async.ServicioPosiciones;
 import es.nervion.maps.fragment.InicioFragment;
 import es.nervion.maps.fragment.MyMapFragment;
 import es.nervion.maps.fragment.PreferenciasFragment;
 import es.nervion.maps.listener.InicioListener;
 import es.nervion.maps.listener.MapLoadedListener;
+import es.nervion.maps.listener.PreferencesListener;
+import es.nervion.maps.service.PosicionesBroadcastReceiver;
+import es.nervion.maps.service.PosicionesIntentService;
+import es.nervion.maps.service.ServicioPosiciones;
 
-public class TabsActivity extends Activity implements MapLoadedListener, InicioListener {
+public class TabsActivity extends Activity implements MapLoadedListener, InicioListener, PreferencesListener {
 
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -47,6 +54,7 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 		setContentView(R.layout.activity_tabs);
 
 		preferenciasFragment = new PreferenciasFragment();
+		preferenciasFragment.setPreferencesListener(this);
 
 		myMapFragment = new MyMapFragment();	
 		myMapFragment.setMapLoadedListener(this);
@@ -64,7 +72,15 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
-		mViewPager.setCurrentItem(1);		
+		mViewPager.setCurrentItem(1);
+		
+		
+		/* Registrar acciones de servicio y broadcastReceiver */
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(PosicionesIntentService.ACTION_ACTIVO);
+		filter.addAction(PosicionesIntentService.ACTION_FIN);
+		PosicionesBroadcastReceiver broadcastReceiver = new PosicionesBroadcastReceiver(this);
+		registerReceiver(broadcastReceiver, filter);
 
 
 	}
@@ -118,6 +134,11 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 		SharedPreferences prefs = getSharedPreferences("es.nervion.maps.activity_preferences",Context.MODE_PRIVATE);
 		return prefs.getInt("pref_"+campo, 500);
 	}
+	
+	public boolean recuperarPreferenciaBoolean(String campo){
+		SharedPreferences prefs = getSharedPreferences("es.nervion.maps.activity_preferences",Context.MODE_PRIVATE);
+		return prefs.getBoolean("pref_"+campo, false);
+	}
 
 
 
@@ -141,10 +162,22 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 	@Override
 	public void onInicioClick(Button btn) {		
 
-		if(myMapFragment.getMap()!=null){
-			peticionPost(myMapFragment);
-		}
+//		if(myMapFragment.getMap()!=null){
+//			peticionPost(myMapFragment);
+//		}
 
+	}
+
+	@Override
+	public void onPreferencesChange() {
+		
+		if(recuperarPreferenciaBoolean("servicio")){
+			Intent msgIntent = new Intent(this, PosicionesIntentService.class);
+			msgIntent.putExtra("vivo", recuperarPreferenciaBoolean("servicio"));
+			msgIntent.putExtra("refresco", 5000);
+	        startService(msgIntent);
+		}		
+		
 	}
 
 

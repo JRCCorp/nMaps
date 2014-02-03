@@ -1,6 +1,7 @@
 package es.nervion.maps.fragment;
 
 import es.nervion.maps.activity.R;
+import es.nervion.maps.listener.PreferencesListener;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -11,8 +12,13 @@ import android.preference.PreferenceFragment;
 
 public class PreferenciasFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
 
+	private PreferencesListener preferencesListener;
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		setRetainInstance(true);
+		
 		addPreferencesFromResource(R.xml.fragment_preferences);
 
 		for (int i = 0; i < getPreferenceScreen().getPreferenceCount(); i++) {
@@ -24,6 +30,7 @@ public class PreferenciasFragment extends PreferenceFragment implements OnShared
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
         String key) {
       updatePreferences(findPreference(key));
+      preferencesListener.onPreferencesChange();
     }
 
 
@@ -55,6 +62,11 @@ public class PreferenciasFragment extends PreferenceFragment implements OnShared
 	public void onPause() {
 		super.onPause();
 		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+	}
+	
+	
+	public void setPreferencesListener(PreferencesListener pl){
+		this.preferencesListener = pl;
 	}
 
 
