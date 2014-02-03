@@ -5,13 +5,14 @@
     android:background="@drawable/fondo3" >
 
     <RelativeLayout
+        android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bordes_rectos"
-        android:layout_marginTop="75dp"
         android:layout_marginBottom="-4dp"
+        android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
-        android:layout_marginLeft="45dp">
+        android:layout_marginTop="75dp"
+        android:background="@drawable/bordes_rectos" >
 
         <Button
             android:id="@+id/btnPeticion"
@@ -31,32 +32,23 @@
             android:layout_marginTop="22dp"
             android:src="@drawable/carga0" />
 
-        <ImageView
-            android:id="@+id/imgCarga2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
-            android:src="@drawable/marca" />
-
         <ToggleButton
             android:id="@+id/btnServicio1"
-            android:background="@color/aguamarinaO"
-            android:textColor="@color/blanco"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/btnPeticion"
-            android:layout_toLeftOf="@+id/imgCarga"/>
+            android:layout_toLeftOf="@+id/imgCarga"
+            android:background="@color/aguamarinaO"
+            android:textColor="@color/blanco" />
 
         <ToggleButton
             android:id="@+id/btnServicio2"
-            android:background="@color/aguamarinaO"
-             android:textColor="@color/blanco"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/btnServicio1"
-            android:layout_toRightOf="@+id/imgCarga"/>
+            android:layout_toRightOf="@+id/imgCarga"
+            android:background="@color/aguamarinaO"
+            android:textColor="@color/blanco" />
 
         <TextView
             android:id="@+id/lblServicio1"
@@ -74,6 +66,22 @@
             android:layout_alignLeft="@+id/btnServicio2"
             android:text="@string/lblServicio2" />
 
+        <ImageView
+            android:id="@+id/imgCarga2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/lblServicio1"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/marca" />
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/relativeLayout1"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/worst3" />
 
 </RelativeLayout>
