@@ -36,17 +36,17 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		btnPeticion = (Button) this.getActivity().findViewById(R.id.btnPeticion);
 		btnPeticion.setOnClickListener(this);
 		
-		imgCarga = (ImageView) this.getActivity().findViewById(R.id.imgCarga);
+		//imgCarga = (ImageView) this.getActivity().findViewById(R.id.imgCarga);
 		imgCarga2 = (ImageView) this.getActivity().findViewById(R.id.imgCarga2);
 //		Animation escala = AnimationUtils.loadAnimation(getActivity(), R.drawable.prueba_imagen_carga);
 //		imgCarga.startAnimation(escala);
 		
 //		AnimationDrawable animacionCarga;
-		Animation giraAumenta = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_aumenta_imagen);
+		//Animation giraAumenta = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_aumenta_imagen);
 //		imgCarga.setBackgroundResource(R.anim.cambio_imagen_carga);
 //		animacionCarga = (AnimationDrawable) imgCarga.getBackground();
 //		animacionCarga.start();
-		imgCarga.setAnimation(giraAumenta);
+		//imgCarga.setAnimation(giraAumenta);
 		Animation gira = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_imagen);
 		imgCarga2.setAnimation(gira);
 			

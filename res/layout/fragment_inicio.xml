@@ -23,21 +23,21 @@
             android:layout_marginBottom="34dp"
             android:text="@string/peticion" />
 
-        <ImageView
+        <!-- <ImageView
             android:id="@+id/imgCarga"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/imgCarga2"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="22dp"
-            android:src="@drawable/carga0" />
+            android:src="@drawable/carga0" /> -->
 
         <ToggleButton
             android:id="@+id/btnServicio1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/btnPeticion"
-            android:layout_toLeftOf="@+id/imgCarga"
+            android:layout_toLeftOf="@+id/imgCarga2"
             android:background="@color/aguamarinaO"
             android:textColor="@color/blanco" />
 
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/btnServicio1"
-            android:layout_toRightOf="@+id/imgCarga"
+            android:layout_toRightOf="@+id/imgCarga2"
             android:background="@color/aguamarinaO"
             android:textColor="@color/blanco" />
 
@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/lblServicio1"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/marca" />
+            android:src="@drawable/bruju" />
     </RelativeLayout>
 
     <ImageView

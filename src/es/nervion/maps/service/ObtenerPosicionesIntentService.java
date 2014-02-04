@@ -6,9 +6,9 @@ import android.content.Intent;
 public class ObtenerPosicionesIntentService extends IntentService {
 
 	public static final String ACTION_ACTIVO =
-			"net.sgoliver.intent.action.ACTIVO";
+			"es.nervion.maps.ACTIVO";
 	public static final String ACTION_FIN =
-			"net.sgoliver.intent.action.FIN";
+			"es.nervion.maps.FIN";
 	
 	public static boolean vivo = false;
 	private int refresco;
