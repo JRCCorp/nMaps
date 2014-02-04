@@ -11,12 +11,14 @@ public class ObtenerPosicionesIntentService extends IntentService {
 			"net.sgoliver.intent.action.FIN";
 	
 	public static boolean vivo = false;
-
 	private int refresco;
 
 	public ObtenerPosicionesIntentService() {
 		super("Servicio de Posiciones");
 	}
+	
+	
+	
 
 	@Override
 	protected void onHandleIntent(Intent intent) {

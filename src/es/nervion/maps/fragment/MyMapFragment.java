@@ -15,12 +15,12 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
-import es.nervion.maps.listener.MapLoadedListener;
+import es.nervion.maps.listener.MapListener;
 
 
 public class MyMapFragment extends MapFragment implements OnMapLoadedCallback {
 	
-	private MapLoadedListener mapLoadedListener;
+	private MapListener mapLoadedListener;
 	private ArrayList<Marker> marcadores;
 	
 
@@ -39,6 +39,8 @@ public class MyMapFragment extends MapFragment implements OnMapLoadedCallback {
 		
 		getMap().setMyLocationEnabled(true);
 		getMap().setOnMapLoadedCallback(this);
+		
+		mapLoadedListener.onMapFragmentLoaded();
  
 	}
 	
@@ -62,7 +64,7 @@ public class MyMapFragment extends MapFragment implements OnMapLoadedCallback {
 	}
 	
 	/* Setter de MapLoadedListener */
-	public void setMapLoadedListener(MapLoadedListener mll){
+	public void setMapLoadedListener(MapListener mll){
 		this.mapLoadedListener = mll;
 	}
 	

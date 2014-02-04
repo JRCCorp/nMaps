@@ -9,7 +9,6 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -23,7 +22,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 
@@ -32,13 +30,13 @@ import es.nervion.maps.fragment.InicioFragment;
 import es.nervion.maps.fragment.MyMapFragment;
 import es.nervion.maps.fragment.PreferenciasFragment;
 import es.nervion.maps.listener.InicioListener;
-import es.nervion.maps.listener.MapLoadedListener;
+import es.nervion.maps.listener.MapListener;
 import es.nervion.maps.listener.PreferencesListener;
 import es.nervion.maps.service.PosicionesBroadcastReceiver;
 import es.nervion.maps.service.ObtenerPosicionesIntentService;
 import es.nervion.maps.service.ServicioPosiciones;
 
-public class TabsActivity extends Activity implements MapLoadedListener, InicioListener, PreferencesListener, OnPageChangeListener {
+public class TabsActivity extends Activity implements MapListener, InicioListener, PreferencesListener, OnPageChangeListener {
 
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -47,18 +45,20 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 	private PreferenciasFragment preferenciasFragment;
 	private InicioFragment inicioFragment;
 	private MyMapFragment myMapFragment;
+	
+	PosicionesBroadcastReceiver broadcastReceiver;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tabs);
-
+		
 		/* Registrar acciones de servicio y broadcastReceiver */
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(ObtenerPosicionesIntentService.ACTION_ACTIVO);
 		filter.addAction(ObtenerPosicionesIntentService.ACTION_FIN);
-		PosicionesBroadcastReceiver broadcastReceiver = new PosicionesBroadcastReceiver(this);
+		broadcastReceiver = new PosicionesBroadcastReceiver(this);
 		registerReceiver(broadcastReceiver, filter);
 
 		preferenciasFragment = new PreferenciasFragment();
@@ -84,7 +84,6 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 
 		mViewPager.setOnPageChangeListener(this);
 
-
 	}
 
 	@Override
@@ -93,11 +92,19 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 		getMenuInflater().inflate(R.menu.tabs, menu);
 		return true;
 	}
+	
+	@Override
+	protected void onDestroy(){
+		super.onDestroy();
+		if(broadcastReceiver!=null){
+			unregisterReceiver(broadcastReceiver);
+		}
+	}
 
 
 
 	public void peticionPost(MyMapFragment mmf){
-
+		
 		Location location = mmf.getMap().getMyLocation();
 		String latitud = Uri.encode(location.getLatitude()+"");
 		String longitud = Uri.encode(location.getLongitude()+"");
@@ -215,6 +222,12 @@ public class TabsActivity extends Activity implements MapLoadedListener, InicioL
 
 	}
 
+	@Override
+	public void onMapFragmentLoaded() {
+		
+		
+		
+	}
 
 
 

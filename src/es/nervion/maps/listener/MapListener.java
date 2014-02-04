@@ -2,9 +2,11 @@ package es.nervion.maps.listener;
 
 import com.google.android.gms.maps.GoogleMap;
 
-public interface MapLoadedListener {
+public interface MapListener {
 	
 	public void onMapLoaded(GoogleMap gm);
+	
+	public void onMapFragmentLoaded();
 	
 
 }
