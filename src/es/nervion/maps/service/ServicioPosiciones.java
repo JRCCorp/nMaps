@@ -55,6 +55,7 @@ public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
 
 	@Override
 	protected JSONArray doInBackground(Void... params) {
+		Log.d("Dani", "ServicioPosiciones Empezado");
 		while(true){
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpResponse response;
@@ -86,8 +87,11 @@ public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
 			}
 			publishProgress(finalResult);
 			
-			if(isCancelled())
+			if(isCancelled()){
+				Log.d("Dani", "ServicioPosiciones Cancelado");
                 break; 
+			}
+				
 			
 			try {
 				Thread.sleep(refresco);

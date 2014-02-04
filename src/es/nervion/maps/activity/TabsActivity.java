@@ -13,6 +13,8 @@ import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -124,10 +126,10 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	@Override
 	public void onMapLoaded(GoogleMap gm) {
 		/* Registrar acciones de servicio y broadcastReceiver */
-		peticionPost();
-//		if(this.recuperarPreferenciaBoolean("servicio")){
-//			Log.d("DANI", "ONMAPLOADED");
-//		}
+		if(mViewPager.getCurrentItem()==2){
+			peticionPost();
+		}
+		
 	}
 
 
@@ -157,7 +159,14 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 	@Override
 	public void onPageSelected(int position) {
-
+		
+		if(myMapFragment.getMap()!=null && position==2){
+			peticionPost();
+		}else{
+			if(sp!=null){
+				sp.cancel(true);
+			}			
+		}
 
 	}
 
@@ -172,22 +181,17 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	public void onInicioClick(ImageButton brujula) {
 		// TODO Auto-generated method stub
 		
-		final Handler handler = new Handler();
+		Handler handler=new Handler();
+		
+		final Runnable r = new Runnable()
+		{
+		    public void run() 
+		    {
+		    	mViewPager.setCurrentItem(2, true);
+		    }
+		};
 
-        final Runnable Update = new Runnable() {
-            public void run() {
-            	mViewPager.setCurrentItem(2, true);
-            }
-        };
-
-        Timer swipeTimer = new Timer();
-        swipeTimer.schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, 500, 3000);
+		handler.postDelayed(r, 1000);
 		
 	}
 
