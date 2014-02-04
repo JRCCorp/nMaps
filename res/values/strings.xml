@@ -17,7 +17,7 @@
      <string name="lblServicio2">Servicio 2</string>
     <!--  PREFERENCIAS  -->
     <string name="tituloPreferenciaNombre">Usuario</string>
-    <string name="tituloPreferenciaServicio">Servicio</string>
+    <string name="tituloPreferenciaServicio">Servicios</string>
 	<string name="pref_nombre">Nombre</string>
 	<string name="pref_estado">Estado</string>
 	 <string-array name="radio">

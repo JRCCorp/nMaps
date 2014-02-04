@@ -2,43 +2,44 @@
 
     <PreferenceCategory android:title="@string/tituloPreferenciaNombre" >
         <EditTextPreference
-            android:key="pref_nombre"
             android:defaultValue="wmaps"
+            android:key="pref_nombre"
             android:title="@string/pref_nombre" />
         <EditTextPreference
-            android:key="pref_estado"
             android:defaultValue="v1.0"
+            android:key="pref_estado"
             android:title="@string/pref_estado" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/tituloPreferenciaServicio" >
         <SwitchPreference
             android:defaultValue="true"
-            android:key="pref_servicio"
-            android:summaryOff="Desactivado"
-            android:summaryOn="Activado" >
+            android:key="pref_servicio1"
+            android:icon="@drawable/icono_pref"
+            android:summaryOff="Localizar"
+            android:summaryOn="Localizar" >
+        </SwitchPreference>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_servicio2"
+            android:icon="@drawable/icono_pref2"
+            android:summaryOff="Buscar"
+            android:summaryOn="Buscar" >
+        </SwitchPreference>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_servicio3"
+            android:icon="@drawable/icono_pref3"
+            android:summaryOff="Mensajes"
+            android:summaryOn="Mensajes" >
         </SwitchPreference>
     </PreferenceCategory>
     <PreferenceCategory android:title="Otro" >
-   <es.nervion.maps.adapter.SeekBarPreference
+        <es.nervion.maps.adapter.SeekBarPreference
             android:defaultValue="500"
             android:key="pref_radio"
             android:max="10000"
             android:summary="Radio actual (en metros):"
-            android:title="Radio"/>
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="prefSendReport"
-            android:summary="Tamaño máximo 20mb"
-            android:title="Enviar datos" >
-        </CheckBoxPreference>
-
-        <ListPreference
-            android:entries="@array/radio"
-            android:entryValues="@array/radioValor"
-            android:key="prefSyncFrequency"
-            android:summary="Sumario"
-            android:title="Lista" />
+            android:title="Radio" />
     </PreferenceCategory>
 
 </PreferenceScreen>
