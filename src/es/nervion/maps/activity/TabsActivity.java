@@ -10,8 +10,6 @@ import java.util.Map;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.net.Uri;
@@ -20,6 +18,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
 
@@ -32,8 +31,7 @@ import es.nervion.maps.fragment.PreferenciasFragment;
 import es.nervion.maps.listener.InicioListener;
 import es.nervion.maps.listener.MapListener;
 import es.nervion.maps.listener.PreferencesListener;
-import es.nervion.maps.service.PosicionesBroadcastReceiver;
-import es.nervion.maps.service.ObtenerPosicionesIntentService;
+import es.nervion.maps.service.ObtenerPosicionesAsyncTask;
 import es.nervion.maps.service.ServicioPosiciones;
 
 public class TabsActivity extends Activity implements MapListener, InicioListener, PreferencesListener, OnPageChangeListener {
@@ -46,20 +44,12 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	private InicioFragment inicioFragment;
 	private MyMapFragment myMapFragment;
 	
-	PosicionesBroadcastReceiver broadcastReceiver;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tabs);
-		
-		/* Registrar acciones de servicio y broadcastReceiver */
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(ObtenerPosicionesIntentService.ACTION_ACTIVO);
-		filter.addAction(ObtenerPosicionesIntentService.ACTION_FIN);
-		broadcastReceiver = new PosicionesBroadcastReceiver(this);
-		registerReceiver(broadcastReceiver, filter);
 
 		preferenciasFragment = new PreferenciasFragment();
 		preferenciasFragment.setPreferencesListener(this);
@@ -84,6 +74,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 		mViewPager.setOnPageChangeListener(this);
 
+
 	}
 
 	@Override
@@ -94,18 +85,13 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	}
 	
 	@Override
-	protected void onDestroy(){
-		super.onDestroy();
-		if(broadcastReceiver!=null){
-			unregisterReceiver(broadcastReceiver);
-		}
+	protected void onStop(){
+		super.onStop();
 	}
-
-
-
-	public void peticionPost(MyMapFragment mmf){
+	
+	public void peticionPost(){
 		
-		Location location = mmf.getMap().getMyLocation();
+		Location location = myMapFragment.getMap().getMyLocation();
 		String latitud = Uri.encode(location.getLatitude()+"");
 		String longitud = Uri.encode(location.getLongitude()+"");
 		String nombre = Uri.encode(recuperarPreferenciaString("nombre"));
@@ -130,7 +116,8 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		parametros.put("host", urlPath);
 
 		//Ejecutamos el servicio-obtener-posiciones
-		new ServicioPosiciones(myMapFragment).execute(parametros);
+		ServicioPosiciones sp = new ServicioPosiciones(myMapFragment, 20000);
+		sp.execute(parametros);
 	}
 
 
@@ -163,32 +150,23 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	/* Implementamos el método onMapLoaded recibido de MyMapFragment */
 	@Override
 	public void onMapLoaded(GoogleMap gm) {
-		peticionPost(myMapFragment);
+		/* Registrar acciones de servicio y broadcastReceiver */
+		peticionPost();
+//		if(this.recuperarPreferenciaBoolean("servicio")){
+//			Log.d("DANI", "ONMAPLOADED");
+//		}
 	}
 
 
 	/* Implementamos el método onInicioClick recibido de MyMapFragment */
 	@Override
-	public void onInicioClick(Button btn) {		
-
-		//		if(myMapFragment.getMap()!=null){
-		//			peticionPost(myMapFragment);
-		//		}
-
-
+	public void onInicioClick(Button btn) {
 
 	}
 
 	/* Implementamos el método onPreferencesChange recibido desde PreferenciasFragment */
 	@Override
 	public void onPreferencesChange() {
-
-		//		if(recuperarPreferenciaBoolean("servicio")){
-		//			Intent msgIntent = new Intent(this, PosicionesIntentService.class);
-		//			msgIntent.putExtra("vivo", recuperarPreferenciaBoolean("servicio"));
-		//			msgIntent.putExtra("refresco", 120000);
-		//	        startService(msgIntent);
-		//		}
 
 	}
 
@@ -206,18 +184,6 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 	@Override
 	public void onPageSelected(int position) {
-
-		System.out.println("Cambiado a "+position);
-		if(position==2 && !ObtenerPosicionesIntentService.vivo){
-			if(this.recuperarPreferenciaBoolean("servicio")){
-				Intent msgIntent = new Intent(this, ObtenerPosicionesIntentService.class);
-				msgIntent.putExtra("vivo", this.recuperarPreferenciaBoolean("servicio"));
-				msgIntent.putExtra("refresco", 20000);
-				this.startService(msgIntent);
-			}
-		}else if(ObtenerPosicionesIntentService.vivo){
-			ObtenerPosicionesIntentService.vivo = false;
-		}
 
 
 	}

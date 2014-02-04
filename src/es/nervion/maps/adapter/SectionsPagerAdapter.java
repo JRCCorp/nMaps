@@ -5,12 +5,9 @@ import java.util.Locale;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import es.nervion.maps.activity.R;
 import es.nervion.maps.activity.TabsActivity;
-import es.nervion.maps.service.ObtenerPosicionesIntentService;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 	
