@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import es.nervion.maps.activity.R;
@@ -17,7 +18,7 @@ import es.nervion.maps.listener.InicioListener;
 
 public class InicioFragment extends Fragment implements View.OnClickListener{
 
-	private ImageView imgCarga, imgCarga2;
+	private ImageButton brujula;
 	
 	private InicioListener inicioLoadedListener;
 
@@ -33,7 +34,7 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		setRetainInstance(true);
 		
 		//imgCarga = (ImageView) this.getActivity().findViewById(R.id.imgCarga);
-		imgCarga2 = (ImageView) this.getActivity().findViewById(R.id.imgCarga2);
+		brujula = (ImageButton) this.getActivity().findViewById(R.id.brujula);
 //		Animation escala = AnimationUtils.loadAnimation(getActivity(), R.drawable.prueba_imagen_carga);
 //		imgCarga.startAnimation(escala);
 		
@@ -44,7 +45,7 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 //		animacionCarga.start();
 		//imgCarga.setAnimation(giraAumenta);
 		Animation gira = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_imagen);
-		imgCarga2.setAnimation(gira);
+		brujula.setAnimation(gira);
 			
 	}
 	
