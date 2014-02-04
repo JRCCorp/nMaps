@@ -56,6 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/lblServicio1"
             android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
             android:layout_marginBottom="36dp"
             android:src="@drawable/bruju" />
 

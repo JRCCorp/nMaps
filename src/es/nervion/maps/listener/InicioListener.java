@@ -7,5 +7,7 @@ public interface InicioListener {
 	
 	public void onInicioClick(Button btn);
 
+	public void onInicioClick(ImageButton brujula);
+
 
 }

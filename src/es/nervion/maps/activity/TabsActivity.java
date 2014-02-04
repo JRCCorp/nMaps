@@ -1,26 +1,20 @@
 package es.nervion.maps.activity;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.Location;
-import android.net.Uri;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.gms.maps.GoogleMap;
 
@@ -171,6 +165,29 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	public void onMapFragmentLoaded() {
 		
 		
+		
+	}
+
+	@Override
+	public void onInicioClick(ImageButton brujula) {
+		// TODO Auto-generated method stub
+		
+		final Handler handler = new Handler();
+
+        final Runnable Update = new Runnable() {
+            public void run() {
+            	mViewPager.setCurrentItem(2, true);
+            }
+        };
+
+        Timer swipeTimer = new Timer();
+        swipeTimer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, 500, 3000);
 		
 	}
 

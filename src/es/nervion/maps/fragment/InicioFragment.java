@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,7 +20,7 @@ import es.nervion.maps.listener.InicioListener;
 public class InicioFragment extends Fragment implements View.OnClickListener{
 
 	private ImageButton brujula;
-	
+
 	private InicioListener inicioLoadedListener;
 
 
@@ -32,23 +33,24 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
-		
+
 		//imgCarga = (ImageView) this.getActivity().findViewById(R.id.imgCarga);
 		brujula = (ImageButton) this.getActivity().findViewById(R.id.brujula);
-//		Animation escala = AnimationUtils.loadAnimation(getActivity(), R.drawable.prueba_imagen_carga);
-//		imgCarga.startAnimation(escala);
-		
-//		AnimationDrawable animacionCarga;
+		brujula.setOnClickListener(this);
+		//		Animation escala = AnimationUtils.loadAnimation(getActivity(), R.drawable.prueba_imagen_carga);
+		//		imgCarga.startAnimation(escala);
+
+		//		AnimationDrawable animacionCarga;
 		//Animation giraAumenta = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_aumenta_imagen);
-//		imgCarga.setBackgroundResource(R.anim.cambio_imagen_carga);
-//		animacionCarga = (AnimationDrawable) imgCarga.getBackground();
-//		animacionCarga.start();
+		//		imgCarga.setBackgroundResource(R.anim.cambio_imagen_carga);
+		//		animacionCarga = (AnimationDrawable) imgCarga.getBackground();
+		//		animacionCarga.start();
 		//imgCarga.setAnimation(giraAumenta);
 		Animation gira = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_imagen);
 		brujula.setAnimation(gira);
-			
+
 	}
-	
+
 	//Setter de InicioLoadedListener
 	public void setInicioLoadedListener(InicioListener ill){
 		inicioLoadedListener = ill;
@@ -56,14 +58,17 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		
+
 		switch (v.getId()) {
+		case R.id.brujula:
+			inicioLoadedListener.onInicioClick(brujula);
+			break;
 		default:
 			break;
 		}
-		
+
 	}
-	
+
 
 
 
