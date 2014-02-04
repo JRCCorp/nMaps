@@ -17,7 +17,6 @@ import es.nervion.maps.listener.InicioListener;
 
 public class InicioFragment extends Fragment implements View.OnClickListener{
 
-	private Button btnPeticion;
 	private ImageView imgCarga, imgCarga2;
 	
 	private InicioListener inicioLoadedListener;
@@ -32,9 +31,6 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
-		
-		btnPeticion = (Button) this.getActivity().findViewById(R.id.btnPeticion);
-		btnPeticion.setOnClickListener(this);
 		
 		//imgCarga = (ImageView) this.getActivity().findViewById(R.id.imgCarga);
 		imgCarga2 = (ImageView) this.getActivity().findViewById(R.id.imgCarga2);
@@ -61,11 +57,6 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 	public void onClick(View v) {
 		
 		switch (v.getId()) {
-		case R.id.btnPeticion:
-			Log.d("InicioFragment", "onClick btnPeticion");
-			inicioLoadedListener.onInicioClick(btnPeticion);
-			break;
-
 		default:
 			break;
 		}

@@ -30,7 +30,7 @@
             android:key="pref_servicio3"
             android:icon="@drawable/icono_pref3"
             android:summaryOff="Mensajes"
-            android:summaryOn="Mensajes" >
+            android:summaryOn="Mensajes">
         </SwitchPreference>
     </PreferenceCategory>
     <PreferenceCategory android:title="Otro" >
