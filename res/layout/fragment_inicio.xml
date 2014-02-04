@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fondo3" >
+    android:background="@drawable/callejero" >
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
@@ -15,50 +15,35 @@
         android:background="@drawable/bordes_rectos" >
 
         <TextView
-            android:id="@+id/lblServicio1"
+            android:id="@+id/lblServicioMaestro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btnServicio1"
-            android:layout_alignLeft="@+id/btnServicio1"
-            android:text="@string/lblServicio1" />
-
-        <TextView
-            android:id="@+id/lblServicio2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/btnServicio2"
-            android:layout_alignLeft="@+id/btnServicio2"
-            android:text="@string/lblServicio2" />
-
-        <ToggleButton
-            android:id="@+id/btnServicio1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-           android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="40dp"
-            android:background="@color/aguamarinaO"
-            android:textColor="@color/blanco" />
-
-        <ToggleButton
-            android:id="@+id/btnServicio2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="40dp"
-            android:background="@color/aguamarinaO"
-            android:textColor="@color/blanco" />
+            android:layout_above="@+id/btnServicioMaestro"
+            android:layout_centerHorizontal="true"
+            android:text="@string/lblServicioMaestro" />
 
         <ImageButton
             android:id="@+id/brujula"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/lblServicio1"
+            android:layout_above="@+id/lblServicioMaestro"
             android:layout_centerHorizontal="true"
             android:background="@android:color/transparent"
             android:layout_marginBottom="36dp"
             android:src="@drawable/bruju" />
+
+        <ToggleButton
+            android:id="@+id/btnServicioMaestro"
+            android:background="@color/aguamarinaO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="41dp"
+            android:padding="8dp"
+            android:textColor="@color/blanco"
+            android:textOn="@string/btnMaestroON"
+            android:textOff="@string/btnMaestroOFF" />
 
     </RelativeLayout>
 
