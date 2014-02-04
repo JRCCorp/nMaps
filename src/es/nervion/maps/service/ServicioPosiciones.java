@@ -3,7 +3,9 @@ package es.nervion.maps.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -16,6 +18,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONTokener;
 
+import android.content.Context;
+import android.location.Location;
+import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -23,27 +30,37 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import es.nervion.maps.activity.TabsActivity;
 import es.nervion.maps.fragment.MyMapFragment;
 
-public class ServicioPosiciones extends AsyncTask<Map<String, String>, JSONArray, JSONArray>{
-
+public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
+	
+	private TabsActivity activity;
 	private MyMapFragment mmf;
 	private int refresco;
+	private String url = "";
 
-	public ServicioPosiciones(MyMapFragment mmf, int refresco){
+	public ServicioPosiciones(TabsActivity activity, int refresco){
 		super();
-		this.mmf = mmf;
+		this.activity = activity;
+		this.mmf = activity.getMyMapFragment();
 		this.refresco = refresco;
 	}
+	
+	 @Override
+	  protected  void onPreExecute()
+	  {
+		 obtenerNuevaLocalizacion();
+	  }
 
 	@Override
-	protected JSONArray doInBackground(Map<String, String>... uri) {
+	protected JSONArray doInBackground(Void... params) {
 		while(true){
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpResponse response;
 			JSONArray finalResult = null;
 			try {
-				response = httpclient.execute(new HttpGet(uri[0].get("host")));
+				response = httpclient.execute(new HttpGet(url));
 				StatusLine statusLine = response.getStatusLine();
 				if(statusLine.getStatusCode() == HttpStatus.SC_OK){	                
 
@@ -68,6 +85,10 @@ public class ServicioPosiciones extends AsyncTask<Map<String, String>, JSONArray
 				Log.d("AsyncDoIn", e.getMessage());
 			}
 			publishProgress(finalResult);
+			
+			if(isCancelled())
+                break; 
+			
 			try {
 				Thread.sleep(refresco);
 			} catch (InterruptedException e) {
@@ -75,6 +96,7 @@ public class ServicioPosiciones extends AsyncTask<Map<String, String>, JSONArray
 				
 			}
 		}
+		return null;
 	}
 	
 	@Override
@@ -93,6 +115,9 @@ public class ServicioPosiciones extends AsyncTask<Map<String, String>, JSONArray
 					mmf.anadirMarcador(m);
 				}
 			}
+			
+			obtenerNuevaLocalizacion();
+			
 		} catch (JSONException e) {
 			Log.d("AsyncPost", e.getMessage());
 			e.printStackTrace();
@@ -104,6 +129,30 @@ public class ServicioPosiciones extends AsyncTask<Map<String, String>, JSONArray
 	protected void onPostExecute(JSONArray result) {
 		super.onPostExecute(result);
 		
-	}	
+	}
+	
+	
+	private void obtenerNuevaLocalizacion(){
+		Location location = mmf.getMap().getMyLocation();
+		String latitud = Uri.encode(location.getLatitude()+"");
+		String longitud = Uri.encode(location.getLongitude()+"");
+		String nombre = Uri.encode(activity.recuperarPreferenciaString("nombre"));
+		String mensaje = Uri.encode(activity.recuperarPreferenciaString("estado"));
+		String radio = Uri.encode((activity.recuperarPreferenciaInteger("radio")/1000)+"");
+		System.out.println("Latitud: "+location.getLatitude()+", Longitud: "+location.getLongitude()+"\n ");
+
+		//Obtenemos la MAC del dispositivo a traves del objeto WifiManager
+		WifiManager manager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
+		WifiInfo info = manager.getConnectionInfo();
+		String macAddress = Uri.encode(info.getMacAddress());
+
+		//Indicamos la url del servicio
+		/***
+		 * @TODO
+		 */
+		String fecha = Uri.encode(new SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(new Date()));
+		url = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress+"&latitud="+latitud+"&longitud="+longitud+"&radio="+radio+"&fecha="+fecha+"&nombre="+nombre+"&mensaje="+mensaje+"&guardar=1&obtener=1";
+		
+	}
 	
 }

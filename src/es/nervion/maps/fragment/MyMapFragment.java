@@ -22,6 +22,7 @@ public class MyMapFragment extends MapFragment implements OnMapLoadedCallback {
 	
 	private MapListener mapLoadedListener;
 	private ArrayList<Marker> marcadores;
+	private String url = "";
 	
 
 	@Override

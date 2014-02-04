@@ -31,7 +31,6 @@ import es.nervion.maps.fragment.PreferenciasFragment;
 import es.nervion.maps.listener.InicioListener;
 import es.nervion.maps.listener.MapListener;
 import es.nervion.maps.listener.PreferencesListener;
-import es.nervion.maps.service.ObtenerPosicionesAsyncTask;
 import es.nervion.maps.service.ServicioPosiciones;
 
 public class TabsActivity extends Activity implements MapListener, InicioListener, PreferencesListener, OnPageChangeListener {
@@ -44,6 +43,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	private InicioFragment inicioFragment;
 	private MyMapFragment myMapFragment;
 	
+	private ServicioPosiciones sp;
 
 
 	@Override
@@ -85,39 +85,18 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	}
 	
 	@Override
-	protected void onStop(){
-		super.onStop();
+	protected void onDestroy(){
+		super.onDestroy();
+		if(sp!=null){
+			sp.cancel(true);
+		}		
 	}
 	
 	public void peticionPost(){
-		
-		Location location = myMapFragment.getMap().getMyLocation();
-		String latitud = Uri.encode(location.getLatitude()+"");
-		String longitud = Uri.encode(location.getLongitude()+"");
-		String nombre = Uri.encode(recuperarPreferenciaString("nombre"));
-		String mensaje = Uri.encode(recuperarPreferenciaString("estado"));
-		String radio = Uri.encode((recuperarPreferenciaInteger("radio")/1000)+"");
-		System.out.println("Latitud: "+location.getLatitude()+", Longitud: "+location.getLongitude()+"\n ");
-
-		//Obtenemos la MAC del dispositivo a traves del objeto WifiManager
-		WifiManager manager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-		WifiInfo info = manager.getConnectionInfo();
-		String macAddress = Uri.encode(info.getMacAddress());
-
-		//Indicamos la url del servicio
-		/***
-		 * @TODO
-		 */
-		String fecha = Uri.encode(new SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(new Date()));
-		String urlPath = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress+"&latitud="+latitud+"&longitud="+longitud+"&radio="+radio+"&fecha="+fecha+"&nombre="+nombre+"&mensaje="+mensaje+"&guardar=1&obtener=1";
-		Map<String, String> parametros = new HashMap<String, String>();
-		
-		//Le pasamos los parámetros al Map
-		parametros.put("host", urlPath);
-
+				
 		//Ejecutamos el servicio-obtener-posiciones
-		ServicioPosiciones sp = new ServicioPosiciones(myMapFragment, 20000);
-		sp.execute(parametros);
+		sp = new ServicioPosiciones(this, 30000);
+		sp.execute();
 	}
 
 
