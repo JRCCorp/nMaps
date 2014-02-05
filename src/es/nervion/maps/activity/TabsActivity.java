@@ -91,8 +91,10 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	public void peticionPost(){
 				
 		//Ejecutamos el servicio-obtener-posiciones
-		sp = new ServicioPosiciones(this, 30000);
-		sp.execute();
+		if(recuperarPreferenciaBoolean("servicio")){
+			sp = new ServicioPosiciones(this, 30000);
+			sp.execute();
+		}		
 	}
 
 
@@ -194,7 +196,6 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		handler.postDelayed(r, 1000);
 		
 	}
-
 
 
 }

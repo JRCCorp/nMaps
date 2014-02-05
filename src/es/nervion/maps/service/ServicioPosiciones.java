@@ -85,12 +85,11 @@ public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
 			} catch (IOException e) {
 				Log.d("AsyncDoIn", e.getMessage());
 			}
-			publishProgress(finalResult);
-			
 			if(isCancelled()){
 				Log.d("Dani", "ServicioPosiciones Cancelado");
-                break; 
+                break;
 			}
+			publishProgress(finalResult);			
 				
 			
 			try {
