@@ -5,13 +5,21 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,7 +46,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	private PreferenciasFragment preferenciasFragment;
 	private InicioFragment inicioFragment;
 	private MyMapFragment myMapFragment;
-	
+
 	private ServicioPosiciones sp;
 
 
@@ -48,18 +56,19 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		setContentView(R.layout.activity_tabs);
 
 		preferenciasFragment = new PreferenciasFragment();
-		preferenciasFragment.setPreferencesListener(this);
-
-		myMapFragment = new MyMapFragment();	
-		myMapFragment.setMapLoadedListener(this);
+		preferenciasFragment.setPreferencesListener(this);		
 
 		inicioFragment = new InicioFragment();		
 		inicioFragment.setInicioLoadedListener(this);
+		
+		crearMapFragment();
 
 		ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 		fragments.add(preferenciasFragment);
-		fragments.add(inicioFragment);
-		fragments.add(myMapFragment);
+		fragments.add(inicioFragment);		
+		if(myMapFragment!=null){			
+			fragments.add(myMapFragment);
+		}		
 
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(this, getFragmentManager(), fragments);
@@ -79,7 +88,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		getMenuInflater().inflate(R.menu.tabs, menu);
 		return true;
 	}
-	
+
 	@Override
 	protected void onDestroy(){
 		super.onDestroy();
@@ -87,11 +96,11 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 			sp.cancel(true);
 		}		
 	}
-	
+
 	public void peticionPost(){
-				
+
 		//Ejecutamos el servicio-obtener-posiciones
-		if(recuperarPreferenciaBoolean("servicio")){
+		if(recuperarPreferenciaBoolean("servicio2")){
 			sp = new ServicioPosiciones(this, 30000);
 			sp.execute();
 		}		
@@ -131,7 +140,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		if(mViewPager.getCurrentItem()==2){
 			peticionPost();
 		}
-		
+
 	}
 
 
@@ -161,7 +170,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 	@Override
 	public void onPageSelected(int position) {
-		
+
 		if(myMapFragment.getMap()!=null && position==2){
 			peticionPost();
 		}else{
@@ -174,28 +183,84 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 	@Override
 	public void onMapFragmentLoaded() {
-		
-		
-		
+
+
+
 	}
 
 	@Override
 	public void onInicioClick(ImageButton brujula) {
 		// TODO Auto-generated method stub
-		
+
 		Handler handler=new Handler();
-		
+
 		final Runnable r = new Runnable()
 		{
-		    public void run() 
-		    {
-		    	mViewPager.setCurrentItem(2, true);
-		    }
+			public void run() 
+			{
+				mViewPager.setCurrentItem(2, true);
+			}
 		};
 
 		handler.postDelayed(r, 1000);
+
+	}
+
+
+
+
+	public void crearMapFragment() {
+		if(isGoogleMapsInstalled())
+		{
+			//Log.d("GoogleMap", "instalado");
+			myMapFragment = new MyMapFragment();
+			myMapFragment.setMapLoadedListener(this);
+		}
+		else
+		{
+			Log.d("GoogleMap", "NO instalado");
+			Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Por favor, instala Google Maps");
+			builder.setCancelable(false);
+			builder.setPositiveButton("Instalar", getGoogleMapsListener());
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
 		
 	}
+
+	public boolean isGoogleMapsInstalled()
+	{
+		try
+		{			
+			ApplicationInfo info = getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0 );
+			return true;
+		} 
+		catch(PackageManager.NameNotFoundException e)
+		{
+			return false;
+		}
+	}
+
+	public android.content.DialogInterface.OnClickListener getGoogleMapsListener()
+	{
+		return new android.content.DialogInterface.OnClickListener() 
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which) 
+			{
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.apps.maps"));
+				startActivity(intent);
+
+				//Finish the activity so they can't circumvent the check
+				finish();
+			}
+		};
+	}
+
+
+
+
 
 
 }

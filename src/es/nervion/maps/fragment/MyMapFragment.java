@@ -15,6 +15,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
+import es.nervion.maps.activity.TabsActivity;
 import es.nervion.maps.listener.MapListener;
 
 
