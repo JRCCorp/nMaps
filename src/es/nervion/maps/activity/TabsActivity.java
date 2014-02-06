@@ -50,7 +50,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tabs);		
+		setContentView(R.layout.activity_tabs);	
 
 		preferenciasFragment = new PreferenciasFragment();
 		preferenciasFragment.setPreferencesListener(this);		
@@ -109,7 +109,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 
 	public void servicioGuardarPosicion(){
- 		if(recuperarPreferenciaBoolean("servicio1") && !recuperarPreferenciaBoolean("servicioActivo")){
+		if(recuperarPreferenciaBoolean("servicio1") && !recuperarPreferenciaBoolean("servicioActivo")){
 			Log.d("TabsActivity", "Activar servicio");
 			SharedPreferences sp = this.getSharedPreferences("es.nervion.maps.activity_preferences", Context.MODE_PRIVATE);
 			SharedPreferences.Editor spe = sp.edit();
@@ -215,6 +215,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	@Override
 	public void onMapFragmentLoaded() {
 		// quitar splAsh
+		
 	}
 
 	@Override
