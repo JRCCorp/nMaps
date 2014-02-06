@@ -117,7 +117,10 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	
 	
 	public void servicioGuardarPosicion(){
-		if(recuperarPreferenciaBoolean("servicio1")){
+		if(recuperarPreferenciaBoolean("servicio1") && !recuperarPreferenciaBoolean("servicioActivo")){
+			SharedPreferences sp = this.getSharedPreferences("es.nervion.maps.activity_preferences", Context.MODE_PRIVATE);
+			SharedPreferences.Editor spe = sp.edit();
+			spe.putBoolean("servicioActivo", true);
 			Intent msgIntent = new Intent(this, SubirPosicionIntentService.class);
 			msgIntent.setAction(SubirPosicionIntentService.BROADCAST_ACTION);
 			msgIntent.putExtra("vivo", true);

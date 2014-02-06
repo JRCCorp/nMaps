@@ -46,7 +46,7 @@ public class SubirPosicionIntentService extends Service {
 	public LocationManager locationManager;
 	public MyLocationListener listener;
 	public Location previousBestLocation = null;
-
+	
 	Intent intent;
 	int counter = 0;
 
