@@ -1,10 +1,6 @@
 package es.nervion.maps.activity;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import javax.crypto.spec.PSource;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,7 +9,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -24,8 +19,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -38,9 +31,8 @@ import es.nervion.maps.fragment.PreferenciasFragment;
 import es.nervion.maps.listener.InicioListener;
 import es.nervion.maps.listener.MapListener;
 import es.nervion.maps.listener.PreferencesListener;
-import es.nervion.maps.service.PosicionesBroadcastReceiver;
-import es.nervion.maps.service.SubirPosicionIntentService;
 import es.nervion.maps.service.ServicioPosiciones;
+import es.nervion.maps.service.SubirPosicionIntentService;
 
 public class TabsActivity extends Activity implements MapListener, InicioListener, PreferencesListener, OnPageChangeListener {
 
@@ -83,7 +75,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		mViewPager.setCurrentItem(1);
 
 		mViewPager.setOnPageChangeListener(this);		
-		
+
 		servicioGuardarPosicion();
 
 
@@ -114,13 +106,15 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 			}			
 		}		
 	}
-	
-	
+
+
 	public void servicioGuardarPosicion(){
-		if(recuperarPreferenciaBoolean("servicio1") && !recuperarPreferenciaBoolean("servicioActivo")){
+ 		if(recuperarPreferenciaBoolean("servicio1") && !recuperarPreferenciaBoolean("servicioActivo")){
+			Log.d("TabsActivity", "Activar servicio");
 			SharedPreferences sp = this.getSharedPreferences("es.nervion.maps.activity_preferences", Context.MODE_PRIVATE);
 			SharedPreferences.Editor spe = sp.edit();
-			spe.putBoolean("servicioActivo", true);
+			spe.putBoolean("pref_servicioActivo", true);
+			spe.commit();
 			Intent msgIntent = new Intent(this, SubirPosicionIntentService.class);
 			msgIntent.setAction(SubirPosicionIntentService.BROADCAST_ACTION);
 			msgIntent.putExtra("vivo", true);
@@ -129,8 +123,15 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 			msgIntent.putExtra("estado", recuperarPreferenciaString("estado"));
 			msgIntent.putExtra("radio", recuperarPreferenciaInteger("radio"));
 			startService(msgIntent);
-		}else{
-//			SubirPosicionIntentService.vivo = false;
+		}else if (!recuperarPreferenciaBoolean("servicio1") && recuperarPreferenciaBoolean("servicioActivo")){
+			Log.d("TabsActivity", "Desactivar servicio");
+			Intent intentPararServicio = new Intent (this, SubirPosicionIntentService.class);
+			intentPararServicio.setAction(SubirPosicionIntentService.BROADCAST_MUERE);
+			stopService(intentPararServicio);
+			SharedPreferences sp = this.getSharedPreferences("es.nervion.maps.activity_preferences", Context.MODE_PRIVATE);
+			SharedPreferences.Editor spe = sp.edit();
+			spe.putBoolean("pref_servicioActivo", false);
+			spe.commit();
 		}
 	}
 
@@ -198,7 +199,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 	@Override
 	public void onPageSelected(int position) {
-		
+
 		System.out.println("Cambiado "+position);
 
 		if(myMapFragment!=null && myMapFragment.getMap()!=null && position==2){
@@ -213,9 +214,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 	@Override
 	public void onMapFragmentLoaded() {
-
-
-
+		// quitar splAsh
 	}
 
 	@Override

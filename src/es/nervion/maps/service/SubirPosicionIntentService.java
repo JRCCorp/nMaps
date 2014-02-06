@@ -19,7 +19,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONTokener;
 
+import es.nervion.maps.activity.R;
+import es.nervion.maps.activity.TabsActivity;
+
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +52,7 @@ public class SubirPosicionIntentService extends Service {
 	public LocationManager locationManager;
 	public MyLocationListener listener;
 	public Location previousBestLocation = null;
+	public NotificationManager mNotificationManager;
 	
 	Intent intent;
 	int counter = 0;
@@ -59,10 +66,16 @@ public class SubirPosicionIntentService extends Service {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 			StrictMode.setThreadPolicy(policy);
 		}
+		
+		String ns = Context.NOTIFICATION_SERVICE;
+		mNotificationManager = (NotificationManager) this.getSystemService(ns);
 	}
 
 	@Override
-	public void onStart(Intent intent, int startId) {      
+	public void onStart(Intent intent, int startId) {  
+		
+		Log.d("START_SERVICE", "onStart()");
+		
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		listener = new MyLocationListener();
 		int refresco = 600000;
@@ -71,6 +84,15 @@ public class SubirPosicionIntentService extends Service {
 		}
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, refresco, 0, listener);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, refresco, 0, listener);
+		
+//		String ns = Context.NOTIFICATION_SERVICE;
+//		NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(ns);
+		
+		Notification not = new Notification(R.drawable.icono_pref, "Iniciando servicio", System.currentTimeMillis());
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, TabsActivity.class), Notification.FLAG_ONGOING_EVENT);        
+		not.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+		not.setLatestEventInfo(this, "WorstMAP", "Servicio de posicionamiento", contentIntent);
+		mNotificationManager.notify(1, not);
 		
 	}
 
@@ -131,10 +153,11 @@ public class SubirPosicionIntentService extends Service {
 
 	@Override
 	public void onDestroy() {       
-		// handler.removeCallbacks(sendUpdatesToUI);     
+		// handler.removeCallbacks(sendUpdatesToUI);  
 		super.onDestroy();
-		Log.v("STOP_SERVICE", "DONE");
-		locationManager.removeUpdates(listener);        
+		Log.d("STOP_SERVICE", "onDestroy()");
+		locationManager.removeUpdates(listener); 
+		sendBroadcast(intent);
 	}   
 
 	public static Thread performOnBackgroundThread(final Runnable runnable) {
