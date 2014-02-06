@@ -34,7 +34,7 @@ import es.nervion.maps.activity.TabsActivity;
 import es.nervion.maps.fragment.MyMapFragment;
 
 public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
-	
+
 	private TabsActivity activity;
 	private MyMapFragment mmf;
 	private int refresco;
@@ -46,12 +46,12 @@ public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
 		this.mmf = activity.getMyMapFragment();
 		this.refresco = refresco;
 	}
-	
-	 @Override
-	  protected  void onPreExecute()
-	  {
-		 obtenerNuevaLocalizacion();
-	  }
+
+	@Override
+	protected  void onPreExecute()
+	{
+		obtenerNuevaLocalizacion();
+	}
 
 	@Override
 	protected JSONArray doInBackground(Void... params) {
@@ -87,54 +87,58 @@ public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
 			}
 			if(isCancelled()){
 				Log.d("Dani", "ServicioPosiciones Cancelado");
-                break;
+				break;
 			}
 			publishProgress(finalResult);			
-				
-			
+
+
 			try {
 				Thread.sleep(refresco);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				
+
 			}
 		}
 		return null;
 	}
-	
+
 	@Override
 	protected void onProgressUpdate(JSONArray... progress) {
 		JSONArray result = progress[0];
 		try {
-			mmf.eliminarMarcadores();
-			mmf.getMap().clear();
-			if(result!=null){				
-				for(int i=0; i<result.length(); i++){
-					Log.d("ServicioPosiciones", result.getString(i));
-					Marker m = mmf.getMap().addMarker(new MarkerOptions()
-					.position(new LatLng(result.getJSONArray(i).getDouble(2), result.getJSONArray(i).getDouble(3)))
-					.title(result.getJSONArray(i).getString(5))
-					.snippet(result.getJSONArray(i).getString(6)));
-					mmf.anadirMarcador(m);
+			if(mmf!=null && mmf.getMap()!=null){			
+
+				mmf.eliminarMarcadores();
+				mmf.getMap().clear();
+				if(result!=null){				
+					for(int i=0; i<result.length(); i++){
+						Log.d("ServicioPosiciones", result.getString(i));
+						Marker m = mmf.getMap().addMarker(new MarkerOptions()
+						.position(new LatLng(result.getJSONArray(i).getDouble(2), result.getJSONArray(i).getDouble(3)))
+						.title(result.getJSONArray(i).getString(5))
+						.snippet(result.getJSONArray(i).getString(6)));
+						mmf.anadirMarcador(m);
+					}
 				}
+
+				obtenerNuevaLocalizacion();
+
 			}
-			
-			obtenerNuevaLocalizacion();
-			
+
 		} catch (JSONException e) {
 			Log.d("AsyncPost", e.getMessage());
 			e.printStackTrace();
 		}
-    }
-	
+	}
+
 
 	@Override
 	protected void onPostExecute(JSONArray result) {
 		super.onPostExecute(result);
-		
+
 	}
-	
-	
+
+
 	private void obtenerNuevaLocalizacion(){
 		Location location = mmf.getMap().getMyLocation();
 		String latitud = Uri.encode(location.getLatitude()+"");
@@ -148,14 +152,10 @@ public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
 		WifiManager manager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
 		WifiInfo info = manager.getConnectionInfo();
 		String macAddress = Uri.encode(info.getMacAddress());
-
-		//Indicamos la url del servicio
-		/***
-		 * @TODO
-		 */
 		String fecha = Uri.encode(new SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(new Date()));
+
 		url = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress+"&latitud="+latitud+"&longitud="+longitud+"&radio="+radio+"&fecha="+fecha+"&nombre="+nombre+"&mensaje="+mensaje+"&guardar=1&obtener=1";
-		
+
 	}
-	
+
 }

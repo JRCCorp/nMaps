@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.crypto.spec.PSource;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -11,6 +13,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -35,6 +38,8 @@ import es.nervion.maps.fragment.PreferenciasFragment;
 import es.nervion.maps.listener.InicioListener;
 import es.nervion.maps.listener.MapListener;
 import es.nervion.maps.listener.PreferencesListener;
+import es.nervion.maps.service.PosicionesBroadcastReceiver;
+import es.nervion.maps.service.SubirPosicionIntentService;
 import es.nervion.maps.service.ServicioPosiciones;
 
 public class TabsActivity extends Activity implements MapListener, InicioListener, PreferencesListener, OnPageChangeListener {
@@ -53,14 +58,14 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tabs);
+		setContentView(R.layout.activity_tabs);		
 
 		preferenciasFragment = new PreferenciasFragment();
 		preferenciasFragment.setPreferencesListener(this);		
 
 		inicioFragment = new InicioFragment();		
 		inicioFragment.setInicioLoadedListener(this);
-		
+
 		crearMapFragment();
 
 		ArrayList<Fragment> fragments = new ArrayList<Fragment>();
@@ -77,7 +82,9 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 		mViewPager.setCurrentItem(1);
 
-		mViewPager.setOnPageChangeListener(this);
+		mViewPager.setOnPageChangeListener(this);		
+		
+		servicioGuardarPosicion();
 
 
 	}
@@ -94,16 +101,34 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		super.onDestroy();
 		if(sp!=null){
 			sp.cancel(true);
-		}		
+		}
 	}
 
 	public void peticionPost(){
 
 		//Ejecutamos el servicio-obtener-posiciones
 		if(recuperarPreferenciaBoolean("servicio2")){
-			sp = new ServicioPosiciones(this, 30000);
-			sp.execute();
+			if(sp==null || sp.isCancelled()){
+				sp = new ServicioPosiciones(this, 30000);
+				sp.execute();
+			}			
 		}		
+	}
+	
+	
+	public void servicioGuardarPosicion(){
+		if(recuperarPreferenciaBoolean("servicio1")){
+			Intent msgIntent = new Intent(this, SubirPosicionIntentService.class);
+			msgIntent.setAction(SubirPosicionIntentService.BROADCAST_ACTION);
+			msgIntent.putExtra("vivo", true);
+			msgIntent.putExtra("refresco", 30000);
+			msgIntent.putExtra("nombre", recuperarPreferenciaString("nombre"));
+			msgIntent.putExtra("estado", recuperarPreferenciaString("estado"));
+			msgIntent.putExtra("radio", recuperarPreferenciaInteger("radio"));
+			startService(msgIntent);
+		}else{
+//			SubirPosicionIntentService.vivo = false;
+		}
 	}
 
 
@@ -153,7 +178,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	/* Implementamos el método onPreferencesChange recibido desde PreferenciasFragment */
 	@Override
 	public void onPreferencesChange() {
-
+		servicioGuardarPosicion();
 	}
 
 	@Override
@@ -170,8 +195,10 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 	@Override
 	public void onPageSelected(int position) {
+		
+		System.out.println("Cambiado "+position);
 
-		if(myMapFragment.getMap()!=null && position==2){
+		if(myMapFragment!=null && myMapFragment.getMap()!=null && position==2){
 			peticionPost();
 		}else{
 			if(sp!=null){
@@ -226,7 +253,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 			AlertDialog dialog = builder.create();
 			dialog.show();
 		}
-		
+
 	}
 
 	public boolean isGoogleMapsInstalled()
