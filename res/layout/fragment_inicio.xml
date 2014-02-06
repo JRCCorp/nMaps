@@ -21,8 +21,8 @@
             android:layout_above="@+id/btnServicioMaestro"
             android:layout_centerHorizontal="true"
             android:text="@string/lblServicioMaestro" />
-
-        <ImageButton
+    
+       <!--   <ImageButton
             android:id="@+id/brujula"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             android:layout_centerHorizontal="true"
             android:background="@android:color/transparent"
             android:layout_marginBottom="36dp"
-            android:src="@drawable/bruju" />
+            android:src="@drawable/bruju" />-->
 
         <ToggleButton
             android:id="@+id/btnServicioMaestro"
@@ -45,6 +45,17 @@
             android:textOn="@string/btnMaestroON"
             android:textOff="@string/btnMaestroOFF" />
 
+        <LinearLayout
+            android:id="@+id/layoutBrujula"
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:layout_above="@+id/lblServicioMaestro"
+            android:layout_centerHorizontal="true"
+            
+            android:background="@android:color/transparent"
+            android:orientation="vertical" >
+        </LinearLayout>
+
     </RelativeLayout>
 
     <ImageView
@@ -55,5 +66,7 @@
         android:layout_alignRight="@+id/relativeLayout1"
         android:layout_marginTop="18dp"
         android:src="@drawable/worst3" />
+
+   
 
 </RelativeLayout>
