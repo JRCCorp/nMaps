@@ -15,6 +15,10 @@
     <string name="lblServicioMaestro">Servicios</string>
     <string name="btnMaestroON">ACTIVADO</string>
     <string name="btnMaestroOFF">DESACTIVADO</string>
+    
+    <!-- SERVICIO -->
+     <string name="lblServicioPrueba">Prueba label servicio</string>
+    <string name="lblServicioIniciado">Posicionamiento activado</string>
     <!-- PREFERENCIAS -->
     <string name="tituloPreferenciaNombre">Usuario</string>
     <string name="tituloPreferenciaServicio">Servicios</string>

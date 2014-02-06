@@ -37,6 +37,7 @@ import android.location.LocationProvider;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.StrictMode;
@@ -52,7 +53,11 @@ public class SubirPosicionIntentService extends Service {
 	public LocationManager locationManager;
 	public MyLocationListener listener;
 	public Location previousBestLocation = null;
+	
+	/* Notificaciones servicio	*/
 	public NotificationManager mNotificationManager;
+	private int NOTIFICACION = R.string.lblServicioPrueba;
+
 	
 	Intent intent;
 	int counter = 0;
@@ -69,7 +74,33 @@ public class SubirPosicionIntentService extends Service {
 		
 		String ns = Context.NOTIFICATION_SERVICE;
 		mNotificationManager = (NotificationManager) this.getSystemService(ns);
+		mostrarNotificacion();
 	}
+
+	private void mostrarNotificacion() {
+		// TODO Auto-generated method stub
+		 CharSequence text = getText(R.string.lblServicioIniciado);
+
+	        // Set the icon, scrolling text and timestamp
+	        Notification notification = new Notification(R.drawable.icono_pref, text,System.currentTimeMillis());
+
+	        // The PendingIntent to launch our activity if the user selects this notification
+	        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+	                new Intent(this, TabsActivity.class), 0);
+
+	        // Set the info for the views that show in the notification panel.
+	        notification.setLatestEventInfo(this, getText(R.string.lblServicioPrueba),
+	                       text, contentIntent);
+
+	        // Send the notification.
+	        mNotificationManager.notify(NOTIFICACION, notification);
+	}
+	
+	@Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i("LocalService", "Received start id " + startId + ": " + intent);
+        return START_STICKY;
+    }
 
 	@Override
 	public void onStart(Intent intent, int startId) {  
@@ -88,18 +119,29 @@ public class SubirPosicionIntentService extends Service {
 //		String ns = Context.NOTIFICATION_SERVICE;
 //		NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(ns);
 		
-		Notification not = new Notification(R.drawable.icono_pref, "Iniciando servicio", System.currentTimeMillis());
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, TabsActivity.class), Notification.FLAG_ONGOING_EVENT);        
-		not.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
-		not.setLatestEventInfo(this, "WorstMAP", "Servicio de posicionamiento", contentIntent);
-		mNotificationManager.notify(1, not);
+//		Notification not = new Notification(R.drawable.icono_pref, "Iniciando servicio", System.currentTimeMillis());
+//		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, TabsActivity.class), Notification.FLAG_ONGOING_EVENT);        
+//		not.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+//		not.setLatestEventInfo(this, "WorstMAP", "Servicio de posicionamiento", contentIntent);
+//		mNotificationManager.notify(1, not);
 		
 	}
 
+	
+	private final IBinder mBinder = new SubirPosicionIntentServiceBinder();
+	 
 	@Override
 	public IBinder onBind(Intent intent) {
-		return null;
+		return mBinder;
 	}
+	
+	public class SubirPosicionIntentServiceBinder extends Binder {
+		SubirPosicionIntentService getService() {
+            return SubirPosicionIntentService.this;
+        }
+    }
+	
+	
 
 	protected boolean isBetterLocation(Location location, Location currentBestLocation) {
 		if (currentBestLocation == null) {
@@ -154,10 +196,12 @@ public class SubirPosicionIntentService extends Service {
 	@Override
 	public void onDestroy() {       
 		// handler.removeCallbacks(sendUpdatesToUI);  
-		super.onDestroy();
 		Log.d("STOP_SERVICE", "onDestroy()");
-		locationManager.removeUpdates(listener); 
+		//locationManager.removeUpdates(listener); 
 		sendBroadcast(intent);
+		mNotificationManager.cancel(NOTIFICACION);
+		super.onDestroy();
+		
 	}   
 
 	public static Thread performOnBackgroundThread(final Runnable runnable) {

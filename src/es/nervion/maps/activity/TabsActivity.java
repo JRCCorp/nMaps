@@ -78,7 +78,6 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 		servicioGuardarPosicion();
 
-
 	}
 
 	@Override

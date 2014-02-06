@@ -1,11 +1,6 @@
 package es.nervion.maps.service;
 
 
-import es.nervion.maps.activity.R;
-import es.nervion.maps.activity.TabsActivity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +20,7 @@ public class PosicionesBroadcastReceiver extends BroadcastReceiver {
 		}else if(intent.getAction().equals(SubirPosicionIntentService.BROADCAST_MUERE)){
 			SharedPreferences sp = context.getSharedPreferences("es.nervion.maps.activity_preferences", Context.MODE_PRIVATE);
 			SharedPreferences.Editor spe = sp.edit();
-			spe.putBoolean("servicioActivo", false);
+			spe.putBoolean("pref_servicioActivo", false);
 			spe.commit();
 			Log.d("Servicio SubirPosicion", "Muere");
 		}
