@@ -165,9 +165,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	@Override
 	public void onMapLoaded(GoogleMap gm) {
 		/* Registrar acciones de servicio y broadcastReceiver */
-		if(mViewPager.getCurrentItem()==2){
-			peticionPost();
-		}
+		peticionPost();
 
 	}
 
@@ -214,7 +212,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	@Override
 	public void onMapFragmentLoaded() {
 		// quitar splAsh
-		
+
 	}
 
 	@Override
@@ -241,7 +239,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	public void crearMapFragment() {
 		if(isGoogleMapsInstalled())
 		{
-			//Log.d("GoogleMap", "instalado");
+			Log.d("GoogleMap", "Creando MapFragment");
 			myMapFragment = new MyMapFragment();
 			myMapFragment.setMapLoadedListener(this);
 		}

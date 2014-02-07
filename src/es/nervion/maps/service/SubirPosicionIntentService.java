@@ -58,7 +58,7 @@ public class SubirPosicionIntentService extends Service {
 	public NotificationManager mNotificationManager;
 	private int NOTIFICACION = R.string.lblServicioPrueba;
 
-	
+	Intent intentRecibido;
 	Intent intent;
 	int counter = 0;
 
@@ -104,6 +104,8 @@ public class SubirPosicionIntentService extends Service {
 
 	@Override
 	public void onStart(Intent intent, int startId) {  
+		
+		intentRecibido = intent;
 		
 		Log.d("START_SERVICE", "onStart()");
 		
@@ -238,9 +240,9 @@ public class SubirPosicionIntentService extends Service {
 				Log.d("Posicion Servicio", loc.getLatitude()+","+loc.getLongitude());
 				String latitud = Uri.encode(loc.getLatitude()+"");
 				String longitud = Uri.encode(loc.getLongitude()+"");
-				String nombre = Uri.encode(intent.getStringExtra("nombre"));
-				String mensaje = Uri.encode(intent.getStringExtra("estado"));
-				String radio = Uri.encode((intent.getIntExtra("radio", 500)/1000)+"");
+				String nombre = Uri.encode(intentRecibido.getStringExtra("nombre"));
+				String mensaje = Uri.encode(intentRecibido.getStringExtra("estado"));
+				String radio = Uri.encode((intentRecibido.getIntExtra("radio", 500)/1000)+"");
 
 				//Obtenemos la MAC del dispositivo a traves del objeto WifiManager
 				WifiManager manager = (WifiManager) SubirPosicionIntentService.this.getSystemService(Context.WIFI_SERVICE);

@@ -33,9 +33,30 @@ public class BrujulaCanvas extends View {
 		float radio = (float) (Math.max(x, y) * 0.5);
 		canvas.drawCircle(x, y, radio, brujula);
 		canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), brujula);
-		canvas.drawLine(x, y, (float) (x + radio * Math.sin((double) (-posicion) / 180 * 3.143)),
-				(float) (y - radio * Math.cos((double) (-posicion) / 180 * 3.143)), brujula);
-		canvas.drawText(String.valueOf(posicion), x, y, brujula);
+
+		int w = getMeasuredWidth();
+		int h = getMeasuredHeight();
+		int r;
+		if(w > h){
+			r = h/2;
+		}else{
+			r = w/2;
+		}
+
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setStrokeWidth(5);
+		paint.setColor(Color.WHITE);
+
+		canvas.drawCircle(w/2, h/2, r, paint);
+
+		paint.setColor(Color.RED);
+		canvas.drawLine(
+				w/2,
+				h/2,
+				(float)(w/2 + r * Math.sin(-posicion)),
+				(float)(h/2 - r * Math.cos(-posicion)),
+				paint);
 
 	}
 

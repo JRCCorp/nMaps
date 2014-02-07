@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -25,9 +26,17 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 	private ImageButton brujula;
 	private static SensorManager manejaSensor;
 	private BrujulaCanvas canvas;
-	private Sensor sensor;
+	private Sensor sensorAccelerometer;
+	private Sensor sensorMagneticField;
 	private LinearLayout lyBrujula;
 	private InicioListener inicioLoadedListener;
+	private Button btnServicios;
+	private float[] valuesAccelerometer;
+	private float[] valuesMagneticField;
+
+	private float[] matrixR;
+	private float[] matrixI;
+	private float[] matrixValues;
 
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,32 +44,45 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		// Inflate the layout for this fragment	
 		return inflater.inflate(R.layout.fragment_inicio, container, false);
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		
+		super.onCreate(savedInstanceState);			
+
 	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
 
-		
+
 		canvas = new BrujulaCanvas(this.getActivity());
 		lyBrujula = (LinearLayout) this.getActivity().findViewById(R.id.layoutBrujula);
 		lyBrujula.addView(canvas);
 
 		manejaSensor = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
-		sensor = manejaSensor.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		if (sensor != null) {
-			manejaSensor.registerListener(mSensor, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+		sensorAccelerometer = manejaSensor.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		sensorMagneticField = manejaSensor.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+		if (sensorAccelerometer != null) {
+			manejaSensor.registerListener(mSensor, sensorAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 		} else {
 			Toast.makeText(this.getActivity(), "Sensor no reconocido", Toast.LENGTH_LONG).show();
 			//getActivity().finish();
 		}
-		
+		if(sensorMagneticField != null){
+			manejaSensor.registerListener(mSensor, sensorMagneticField, SensorManager.SENSOR_DELAY_NORMAL);
+		}else{
+			Toast.makeText(this.getActivity(), "Sensor no reconocido", Toast.LENGTH_LONG).show();
+			//getActivity().finish();
+		}
+
+		valuesAccelerometer = new float[3];
+		valuesMagneticField = new float[3];
+
+		matrixR = new float[9];
+		matrixI = new float[9];
+		matrixValues = new float[3];
+
 		//imgCarga = (ImageView) this.getActivity().findViewById(R.id.imgCarga);
 		//		Animation escala = AnimationUtils.loadAnimation(getActivity(), R.drawable.prueba_imagen_carga);
 		//		imgCarga.startAnimation(escala);
@@ -71,15 +93,18 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		//		animacionCarga = (AnimationDrawable) imgCarga.getBackground();
 		//		animacionCarga.start();
 		//imgCarga.setAnimation(giraAumenta);
-//		brujula = (ImageButton) this.getActivity().findViewById(R.id.brujula);
-//		brujula.setOnClickListener(this);
-//		Animation gira = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_imagen);
-//		brujula.setAnimation(gira);
+		//		brujula = (ImageButton) this.getActivity().findViewById(R.id.brujula);
+		//		brujula.setOnClickListener(this);
+		//		Animation gira = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_imagen);
+		//		brujula.setAnimation(gira);
+
+		btnServicios = (Button) getActivity().findViewById(R.id.btnServicioMaestro);
+		btnServicios.setOnClickListener(this);
 
 	}
 
-	
-	
+
+
 	private SensorEventListener mSensor = new SensorEventListener() {
 
 		@Override
@@ -88,20 +113,50 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 
 		@Override
 		public void onSensorChanged(SensorEvent event) {
-			float datos = event.values[0];
-			canvas.updateData(datos);
+			switch(event.sensor.getType()){
+			case Sensor.TYPE_ACCELEROMETER:
+				for(int i =0; i < 3; i++){
+					valuesAccelerometer[i] = event.values[i];
+				}
+				break;
+			case Sensor.TYPE_MAGNETIC_FIELD:
+				for(int i =0; i < 3; i++){
+					valuesMagneticField[i] = event.values[i];
+				}
+				break;
+			}
+
+			boolean success = SensorManager.getRotationMatrix(
+					matrixR,
+					matrixI,
+					valuesAccelerometer,
+					valuesMagneticField);
+
+			if(success){
+				SensorManager.getOrientation(matrixR, matrixValues);
+
+				double azimuth = Math.toDegrees(matrixValues[0]);
+				double pitch = Math.toDegrees(matrixValues[1]);
+				double roll = Math.toDegrees(matrixValues[2]);
+
+				//		   readingAzimuth.setText("Azimuth: " + String.valueOf(azimuth));
+				//		   readingPitch.setText("Pitch: " + String.valueOf(pitch));
+				//		   readingRoll.setText("Roll: " + String.valueOf(roll));
+				canvas.updateData(matrixValues[0]);
+			}
 		}
 
+
 	};
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (sensor != null) {
+		if (sensorAccelerometer != null || sensorMagneticField != null) {
 			manejaSensor.unregisterListener(mSensor);
 		}
 	}
-	
+
 	//Setter de InicioLoadedListener
 	public void setInicioLoadedListener(InicioListener ill){
 		inicioLoadedListener = ill;
@@ -111,9 +166,12 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 	public void onClick(View v) {
 
 		switch (v.getId()) {
-//		case R.id.brujula:
-//			inicioLoadedListener.onInicioClick(brujula);
-//			break;
+		//		case R.id.brujula:
+		//			inicioLoadedListener.onInicioClick(brujula);
+		//			break;
+		case R.id.btnServicioMaestro:
+			inicioLoadedListener.onInicioClick(btnServicios);
+			break;
 		default:
 			break;
 		}
