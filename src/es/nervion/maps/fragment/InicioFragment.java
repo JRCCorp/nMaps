@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import es.nervion.maps.activity.R;
+import es.nervion.maps.activity.TabsActivity;
 import es.nervion.maps.canvas.BrujulaCanvas;
 import es.nervion.maps.listener.InicioListener;
 
@@ -54,6 +55,8 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
+		
+		((TabsActivity) getActivity() ).getViewPager().setCurrentItem(1);
 
 
 		canvas = new BrujulaCanvas(this.getActivity());

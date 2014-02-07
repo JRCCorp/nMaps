@@ -72,9 +72,9 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
-		mViewPager.setCurrentItem(1);
+//		mViewPager.setCurrentItem(1);
 
-		mViewPager.setOnPageChangeListener(this);		
+		mViewPager.setOnPageChangeListener(this);
 
 		servicioGuardarPosicion();
 
@@ -104,7 +104,8 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	public void peticionPost(){
 
 		//Ejecutamos el servicio-obtener-posiciones
-		if(recuperarPreferenciaBoolean("servicio2")){
+		Log.d("TabsActivity", "Tab Actual: "+mViewPager.getCurrentItem());
+		if(recuperarPreferenciaBoolean("servicio2") && mViewPager.getCurrentItem()==2){
 			if(sp==null || sp.isCancelled()){
 				sp = new ServicioPosiciones(this, 30000);
 				sp.execute();
@@ -169,6 +170,14 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	public InicioFragment getInicioFragment() {
 		return inicioFragment;
 	}
+	
+	public ServicioPosiciones getServicioPosiciones(){
+		return sp;
+	}
+	
+	public ViewPager getViewPager(){
+		return mViewPager;
+	}
 
 
 	/* Implementamos el método onMapLoaded recibido de MyMapFragment */
@@ -209,7 +218,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 		System.out.println("Cambiado "+position);
 
-		if(myMapFragment!=null && myMapFragment.getMap()!=null && position==2){
+		if(position==2){
 			peticionPost();
 		}else{
 			if(sp!=null){

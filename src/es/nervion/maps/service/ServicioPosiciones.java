@@ -38,7 +38,7 @@ public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
 	private TabsActivity activity;
 	private MyMapFragment mmf;
 	private int refresco;
-	private String url = "";
+	private String url = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?";
 
 	public ServicioPosiciones(TabsActivity activity, int refresco){
 		super();
@@ -104,30 +104,34 @@ public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
 
 	@Override
 	protected void onProgressUpdate(JSONArray... progress) {
-		JSONArray result = progress[0];
-		try {
-			if(mmf!=null && mmf.getMap()!=null){			
+		try{
 
-				mmf.eliminarMarcadores();
-				mmf.getMap().clear();
-				if(result!=null){				
-					for(int i=0; i<result.length(); i++){
-						Log.d("ServicioPosiciones", result.getString(i));
-						Marker m = mmf.getMap().addMarker(new MarkerOptions()
-						.position(new LatLng(result.getJSONArray(i).getDouble(2), result.getJSONArray(i).getDouble(3)))
-						.title(result.getJSONArray(i).getString(5))
-						.snippet(result.getJSONArray(i).getString(6)));
-						mmf.anadirMarcador(m);
+			JSONArray result = progress[0];
+			try {
+				if(mmf!=null && mmf.getMyMap()!=null){			
+
+					mmf.eliminarMarcadores();
+					mmf.getMyMap().clear();
+					if(result!=null){				
+						for(int i=0; i<result.length(); i++){
+							Log.d("ServicioPosiciones", result.getString(i));
+							Marker m = mmf.getMyMap().addMarker(new MarkerOptions()
+							.position(new LatLng(result.getJSONArray(i).getDouble(2), result.getJSONArray(i).getDouble(3)))
+							.title(result.getJSONArray(i).getString(5))
+							.snippet(result.getJSONArray(i).getString(6)));
+							mmf.anadirMarcador(m);
+						}
 					}
+
+					obtenerNuevaLocalizacion();
+
 				}
 
-				obtenerNuevaLocalizacion();
-
+			} catch (JSONException e) {
+				Log.d("AsyncPost", e.getMessage());
 			}
-
-		} catch (JSONException e) {
-			Log.d("AsyncPost", e.getMessage());
-			e.printStackTrace();
+		}catch(Exception e){
+			Log.d("ServicioPosiciones", "Mapa no cargado");
 		}
 	}
 
@@ -140,22 +144,28 @@ public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
 
 
 	private void obtenerNuevaLocalizacion(){
-		Location location = mmf.getMap().getMyLocation();
-		String latitud = Uri.encode(location.getLatitude()+"");
-		String longitud = Uri.encode(location.getLongitude()+"");
-		String nombre = Uri.encode(activity.recuperarPreferenciaString("nombre"));
-		String mensaje = Uri.encode(activity.recuperarPreferenciaString("estado"));
-		String radio = Uri.encode((activity.recuperarPreferenciaInteger("radio")/1000)+"");
-		System.out.println("Latitud: "+location.getLatitude()+", Longitud: "+location.getLongitude()+"\n ");
+		try{
 
-		//Obtenemos la MAC del dispositivo a traves del objeto WifiManager
-		WifiManager manager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
-		WifiInfo info = manager.getConnectionInfo();
-		String macAddress = Uri.encode(info.getMacAddress());
-		String fecha = Uri.encode(new SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(new Date()));
 
-		url = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress+"&latitud="+latitud+"&longitud="+longitud+"&radio="+radio+"&fecha="+fecha+"&nombre="+nombre+"&mensaje="+mensaje+"&guardar=1&obtener=1";
+			Location location = mmf.getMyMap().getMyLocation();
+			String latitud = Uri.encode(location.getLatitude()+"");
+			String longitud = Uri.encode(location.getLongitude()+"");
+			String nombre = Uri.encode(activity.recuperarPreferenciaString("nombre"));
+			String mensaje = Uri.encode(activity.recuperarPreferenciaString("estado"));
+			String radio = Uri.encode((activity.recuperarPreferenciaInteger("radio")/1000)+"");
+			System.out.println("Latitud: "+location.getLatitude()+", Longitud: "+location.getLongitude()+"\n ");
 
+			//Obtenemos la MAC del dispositivo a traves del objeto WifiManager
+			WifiManager manager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
+			WifiInfo info = manager.getConnectionInfo();
+			String macAddress = Uri.encode(info.getMacAddress());
+			String fecha = Uri.encode(new SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(new Date()));
+
+			url = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress+"&latitud="+latitud+"&longitud="+longitud+"&radio="+radio+"&fecha="+fecha+"&nombre="+nombre+"&mensaje="+mensaje+"&guardar=1&obtener=1";
+		}catch(Exception e){
+			Log.d("ServicioPosiciones", "mapa no cargado");
+			ServicioPosiciones.this.cancel(true);
+		}
 	}
 
 }
