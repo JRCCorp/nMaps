@@ -12,7 +12,7 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/tituloPreferenciaServicio" >
         <SwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="pref_servicio1"
             android:icon="@drawable/icono_pref"
             android:summaryOff="Localizar"
