@@ -94,6 +94,12 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 			sp.cancel(true);
 		}
 	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
+		peticionPost();
+	}
 
 	public void peticionPost(){
 
@@ -102,8 +108,12 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 			if(sp==null || sp.isCancelled()){
 				sp = new ServicioPosiciones(this, 30000);
 				sp.execute();
-			}			
-		}		
+			}
+		}else{
+			if(sp!=null){
+				sp.cancel(true);
+			}
+		}
 	}
 
 
@@ -204,7 +214,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		}else{
 			if(sp!=null){
 				sp.cancel(true);
-			}			
+			}
 		}
 
 	}
