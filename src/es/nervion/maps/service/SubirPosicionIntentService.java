@@ -98,6 +98,7 @@ public class SubirPosicionIntentService extends Service {
 	
 	@Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+		super.onStartCommand(intent, flags, startId);
         Log.i("LocalService", "Received start id " + startId + ": " + intent);
         return START_STICKY;
     }
