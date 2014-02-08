@@ -26,6 +26,7 @@ import com.google.android.gms.maps.GoogleMap;
 
 import es.nervion.maps.adapter.SectionsPagerAdapter;
 import es.nervion.maps.fragment.InicioFragment;
+import es.nervion.maps.fragment.MyMapDrawerFragment;
 import es.nervion.maps.fragment.MyMapFragment;
 import es.nervion.maps.fragment.PreferenciasFragment;
 import es.nervion.maps.listener.InicioListener;
@@ -35,7 +36,7 @@ import es.nervion.maps.service.ServicioPosiciones;
 import es.nervion.maps.service.SubirPosicionIntentService;
 
 public class TabsActivity extends Activity implements MapListener, InicioListener, PreferencesListener, OnPageChangeListener {
-
+	
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 
 	private ViewPager mViewPager;
@@ -59,13 +60,14 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		inicioFragment.setInicioLoadedListener(this);
 
 		crearMapFragment();
+		
 
 		ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 		fragments.add(preferenciasFragment);
 		fragments.add(inicioFragment);		
 		if(myMapFragment!=null){			
 			fragments.add(myMapFragment);
-		}		
+		}
 
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(this, getFragmentManager(), fragments);
@@ -77,6 +79,8 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		mViewPager.setOnPageChangeListener(this);
 
 		servicioGuardarPosicion();
+		
+		sp = (ServicioPosiciones) this.getLastNonConfigurationInstance();
 
 	}
 
@@ -178,6 +182,12 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	public ViewPager getViewPager(){
 		return mViewPager;
 	}
+	
+	
+	@Override
+	public Object onRetainNonConfigurationInstance(){
+		return sp;
+	}
 
 
 	/* Implementamos el método onMapLoaded recibido de MyMapFragment */
@@ -216,8 +226,8 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	@Override
 	public void onPageSelected(int position) {
 
-		System.out.println("Cambiado "+position);
-
+		Log.d("TabsActivity", "Tab: "+position);
+		
 		if(position==2){
 			peticionPost();
 		}else{

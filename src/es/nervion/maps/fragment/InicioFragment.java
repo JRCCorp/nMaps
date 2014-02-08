@@ -159,6 +159,19 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 			manejaSensor.unregisterListener(mSensor);
 		}
 	}
+	
+	
+	public void onMyDestroy(){
+		if(getActivity()!=null){
+			
+			Fragment f = getActivity().getFragmentManager().findFragmentById(R.layout.fragment_inicio);
+
+			if (f != null) {
+				getActivity().getFragmentManager()
+				.beginTransaction().remove(f).commit();
+			}
+		}
+	}
 
 	//Setter de InicioLoadedListener
 	public void setInicioLoadedListener(InicioListener ill){
