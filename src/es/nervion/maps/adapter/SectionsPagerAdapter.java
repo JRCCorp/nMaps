@@ -52,7 +52,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		if(position==1){
 			((InicioFragment) this.getItem(position)).onMyDestroy();
 		}else if(position==2){
-			((MyMapFragment) this.getItem(position)).onMyDestroy();
+			//((MyMapFragment) this.getItem(position)).onMyDestroy();
 		}else{
 			super.destroyItem(container, position, object);
 		}

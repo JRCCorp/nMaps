@@ -104,6 +104,20 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		super.onRestart();
 		peticionPost();
 	}
+	
+	@Override
+	protected void onPause(){
+		super.onPause();
+		if(sp!=null){
+			sp.cancel(true);
+		}
+	}
+	
+	@Override
+	protected void onResume(){
+		super.onResume();
+		peticionPost();
+	}
 
 	public void peticionPost(){
 
