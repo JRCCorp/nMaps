@@ -18,7 +18,9 @@ import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -329,6 +331,26 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	}
 
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	    case R.id.action_preferencias:
+	    	if(myMapFragment.getDrawerLayout().isDrawerOpen(Gravity.END)){
+	    		myMapFragment.getDrawerLayout().closeDrawer(Gravity.END);
+			}else{
+				myMapFragment.getDrawerLayout().openDrawer(Gravity.END);
+			}
+	    	break;
+	    }
+	    return true;
+	}
+	
+	public void toggleDrawer(MenuItem item){
+	    
+		
+		
+	}
 
 
 

@@ -10,11 +10,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.internal.dr;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
@@ -58,6 +61,13 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 		super.onCreate(savedInstanceState);
 
 	}
+	
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+   }
 
 	public void onDestroyView() {
 		super.onDestroyView();
@@ -132,8 +142,8 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 
 		mapLoadedListener.onMapLoaded(this.getMyMap());
 		
-		
-		drawerLayout.openDrawer(Gravity.END);
+		drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		//drawerLayout.openDrawer(Gravity.END);
 
 	}
 
@@ -164,6 +174,9 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 	}
 
 
+	public DrawerLayout getDrawerLayout(){
+		return drawerLayout;
+	}
 
 
 }

@@ -57,7 +57,7 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
-		
+
 		((TabsActivity) getActivity() ).getViewPager().setCurrentItem(1);
 
 
@@ -107,14 +107,14 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		btnServicios.setOnClickListener(this);
 
 	}
-	
 
-	public void   onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.inicio, menu);
-        super.onCreateOptionsMenu(menu, inflater);
 
-   }
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.clear();
+		inflater.inflate(R.menu.inicio, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+
+	}
 
 
 
@@ -169,11 +169,11 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 			manejaSensor.unregisterListener(mSensor);
 		}
 	}
-	
-	
+
+
 	public void onMyDestroy(){
 		if(getActivity()!=null){
-			
+
 			Fragment f = getActivity().getFragmentManager().findFragmentById(R.layout.fragment_inicio);
 
 			if (f != null) {
