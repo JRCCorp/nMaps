@@ -1,16 +1,19 @@
 package es.nervion.maps.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -41,6 +44,8 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 	private float[] matrixI;
 	private float[] matrixValues;
 
+	private MenuItem actualizarServidor;
+	
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -108,12 +113,32 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 
 	}
 
+<<<<<<< HEAD
 
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		menu.clear();
 		inflater.inflate(R.menu.inicio, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 
+=======
+	public void   onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.inicio, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+   }
+	
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_refresh:
+			actualizarServidor = item;
+			new SyncData().execute();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+>>>>>>> 39012c442189721070414471512564491da5f10c
 	}
 
 
@@ -203,6 +228,32 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		}
 
 	}
+	
+	private class SyncData extends AsyncTask<String, Void, String> {
+		@SuppressLint("NewApi")
+		@Override
+		protected void onPreExecute() {
+			actualizarServidor.setActionView(R.layout.action_progressbar);
+			actualizarServidor.expandActionView();
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@SuppressLint("NewApi")
+		@Override
+		protected void onPostExecute(String result) {
+			actualizarServidor.collapseActionView();
+			actualizarServidor.setActionView(null);
+		}
+	};
 
 
 
