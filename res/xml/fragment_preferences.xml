@@ -12,7 +12,7 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/tituloPreferenciaServicio" >
         <ListPreference
-            android:defaultValue="2"
+            android:defaultValue="120"
             android:entries="@array/listaRefresco"
             android:entryValues="@array/valorRefresco"
             android:key="listPref"
