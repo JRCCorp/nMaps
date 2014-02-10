@@ -9,6 +9,8 @@ import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 public class PreferenciasFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
 
@@ -18,6 +20,7 @@ public class PreferenciasFragment extends PreferenceFragment implements OnShared
 		super.onCreate(savedInstanceState);
 		
 		setRetainInstance(true);
+		setHasOptionsMenu(true);
 		
 		addPreferencesFromResource(R.xml.fragment_preferences);
 
@@ -26,6 +29,13 @@ public class PreferenciasFragment extends PreferenceFragment implements OnShared
 		}
 		
 	}
+	
+	public void   onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+       // inflater.inflate(R.menu.inicio, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+   }
+	
 
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
         String key) {
