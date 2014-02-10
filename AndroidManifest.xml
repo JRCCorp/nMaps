@@ -47,10 +47,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="es.nervion.maps.activity.MainActivity"
-            android:label="@string/title_activity_tabs" >
-        </activity>
+
 
         <service android:name="es.nervion.maps.service.SubirPosicionIntentService" >
         </service>
@@ -59,10 +56,6 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyC6MTiFm6z9_HcOujRzNEh5RsIDCTpRcUo" />
 
-        <activity
-            android:name="es.nervion.maps.activity.SplashActivity"
-            android:label="@string/title_activity_splash" >
-        </activity>
     </application>
 
 </manifest>

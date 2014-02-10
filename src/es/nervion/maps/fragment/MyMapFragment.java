@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -56,14 +57,13 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-
+		setHasOptionsMenu(true);
 	}
 	
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.mapa, menu);
         super.onCreateOptionsMenu(menu, inflater);
-
    }
 
 	public void onDestroyView() {
@@ -121,6 +121,24 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
         
 
 	}
+	
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    case R.id.action_chat:
+	    	if(this.getDrawerLayout().isDrawerOpen(Gravity.END)){
+	    		this.getDrawerLayout().closeDrawer(Gravity.END);
+			}else{
+				this.getDrawerLayout().openDrawer(Gravity.END);
+			}
+	    	break;
+	    }
+	    return true;
+	}
+	
+	
+	
 
 	/* Implementacion de onMapLoadedCallback */
 	@Override

@@ -15,7 +15,8 @@
     <string name="lblServicioMaestro">Servicios</string>
     <string name="btnMaestroON">ACTIVADO</string>
     <string name="btnMaestroOFF">DESACTIVADO</string>
-    
+    <!-- MAPA -->
+    <string name="action_chat">Chat</string>
     <!-- SERVICIO -->
      <string name="lblServicioPrueba">Prueba label servicio</string>
     <string name="lblServicioIniciado">Posicionamiento activado</string>
@@ -25,22 +26,20 @@
     <string name="pref_nombre">Nombre</string>
     <string name="pref_estado">Estado</string>
 
-    <string-array name="radio">
-        <item name="r10">10 metros</item>
-        <item name="r25">25 metros</item>
-        <item name="r50">50 metros</item>
-        <item name="r500">500 metros</item>
-        <item name="r1000">1000 metros</item>
+    <string-array name="listaRefresco">
+        <item name="r30">30 segundos</item>
+        <item name="r1">1 minuto</item>
+        <item name="r2">2 minutos</item>
+        <item name="r5">5 minutos</item>
+        <item name="r10">10 minutos</item>
     </string-array>
-    <string-array name="radioValor">
-        <item name="r10">10</item>
-        <item name="r25">25</item>
-        <item name="r50">50</item>
-        <item name="r500">500</item>
-        <item name="r1000">1000 metros</item>
+    <string-array name="valorRefresco">
+        <item name="r10">30</item>
+        <item name="r1">60</item>
+        <item name="r2">120</item>
+        <item name="r5">350</item>
+        <item name="r10">600</item>
     </string-array>
 
-    <string name="title_activity_splash">SplashActivity</string>
-    <string name="hello_world">Hello world!</string>
 
 </resources>

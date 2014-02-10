@@ -113,14 +113,8 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 
 	}
 
-<<<<<<< HEAD
 
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		menu.clear();
-		inflater.inflate(R.menu.inicio, menu);
-		super.onCreateOptionsMenu(menu, inflater);
 
-=======
 	public void   onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.inicio, menu);
@@ -138,7 +132,6 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		default:
 			return super.onOptionsItemSelected(item);
 		}
->>>>>>> 39012c442189721070414471512564491da5f10c
 	}
 
 

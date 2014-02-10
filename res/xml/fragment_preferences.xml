@@ -11,26 +11,32 @@
             android:title="@string/pref_estado" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/tituloPreferenciaServicio" >
+        <ListPreference
+            android:defaultValue="2"
+            android:entries="@array/listaRefresco"
+            android:entryValues="@array/valorRefresco"
+            android:key="listPref"
+            android:title="Configurar tiempo de refresco" />
         <SwitchPreference
             android:defaultValue="true"
-            android:key="pref_servicio1"
             android:icon="@drawable/icono_pref"
+            android:key="pref_servicio1"
             android:summaryOff="Localizar"
             android:summaryOn="Localizar" >
         </SwitchPreference>
         <SwitchPreference
             android:defaultValue="true"
-            android:key="pref_servicio2"
             android:icon="@drawable/icono_pref2"
+            android:key="pref_servicio2"
             android:summaryOff="Buscar"
             android:summaryOn="Buscar" >
         </SwitchPreference>
         <SwitchPreference
             android:defaultValue="true"
-            android:key="pref_servicio3"
             android:icon="@drawable/icono_pref3"
+            android:key="pref_servicio3"
             android:summaryOff="Mensajes"
-            android:summaryOn="Mensajes">
+            android:summaryOn="Mensajes" >
         </SwitchPreference>
     </PreferenceCategory>
     <PreferenceCategory android:title="Otro" >
