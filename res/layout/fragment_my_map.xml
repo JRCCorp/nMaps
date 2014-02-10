@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-     >
+    android:orientation="vertical" >
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -27,28 +26,25 @@
             android:choiceMode="singleChoice"
             android:divider="@android:color/transparent" />
     </android.support.v4.widget.DrawerLayout>
-    
-    <LinearLayout 
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="horizontal"
-        >
-        
-        <EditText 
+        android:orientation="horizontal" >
+
+        <EditText
+            android:inputType="textMultiLine"
             android:id="@+id/etxtChat"
             android:layout_width="0dp"
-            android:layout_weight="80"
             android:layout_height="match_parent"
-            />
-        
-        <Button 
+            android:layout_weight="80" />
+
+        <Button
             android:id="@+id/btnChat"
             android:layout_width="0dp"
-            android:layout_weight="20"
             android:layout_height="match_parent"
-            android:text=">"
-            />
-        
+            android:layout_weight="20"
+            android:text=">" />
     </LinearLayout>
 
 </LinearLayout>

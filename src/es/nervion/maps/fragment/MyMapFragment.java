@@ -24,6 +24,8 @@ import com.google.android.gms.maps.model.Marker;
 
 import es.nervion.maps.activity.R;
 import es.nervion.maps.activity.TabsActivity;
+import es.nervion.maps.adapter.MyDrawerListAdapter;
+import es.nervion.maps.clase.Mensaje;
 import es.nervion.maps.listener.MapListener;
 
 
@@ -95,7 +97,12 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
         drawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         drawerList = (ListView) getActivity().findViewById(R.id.right_drawer);
  
-        drawerList.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.row_drawer_list, R.id.txtItemDrawerList, opcionesMenu));
+        ArrayList<Mensaje> mensajes = new ArrayList<Mensaje>();
+        mensajes.add(new Mensaje());
+        mensajes.add(new Mensaje());
+        mensajes.add(new Mensaje());
+        
+        drawerList.setAdapter(new MyDrawerListAdapter(getActivity(), R.layout.row_drawer_list, mensajes));
 		
 
 		marcadores = new ArrayList<Marker>();
