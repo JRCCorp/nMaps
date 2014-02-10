@@ -9,6 +9,8 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -49,7 +51,7 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);			
-
+		setHasOptionsMenu(true);
 	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -105,6 +107,14 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		btnServicios.setOnClickListener(this);
 
 	}
+	
+
+	public void   onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.inicio, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+   }
 
 
 
