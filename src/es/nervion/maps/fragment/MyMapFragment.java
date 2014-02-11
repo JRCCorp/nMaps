@@ -210,6 +210,10 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 		return drawerLayout;
 	}
 	
+	public ListView getDrawerList(){
+		return drawerList;
+	}
+	
 	
 	public ArrayList<Marker> getMarcadores(){
 		return marcadores;
@@ -218,6 +222,12 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 	public void setMarcadores(ArrayList<Marker> marcadores){
 		this.marcadores = marcadores;
 	}
+	
+	public ArrayList<Mensaje> getMensajes(){
+		return mensajes;
+	}
+	
+
 
 
 }

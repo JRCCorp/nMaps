@@ -9,11 +9,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Fragment;
-import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -24,6 +23,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
@@ -37,9 +37,10 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.maps.GoogleMap;
 
+import es.nervion.maps.adapter.MyDrawerListAdapter;
 import es.nervion.maps.adapter.SectionsPagerAdapter;
+import es.nervion.maps.clase.Mensaje;
 import es.nervion.maps.fragment.InicioFragment;
-import es.nervion.maps.fragment.MyMapDrawerFragment;
 import es.nervion.maps.fragment.MyMapFragment;
 import es.nervion.maps.fragment.PreferenciasFragment;
 import es.nervion.maps.listener.InicioListener;
@@ -65,13 +66,12 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	public static final String PROPERTY_REG_ID = "registration_id";
 	public static final String PROPERTY_APP_VERSION = "appVersion";
 	public static final String PROPERTY_EXPIRATION_TIME = "onServerExpirationTimeMs";
-	public static final String PROPERTY_USER = "user";	
-
+	public static final String PROPERTY_USER = "user";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tabs);	
+		setContentView(R.layout.activity_tabs);			
 
 		preferenciasFragment = new PreferenciasFragment();
 		preferenciasFragment.setPreferencesListener(this);		
@@ -102,16 +102,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 		sp = (ServicioPosiciones) this.getLastNonConfigurationInstance();
 
-		GCMRegistrar.checkDevice(this);
-		GCMRegistrar.checkManifest(this);
-
 		registroGCM();
-
-		//		
-		//		Intent registrationIntent = new Intent("com.google.android.c2dm.intent.REGISTER");
-		//	    registrationIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
-		//	    registrationIntent.putExtra("sender", "834884443249");
-		//	    startService(registrationIntent);
 
 	}
 
@@ -134,6 +125,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	protected void onRestart(){
 		super.onRestart();
 		peticionPost();
+
 	}
 
 	@Override
@@ -142,7 +134,6 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		if(sp!=null){
 			sp.cancel(true);
 		}
-		GCMRegistrar.unregister(this);
 	}
 
 	@Override
@@ -377,7 +368,6 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 			//Si no disponemos de Registration ID comenzamos el registro
 			if (regid.equals("")) {
-				GCMRegistrar.register(this, "834884443249");
 				WifiManager manager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
 				WifiInfo info = manager.getConnectionInfo();
 				String macAddress = Uri.encode(info.getMacAddress());
@@ -482,6 +472,10 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 			throw new RuntimeException("Error al obtener versión: " + e);
 		}
 	}
+
+
+
+
 	
 
 
