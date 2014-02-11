@@ -40,7 +40,7 @@
             android:layout_height="120dp"
             android:layout_above="@+id/lblServicioMaestro"
             android:layout_centerHorizontal="true"
-            android:background="@android:color/transparent"
+            android:background="@drawable/brujula"
             android:orientation="vertical" >
         </LinearLayout>
 
@@ -63,8 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/layoutBrujula"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="55dp"
-            android:background="@drawable/bordes_rectos"
+            android:layout_marginBottom="122dp"
             android:orientation="horizontal" >
 
             <TextView

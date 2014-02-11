@@ -243,7 +243,7 @@ public class SubirPosicionIntentService extends Service {
 				String longitud = Uri.encode(loc.getLongitude()+"");
 				String nombre = Uri.encode(intentRecibido.getStringExtra("nombre"));
 				String mensaje = Uri.encode(intentRecibido.getStringExtra("estado"));
-				String radio = Uri.encode((intentRecibido.getIntExtra("radio", 500)/1000)+"");
+				String radio = Uri.encode((intentRecibido.getIntExtra("radio", 500))+"");
 
 				//Obtenemos la MAC del dispositivo a traves del objeto WifiManager
 				WifiManager manager = (WifiManager) SubirPosicionIntentService.this.getSystemService(Context.WIFI_SERVICE);

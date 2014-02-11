@@ -4,131 +4,66 @@
     android:layout_height="match_parent"
     android:background="@drawable/callejero" >
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="-4dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginRight="35dp"
-        android:layout_marginTop="35dp"
-        android:background="@drawable/bordes_rectos" >
+    <LinearLayout
+        android:id="@+id/layoutBrujula"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:layout_above="@+id/lblServicioMaestro"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/brujula"
+        android:orientation="vertical" >
+    </LinearLayout>
 
-        <!--
-              <ImageButton
-            android:id="@+id/brujula"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/lblServicioMaestro"
-            android:layout_centerHorizontal="true"
-            android:background="@android:color/transparent"
-            android:layout_marginBottom="36dp"
-            android:src="@drawable/bruju" />
-        -->
+    <ToggleButton
+        android:id="@+id/btnServicioMaestro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="19dp"
+        android:layout_marginRight="44dp"
+        android:background="@color/aguamarinaO"
+        android:padding="8dp"
+        android:textColor="@color/blanco"
+        android:textOff="@string/btnMaestroOFF"
+        android:textOn="@string/btnMaestroON" />
 
-        <LinearLayout
-            android:id="@+id/layoutBrujula"
-            android:layout_width="wrap_content"
-            android:layout_height="120dp"
-            android:layout_above="@+id/lblServicioMaestro"
-            android:layout_centerHorizontal="true"
-            android:background="@android:color/transparent"
-            android:orientation="vertical" >
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/lblServicioMaestro"
-            android:background="@drawable/bordes_rectos" >
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/textView1"
-                android:layout_alignTop="@+id/textView1"
-                android:layout_marginTop="20dp"
-                android:text="Búsqueda" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/textView2"
-                android:layout_alignTop="@+id/textView2"
-                android:layout_marginTop="20dp"
-                android:text="Mensajería" />
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:text="Localización" />
-
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignTop="@+id/textView1"
-                android:layout_marginLeft="-15dp"
-                android:src="@drawable/estado_onoff" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignTop="@+id/textView2"
-                android:layout_marginLeft="-15dp"
-                android:src="@drawable/estado_onoff" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignTop="@+id/textView3"
-                android:layout_marginLeft="-15dp"
-                android:src="@drawable/estado_onoff" />
-        </RelativeLayout>
-
-        <ToggleButton
-            android:id="@+id/btnServicioMaestro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="19dp"
-            android:layout_marginRight="44dp"
-            android:background="@color/aguamarinaO"
-            android:padding="8dp"
-            android:textColor="@color/blanco"
-            android:textOff="@string/btnMaestroOFF"
-            android:textOn="@string/btnMaestroON" />
-
-        <TextView
-            android:id="@+id/lblServicioMaestro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/btnServicioMaestro"
-            android:layout_alignRight="@+id/btnServicioMaestro"
-            android:text="@string/lblServicioMaestro" />
-
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/lblServicioMaestro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnServicioMaestro"
+        android:layout_alignRight="@+id/btnServicioMaestro"
+        android:text="@string/lblServicioMaestro" />
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/relativeLayout1"
         android:layout_marginTop="18dp"
         android:src="@drawable/worst3" />
+
+    <LinearLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Servidor" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/estado_onoff" />
+    </LinearLayout>
 
 </RelativeLayout>

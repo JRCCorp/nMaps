@@ -18,7 +18,7 @@ public class BrujulaCanvas extends View {
 
 	private void init() {
 		brujula = new Paint();
-		brujula.setColor(Color.BLACK);
+		brujula.setColor(Color.TRANSPARENT);
 		brujula.setStrokeWidth(2);
 		brujula.setTextSize(22);
 		brujula.setStyle(Paint.Style.STROKE);

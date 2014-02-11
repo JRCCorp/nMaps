@@ -152,7 +152,7 @@ public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
 			String longitud = Uri.encode(location.getLongitude()+"");
 			String nombre = Uri.encode(activity.recuperarPreferenciaString("nombre"));
 			String mensaje = Uri.encode(activity.recuperarPreferenciaString("estado"));
-			String radio = Uri.encode((activity.recuperarPreferenciaInteger("radio")/1000)+"");
+			String radio = Uri.encode((activity.recuperarPreferenciaInteger("radio"))+"");
 			System.out.println("Latitud: "+location.getLatitude()+", Longitud: "+location.getLongitude()+"\n ");
 
 			//Obtenemos la MAC del dispositivo a traves del objeto WifiManager
