@@ -1,29 +1,40 @@
 package es.nervion.maps.activity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Fragment;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.google.android.gcm.GCMRegistrar;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.maps.GoogleMap;
 
 import es.nervion.maps.adapter.SectionsPagerAdapter;
@@ -36,9 +47,10 @@ import es.nervion.maps.listener.MapListener;
 import es.nervion.maps.listener.PreferencesListener;
 import es.nervion.maps.service.ServicioPosiciones;
 import es.nervion.maps.service.SubirPosicionIntentService;
+import es.nervion.maps.service.TareaRegistroGCM;
 
 public class TabsActivity extends Activity implements MapListener, InicioListener, PreferencesListener, OnPageChangeListener {
-	
+
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 
 	private ViewPager mViewPager;
@@ -48,6 +60,12 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	private MyMapFragment myMapFragment;
 
 	private ServicioPosiciones sp;
+
+
+	public static final String PROPERTY_REG_ID = "registration_id";
+	public static final String PROPERTY_APP_VERSION = "appVersion";
+	public static final String PROPERTY_EXPIRATION_TIME = "onServerExpirationTimeMs";
+	public static final String PROPERTY_USER = "user";	
 
 
 	@Override
@@ -62,7 +80,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		inicioFragment.setInicioLoadedListener(this);
 
 		crearMapFragment();
-		
+
 
 		ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 		fragments.add(preferenciasFragment);
@@ -76,13 +94,24 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
-//		mViewPager.setCurrentItem(1);
+		//		mViewPager.setCurrentItem(1);
 
 		mViewPager.setOnPageChangeListener(this);
 
 		servicioGuardarPosicion();
-		
+
 		sp = (ServicioPosiciones) this.getLastNonConfigurationInstance();
+
+		GCMRegistrar.checkDevice(this);
+		GCMRegistrar.checkManifest(this);
+
+		registroGCM();
+
+		//		
+		//		Intent registrationIntent = new Intent("com.google.android.c2dm.intent.REGISTER");
+		//	    registrationIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
+		//	    registrationIntent.putExtra("sender", "834884443249");
+		//	    startService(registrationIntent);
 
 	}
 
@@ -100,24 +129,26 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 			sp.cancel(true);
 		}
 	}
-	
+
 	@Override
 	protected void onRestart(){
 		super.onRestart();
 		peticionPost();
 	}
-	
+
 	@Override
 	protected void onPause(){
 		super.onPause();
 		if(sp!=null){
 			sp.cancel(true);
 		}
+		GCMRegistrar.unregister(this);
 	}
-	
+
 	@Override
 	protected void onResume(){
 		super.onResume();
+		checkPlayServices();
 		peticionPost();
 	}
 
@@ -190,16 +221,16 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	public InicioFragment getInicioFragment() {
 		return inicioFragment;
 	}
-	
+
 	public ServicioPosiciones getServicioPosiciones(){
 		return sp;
 	}
-	
+
 	public ViewPager getViewPager(){
 		return mViewPager;
 	}
-	
-	
+
+
 	@Override
 	public Object onRetainNonConfigurationInstance(){
 		return sp;
@@ -243,7 +274,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	public void onPageSelected(int position) {
 
 		Log.d("TabsActivity", "Tab: "+position);
-		
+
 		if(position==2){
 			peticionPost();
 		}else{
@@ -331,15 +362,127 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	}
 
 
-	
-	
-	public void toggleDrawer(MenuItem item){
-	    
-		
-		
+
+
+	public void registroGCM(){
+		Context context = getApplicationContext();
+
+		//Chequemos si está instalado Google Play Services
+		if(checkPlayServices())
+		{
+			GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(TabsActivity.this);
+
+			//Obtenemos el Registration ID guardado
+			String regid = getRegistrationId(context);
+
+			//Si no disponemos de Registration ID comenzamos el registro
+			if (regid.equals("")) {
+				GCMRegistrar.register(this, "834884443249");
+				WifiManager manager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+				WifiInfo info = manager.getConnectionInfo();
+				String macAddress = Uri.encode(info.getMacAddress());
+				TareaRegistroGCM tarea = new TareaRegistroGCM(this);
+				Log.d("TabsActivity", "Vamos a ejecutar TareaRegistroGCM");
+				tarea.execute(macAddress);
+			}
+		}
+		else
+		{
+			Log.i("RegistroGCM", "No se ha encontrado Google Play Services.");
+		}
 	}
 
 
+	private boolean checkPlayServices() {
+		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		if (resultCode != ConnectionResult.SUCCESS)
+		{
+			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode))
+			{
+				GooglePlayServicesUtil.getErrorDialog(resultCode, this, 1).show();
+			}
+			else
+			{
+				Log.i("CheckPlayServices", "Dispositivo no soportado.");
+				finish();
+			}
+			return false;
+		}
+		return true;
+	}
+
+
+
+	private String getRegistrationId(Context context)
+	{
+		SharedPreferences prefs = getSharedPreferences(
+				TabsActivity.class.getSimpleName(),
+				Context.MODE_PRIVATE);
+
+		String registrationId = prefs.getString(PROPERTY_REG_ID, "");
+
+		if (registrationId.length() == 0)
+		{
+			Log.d("GCM", "Registro GCM no encontrado.");
+			return "";
+		}
+
+		String registeredUser =
+				prefs.getString(PROPERTY_USER, "user");
+
+		int registeredVersion =
+				prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
+
+		long expirationTime =
+				prefs.getLong(PROPERTY_EXPIRATION_TIME, -1);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+		String expirationDate = sdf.format(new Date(expirationTime));
+
+		Log.d("GCM", "Registro GCM encontrado (usuario=" + registeredUser +
+				", version=" + registeredVersion +
+				", expira=" + expirationDate + ")");
+
+		WifiManager manager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+		WifiInfo info = manager.getConnectionInfo();
+		String macAddress = Uri.encode(info.getMacAddress());
+
+		int currentVersion = getAppVersion(context);
+
+		if (registeredVersion != currentVersion)
+		{
+			Log.d("GCM", "Nueva versión de la aplicación.");
+			return "";
+		}
+		else if (System.currentTimeMillis() > expirationTime)
+		{
+			Log.d("GCM", "Registro GCM expirado.");
+			return "";
+		}
+		else if (macAddress.equals(registeredUser))
+		{
+			Log.d("GCM", "Nuevo nombre de usuario.");
+			return "";
+		}
+
+		return registrationId;
+	}
+
+	private static int getAppVersion(Context context)
+	{
+		try
+		{
+			PackageInfo packageInfo = context.getPackageManager()
+					.getPackageInfo(context.getPackageName(), 0);
+
+			return packageInfo.versionCode;
+		}
+		catch (NameNotFoundException e)
+		{
+			throw new RuntimeException("Error al obtener versión: " + e);
+		}
+	}
+	
 
 
 }

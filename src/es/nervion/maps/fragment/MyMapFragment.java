@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import es.nervion.maps.activity.R;
 import es.nervion.maps.activity.TabsActivity;
@@ -34,11 +36,18 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 
 	private MapListener mapLoadedListener;
 	private ArrayList<Marker> marcadores;
+	private ArrayList<Mensaje> mensajes;
 	private GoogleMap map;
 
 	private String[] opcionesMenu;
 	private DrawerLayout drawerLayout;
 	private ListView drawerList;
+	
+	
+	public MyMapFragment(){
+		marcadores = new ArrayList<Marker>();
+		mensajes = new ArrayList<Mensaje>();
+	}
 
 
 	@Override
@@ -47,7 +56,7 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 
 
 		View rootView = inflater.inflate(R.layout.fragment_my_map, container, false);
-
+		
 		map = ((MapFragment) getActivity().getFragmentManager()
 				.findFragmentById(R.id.map)).getMap();
 
@@ -112,12 +121,20 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
         drawerList.setAdapter(new MyDrawerListAdapter(getActivity(), R.layout.row_drawer_list, mensajes));
 		
 
-		marcadores = new ArrayList<Marker>();
-
 		getMyMap().setMyLocationEnabled(true);
 		getMyMap().setOnMapLoadedCallback(this);
 
-		mapLoadedListener.onMapFragmentLoaded();		
+		mapLoadedListener.onMapFragmentLoaded();
+		
+		if(marcadores.size()>0){
+			for(Marker m: marcadores){
+				getMyMap().addMarker(new MarkerOptions()
+				.position(new LatLng(m.getPosition().latitude, m.getPosition().longitude))
+				.title(m.getTitle())
+				.snippet(m.getSnippet()));
+			}
+		}
+		Log.d("MyMapFragment", "Tamanio Marcadores: "+marcadores.size());
         
 
 	}
@@ -191,6 +208,15 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 
 	public DrawerLayout getDrawerLayout(){
 		return drawerLayout;
+	}
+	
+	
+	public ArrayList<Marker> getMarcadores(){
+		return marcadores;
+	}
+	
+	public void setMarcadores(ArrayList<Marker> marcadores){
+		this.marcadores = marcadores;
 	}
 
 

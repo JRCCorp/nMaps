@@ -3,19 +3,29 @@ package es.nervion.maps.clase;
 import java.sql.Date;
 
 public class Mensaje {
-	
+
 	private static int numMensaje = 0;
 	private String nombre, mensaje;
 	private Date fecha;
-	
+
 	public Mensaje(){
-		
+
 		nombre = "Nombre "+numMensaje;
 		mensaje = "Mensaje "+numMensaje;
 		fecha = new Date(1991, 10, 10);
-		
+
 		numMensaje++;
-		
+
+	}
+
+	public Mensaje(String nombre, String mensaje, Date fecha){
+
+		this.nombre = nombre;
+		this.mensaje = mensaje;
+		this.fecha = fecha;
+
+		numMensaje++;
+
 	}
 
 	public static int getNumMensaje() {
@@ -49,8 +59,8 @@ public class Mensaje {
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
-	
-	
-	
+
+
+
 
 }
