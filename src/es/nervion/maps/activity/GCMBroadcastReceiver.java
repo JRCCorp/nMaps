@@ -1,5 +1,9 @@
 package es.nervion.maps.activity;
 
+import java.util.Date;
+
+import es.nervion.maps.adapter.MyDrawerListAdapter;
+import es.nervion.maps.clase.Mensaje;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,6 +15,7 @@ import android.util.Log;
 public class GCMBroadcastReceiver extends WakefulBroadcastReceiver
 {
 
+	
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
@@ -18,16 +23,16 @@ public class GCMBroadcastReceiver extends WakefulBroadcastReceiver
 
 		Bundle extras = intent.getExtras();
 
-//		if(this!=null){
-//			try{
-//				TabsActivity.this.getMyMapFragment().getMensajes().add(new Mensaje(extras.getString("nombre"), extras.getString("mensaje"), new Date()));
-//				MyDrawerListAdapter adapter = new MyDrawerListAdapter(TabsActivity.this, R.layout.fragment_my_map, TabsActivity.this.getMyMapFragment().getMensajes());
-//				TabsActivity.this.getMyMapFragment().getDrawerList().setAdapter(adapter);  
-//			}catch(Exception e){
-//				Log.d("GCMBroadcast", "Activity null");
-//			}
-//		}
-		
+		//		if(this!=null){
+		//			try{
+		//				TabsActivity.this.getMyMapFragment().getMensajes().add(new Mensaje(extras.getString("nombre"), extras.getString("mensaje"), new Date()));
+		//				MyDrawerListAdapter adapter = new MyDrawerListAdapter(TabsActivity.this, R.layout.fragment_my_map, TabsActivity.this.getMyMapFragment().getMensajes());
+		//				TabsActivity.this.getMyMapFragment().getDrawerList().setAdapter(adapter);  
+		//			}catch(Exception e){
+		//				Log.d("GCMBroadcast", "Activity null");
+		//			}
+		//		}
+
 
 
 		ComponentName comp =

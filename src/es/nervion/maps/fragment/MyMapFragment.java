@@ -113,10 +113,11 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
         drawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         drawerList = (ListView) getActivity().findViewById(R.id.right_drawer);
  
-        ArrayList<Mensaje> mensajes = new ArrayList<Mensaje>();
-        mensajes.add(new Mensaje());
-        mensajes.add(new Mensaje());
-        mensajes.add(new Mensaje());
+//        mensajes.add(new Mensaje());
+//        mensajes.add(new Mensaje());
+//        mensajes.add(new Mensaje());
+        
+        Log.d("MyMapFragment","Numero de mensajes: "+mensajes.size());
         
         drawerList.setAdapter(new MyDrawerListAdapter(getActivity(), R.layout.row_drawer_list, mensajes));
 		

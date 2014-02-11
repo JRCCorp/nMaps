@@ -40,7 +40,6 @@ public class GCMIntentService extends IntentService
 					mostrarNotification(extras.getString("msg"));
 				}
 			}
-
 			GCMBroadcastReceiver.completeWakefulIntent(intent);
 		}
 

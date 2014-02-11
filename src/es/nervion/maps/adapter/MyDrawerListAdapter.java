@@ -46,7 +46,7 @@ public class MyDrawerListAdapter extends ArrayAdapter<Mensaje> {
 		}
 		
 		holder.getNombre().setText(mensajes.get(position).getNombre());
-		holder.getFecha().setText(mensajes.get(position).getFecha().toLocaleString());
+		//holder.getFecha().setText(mensajes.get(position).getFecha().toLocaleString());
 		holder.getMensaje().setText(mensajes.get(position).getMensaje());
 
 		return row;

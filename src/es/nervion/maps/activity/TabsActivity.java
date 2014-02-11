@@ -9,10 +9,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Fragment;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -67,6 +70,8 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	public static final String PROPERTY_APP_VERSION = "appVersion";
 	public static final String PROPERTY_EXPIRATION_TIME = "onServerExpirationTimeMs";
 	public static final String PROPERTY_USER = "user";
+
+	private GCMBroadcastReceiver gcmReceiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +139,16 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		if(sp!=null){
 			sp.cancel(true);
 		}
+		if(gcmReceiver!=null){
+			Log.i("deactivate::","clicked");
+			Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
+			Log.i("intent::","created");
+			unregIntent.putExtra("app", PendingIntent.getBroadcast(getApplicationContext(), 0,
+					new Intent(), 0));
+			startService(unregIntent);
+			unregisterReceiver(gcmReceiver);
+			gcmReceiver = null;
+		}
 	}
 
 	@Override
@@ -141,6 +156,17 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		super.onResume();
 		checkPlayServices();
 		peticionPost();
+		if(gcmReceiver!=null){
+			Log.i("deactivate::","clicked");
+			Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
+			Log.i("intent::","created");
+			unregIntent.putExtra("app", PendingIntent.getBroadcast(getApplicationContext(), 0,
+					new Intent(), 0));
+			startService(unregIntent);
+			unregisterReceiver(gcmReceiver);
+			gcmReceiver = null;
+		}
+		registrarGCMReceiver();
 	}
 
 	public void peticionPost(){
@@ -474,9 +500,50 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	}
 
 
+	public void registrarGCMReceiver(){		
+		SharedPreferences prefs = getSharedPreferences(
+				TabsActivity.class.getSimpleName(),
+				Context.MODE_PRIVATE);
+
+		String registrationId = prefs.getString(PROPERTY_REG_ID, "");
+		Intent regIntent = new Intent("com.google.android.c2dm.intent.REGISTRATION");
+		Log.i("intent::","created");
+		regIntent.putExtra("app", PendingIntent.getBroadcast(this, 0,
+				new Intent(), 0));
+		regIntent.putExtra("sender", registrationId);
+		startService(regIntent);
+
+		IntentFilter intentF = new IntentFilter();
+		intentF.addAction("com.google.android.c2dm.intent.RECEIVE");
+		intentF.addAction("com.google.android.c2dm.intent.REGISTRATION");
+		intentF.addCategory("es.nervion.maps");
+		gcmReceiver = new GCMBroadcastReceiver() {
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if(context instanceof TabsActivity){
+					TabsActivity activity = (TabsActivity) context;
+					if(activity.getMyMapFragment()!=null && activity.getMyMapFragment().getDrawerList()!=null){
+						Bundle extras = intent.getExtras();
+						Mensaje mensaje = new Mensaje(extras.getString("nombre"), extras.getString("mensaje"), new Date());
+						if(extras.getString("mensaje")!=null && !extras.getString("mensaje").equals("")){
+							activity.getMyMapFragment().getMensajes().add(mensaje);
+							MyDrawerListAdapter adapter = new MyDrawerListAdapter(activity, R.layout.fragment_my_map, myMapFragment.getMensajes());
+							activity.getMyMapFragment().getDrawerList().setAdapter(adapter);
+						}					
+						System.out.println("TAMAÑOOOOOOOOOOOOOOOOOOOOOOOOOOOOO: "+activity.getMyMapFragment().getMensajes().size());
+					}
+				}
+
+			}
+		};
+		registerReceiver(gcmReceiver, intentF);
+	}
 
 
-	
+
+
+
 
 
 }
