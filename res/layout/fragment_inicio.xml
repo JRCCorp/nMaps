@@ -73,11 +73,11 @@
                 android:text="Servidor" />
 
             <ImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/imgEstadoServidor"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
-                android:src="@drawable/estado_onoff" />
+                 />
         </LinearLayout>
 
     </RelativeLayout>

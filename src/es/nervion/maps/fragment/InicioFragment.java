@@ -1,5 +1,15 @@
 package es.nervion.maps.fragment;
 
+import java.io.IOException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
@@ -16,10 +26,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import es.nervion.maps.activity.R;
@@ -45,7 +54,9 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 	private float[] matrixValues;
 
 	private MenuItem actualizarServidor;
-	
+	private ImageView imgEstadoServidor;
+
+
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -65,11 +76,11 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 
 		((TabsActivity) getActivity() ).getViewPager().setCurrentItem(1);
 
-
+		new SyncData().execute();
 		canvas = new BrujulaCanvas(this.getActivity());
 		lyBrujula = (LinearLayout) this.getActivity().findViewById(R.id.layoutBrujula);
 		lyBrujula.addView(canvas);
-
+		imgEstadoServidor = (ImageView) this.getActivity().findViewById(R.id.imgEstadoServidor);
 		manejaSensor = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
 		sensorAccelerometer = manejaSensor.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		sensorMagneticField = manejaSensor.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -93,21 +104,6 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		matrixI = new float[9];
 		matrixValues = new float[3];
 
-		//imgCarga = (ImageView) this.getActivity().findViewById(R.id.imgCarga);
-		//		Animation escala = AnimationUtils.loadAnimation(getActivity(), R.drawable.prueba_imagen_carga);
-		//		imgCarga.startAnimation(escala);
-
-		//		AnimationDrawable animacionCarga;
-		//Animation giraAumenta = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_aumenta_imagen);
-		//		imgCarga.setBackgroundResource(R.anim.cambio_imagen_carga);
-		//		animacionCarga = (AnimationDrawable) imgCarga.getBackground();
-		//		animacionCarga.start();
-		//imgCarga.setAnimation(giraAumenta);
-		//		brujula = (ImageButton) this.getActivity().findViewById(R.id.brujula);
-		//		brujula.setOnClickListener(this);
-		//		Animation gira = AnimationUtils.loadAnimation(getActivity(), R.drawable.gira_imagen);
-		//		brujula.setAnimation(gira);
-
 		btnServicios = (Button) getActivity().findViewById(R.id.btnServicioMaestro);
 		btnServicios.setOnClickListener(this);
 
@@ -116,12 +112,12 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 
 
 	public void   onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.inicio, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-   }
-	
-	
+		menu.clear();
+		inflater.inflate(R.menu.inicio, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -221,8 +217,12 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		}
 
 	}
-	
-	private class SyncData extends AsyncTask<String, Void, String> {
+
+	private class SyncData extends AsyncTask<String, Void, Boolean> {
+
+		private String url = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?";
+
+
 		@SuppressLint("NewApi")
 		@Override
 		protected void onPreExecute() {
@@ -231,20 +231,44 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		}
 
 		@Override
-		protected String doInBackground(String... params) {
+		protected Boolean doInBackground(String... params) {
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpResponse response;
+			Boolean resultado = false;
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(1500);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				// TODO Auto-generated catch block
+
 			}
-			return null;
+
+			try {
+				response = httpclient.execute(new HttpGet(url));
+				StatusLine statusLine = response.getStatusLine();
+				if(statusLine.getStatusCode() == HttpStatus.SC_OK){	                
+					resultado = true;
+				} else{
+					//Closes the connection.
+					response.getEntity().getContent().close();
+					throw new IOException(statusLine.getReasonPhrase());
+				}
+			} catch (ClientProtocolException e) {
+				Log.d("AsyncDoIn", e.getMessage());
+			} catch (IOException e) {
+				Log.d("AsyncDoIn", e.getMessage());
+			}
+
+			return resultado;
 		}
 
 		@SuppressLint("NewApi")
 		@Override
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(Boolean result) {
 			actualizarServidor.collapseActionView();
 			actualizarServidor.setActionView(null);
+			if (result){
+				imgEstadoServidor.setImageResource(R.drawable.estado_on);
+			}
 		}
 	};
 
