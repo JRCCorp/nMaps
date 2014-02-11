@@ -76,7 +76,6 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 
 		((TabsActivity) getActivity() ).getViewPager().setCurrentItem(1);
 
-		new SyncData().execute();
 		canvas = new BrujulaCanvas(this.getActivity());
 		lyBrujula = (LinearLayout) this.getActivity().findViewById(R.id.layoutBrujula);
 		lyBrujula.addView(canvas);
