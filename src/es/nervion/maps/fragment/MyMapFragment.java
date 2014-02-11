@@ -168,14 +168,14 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 		if (location != null) {
 			myLocation = new LatLng(location.getLatitude(),
 					location.getLongitude());
-			getMyMap().animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,  12.0f));
+			getMyMap().animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation,  14.0f));
 
 			getMyMap().setMapType(GoogleMap.MAP_TYPE_HYBRID);
 		}
 
 		mapLoadedListener.onMapLoaded(this.getMyMap());
 		
-		drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		//drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		//drawerLayout.openDrawer(Gravity.END);
 
 	}

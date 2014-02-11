@@ -527,14 +527,20 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 						Bundle extras = intent.getExtras();
 						Mensaje mensaje = new Mensaje(extras.getString("nombre"), extras.getString("mensaje"), new Date());
 						if(extras.getString("mensaje")!=null && !extras.getString("mensaje").equals("")){
-							activity.getMyMapFragment().getMensajes().add(mensaje);
+							activity.getMyMapFragment().getMensajes().add(0, mensaje);
 							MyDrawerListAdapter adapter = new MyDrawerListAdapter(activity, R.layout.fragment_my_map, myMapFragment.getMensajes());
 							activity.getMyMapFragment().getDrawerList().setAdapter(adapter);
-						}					
-						System.out.println("TAMAÑOOOOOOOOOOOOOOOOOOOOOOOOOOOOO: "+activity.getMyMapFragment().getMensajes().size());
+						}
 					}
 				}
+				ComponentName comp =
+						new ComponentName(context.getPackageName(),
+								GCMIntentService.class.getName());
 
+				startWakefulService(context, (intent.setComponent(comp)));
+
+				setResultCode(Activity.RESULT_OK);
+				System.out.println("LLEGA MENSAJE");
 			}
 		};
 		registerReceiver(gcmReceiver, intentF);
