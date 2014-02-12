@@ -23,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import es.nervion.maps.activity.R;
@@ -34,10 +35,7 @@ public class InicioFragment extends Fragment{
 	private InicioListener inicioLoadedListener;
 	private MenuItem actualizarServidor;
 	private ImageView imgEstadoServidor;
-	
-	private ImageButton btnSwitch;
-	private boolean activo = true;
-	private MediaPlayer mp;
+	private WebView webview;
 
 
 
@@ -58,40 +56,8 @@ public class InicioFragment extends Fragment{
 		setRetainInstance(true);
 		((TabsActivity) getActivity() ).getViewPager().setCurrentItem(1);
 		//imgEstadoServidor = (ImageView) this.getActivity().findViewById(R.id.imgEstadoServidor);
-		btnSwitch = (ImageButton) this.getActivity().findViewById(R.id.btnSwitch);
-		
-		btnSwitch.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (activo) {
-					playSound();
-					activo = false;
-					btnSwitch.setImageResource(R.drawable.btn_switch_on);
-				} else {
-					playSound();
-					activo = true;
-					btnSwitch.setImageResource(R.drawable.btn_switch_off);
-				}
-			}
-		});
-	}
-
-	private void playSound(){
-		if(activo){
-			mp = MediaPlayer.create(getActivity(), R.raw.light_switch_off);
-		}else{
-			mp = MediaPlayer.create(getActivity(), R.raw.light_switch_on);
-		}
-		mp.setOnCompletionListener(new OnCompletionListener() {
-
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                // TODO Auto-generated method stub
-                mp.release();
-            }
-        }); 
-		mp.start();
+		webview = (WebView) this.getActivity().findViewById(R.id.webview);
+		webview.loadUrl("http://wmap.herobo.com");
 	}
 
 	public void   onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
