@@ -32,6 +32,7 @@
                 android:id="@+id/imgEstadoServidor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@drawable/estado_onoff"
                 android:layout_marginLeft="5dp" />
         </LinearLayout>
 

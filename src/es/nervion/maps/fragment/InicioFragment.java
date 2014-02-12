@@ -108,9 +108,9 @@ public class InicioFragment extends Fragment{
 		protected Boolean doInBackground(String... params) {
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpResponse response;
-			Boolean resultado = false;
+			Boolean resultado = false; // 0: ROJO, 1: VERDE, 2: AMARILLO
 			try {
-				Thread.sleep(1500);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 
@@ -121,6 +121,10 @@ public class InicioFragment extends Fragment{
 				StatusLine statusLine = response.getStatusLine();
 				if(statusLine.getStatusCode() == HttpStatus.SC_OK){	                
 					resultado = true;
+				}else if(statusLine.getStatusCode() == HttpStatus.SC_BAD_REQUEST ){	   
+					resultado = false;
+				}else if(statusLine.getStatusCode() == HttpStatus.SC_MULTIPLE_CHOICES || statusLine.getStatusCode() == HttpStatus.SC_INTERNAL_SERVER_ERROR){	   
+					resultado = false;
 				} else{
 					//Closes the connection.
 					response.getEntity().getContent().close();
@@ -136,12 +140,14 @@ public class InicioFragment extends Fragment{
 		}
 
 		@SuppressLint("NewApi")
-		@Override
 		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
 			actualizarServidor.collapseActionView();
 			actualizarServidor.setActionView(null);
 			if (result){
 				imgEstadoServidor.setImageResource(R.drawable.estado_on);
+			}else{
+				imgEstadoServidor.setImageResource(R.drawable.estado_off);
 			}
 		}
 	};
