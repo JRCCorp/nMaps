@@ -12,11 +12,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,33 +21,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 import es.nervion.maps.activity.R;
 import es.nervion.maps.activity.TabsActivity;
-import es.nervion.maps.canvas.BrujulaCanvas;
 import es.nervion.maps.listener.InicioListener;
 
-public class InicioFragment extends Fragment implements View.OnClickListener{
+public class InicioFragment extends Fragment{
 
-	private ImageButton brujula;
-	private static SensorManager manejaSensor;
-	private BrujulaCanvas canvas;
-	private Sensor sensorAccelerometer;
-	private Sensor sensorMagneticField;
-	private LinearLayout lyBrujula;
 	private InicioListener inicioLoadedListener;
-	private Button btnServicios;
-	private float[] valuesAccelerometer;
-	private float[] valuesMagneticField;
-
-	private float[] matrixR;
-	private float[] matrixI;
-	private float[] matrixValues;
-
 	private MenuItem actualizarServidor;
 	private ImageView imgEstadoServidor;
 
@@ -73,39 +49,8 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
-
 		((TabsActivity) getActivity() ).getViewPager().setCurrentItem(1);
-
-		canvas = new BrujulaCanvas(this.getActivity());
-		lyBrujula = (LinearLayout) this.getActivity().findViewById(R.id.layoutBrujula);
-		lyBrujula.addView(canvas);
 		imgEstadoServidor = (ImageView) this.getActivity().findViewById(R.id.imgEstadoServidor);
-		manejaSensor = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
-		sensorAccelerometer = manejaSensor.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		sensorMagneticField = manejaSensor.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-		if (sensorAccelerometer != null) {
-			manejaSensor.registerListener(mSensor, sensorAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-		} else {
-			Toast.makeText(this.getActivity(), "Sensor no reconocido", Toast.LENGTH_LONG).show();
-			//getActivity().finish();
-		}
-		if(sensorMagneticField != null){
-			manejaSensor.registerListener(mSensor, sensorMagneticField, SensorManager.SENSOR_DELAY_NORMAL);
-		}else{
-			Toast.makeText(this.getActivity(), "Sensor no reconocido", Toast.LENGTH_LONG).show();
-			//getActivity().finish();
-		}
-
-		valuesAccelerometer = new float[3];
-		valuesMagneticField = new float[3];
-
-		matrixR = new float[9];
-		matrixI = new float[9];
-		matrixValues = new float[3];
-
-		btnServicios = (Button) getActivity().findViewById(R.id.btnServicioMaestro);
-		btnServicios.setOnClickListener(this);
-
 	}
 
 
@@ -129,61 +74,6 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		}
 	}
 
-
-
-	private SensorEventListener mSensor = new SensorEventListener() {
-
-		@Override
-		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		}
-
-		@Override
-		public void onSensorChanged(SensorEvent event) {
-			switch(event.sensor.getType()){
-			case Sensor.TYPE_ACCELEROMETER:
-				for(int i =0; i < 3; i++){
-					valuesAccelerometer[i] = event.values[i];
-				}
-				break;
-			case Sensor.TYPE_MAGNETIC_FIELD:
-				for(int i =0; i < 3; i++){
-					valuesMagneticField[i] = event.values[i];
-				}
-				break;
-			}
-
-			boolean success = SensorManager.getRotationMatrix(
-					matrixR,
-					matrixI,
-					valuesAccelerometer,
-					valuesMagneticField);
-
-			if(success){
-				SensorManager.getOrientation(matrixR, matrixValues);
-
-				double azimuth = Math.toDegrees(matrixValues[0]);
-				double pitch = Math.toDegrees(matrixValues[1]);
-				double roll = Math.toDegrees(matrixValues[2]);
-
-				//		   readingAzimuth.setText("Azimuth: " + String.valueOf(azimuth));
-				//		   readingPitch.setText("Pitch: " + String.valueOf(pitch));
-				//		   readingRoll.setText("Roll: " + String.valueOf(roll));
-				canvas.updateData(matrixValues[0]);
-			}
-		}
-
-
-	};
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		if (sensorAccelerometer != null || sensorMagneticField != null) {
-			manejaSensor.unregisterListener(mSensor);
-		}
-	}
-
-
 	public void onMyDestroy(){
 		if(getActivity()!=null){
 
@@ -201,21 +91,6 @@ public class InicioFragment extends Fragment implements View.OnClickListener{
 		inicioLoadedListener = ill;
 	}
 
-	@Override
-	public void onClick(View v) {
-
-		switch (v.getId()) {
-		//		case R.id.brujula:
-		//			inicioLoadedListener.onInicioClick(brujula);
-		//			break;
-		case R.id.btnServicioMaestro:
-			inicioLoadedListener.onInicioClick(btnServicios);
-			break;
-		default:
-			break;
-		}
-
-	}
 
 	private class SyncData extends AsyncTask<String, Void, Boolean> {
 

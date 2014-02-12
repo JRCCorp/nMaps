@@ -14,56 +14,12 @@
         android:layout_marginTop="75dp"
         android:background="@drawable/bordes_rectos" >
 
-        <TextView
-            android:id="@+id/lblServicioMaestro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/btnServicioMaestro"
-            android:layout_centerHorizontal="true"
-            android:text="@string/lblServicioMaestro" />
-
-        <!--
-              <ImageButton
-            android:id="@+id/brujula"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/lblServicioMaestro"
-            android:layout_centerHorizontal="true"
-            android:background="@android:color/transparent"
-            android:layout_marginBottom="36dp"
-            android:src="@drawable/bruju" />
-        -->
-
-        <LinearLayout
-            android:id="@+id/layoutBrujula"
-            android:layout_width="wrap_content"
-            android:layout_height="120dp"
-            android:layout_above="@+id/lblServicioMaestro"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/brujula"
-            android:orientation="vertical" >
-        </LinearLayout>
-
-        <ToggleButton
-            android:id="@+id/btnServicioMaestro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="15dp"
-            android:background="@color/aguamarinaO"
-            android:padding="8dp"
-            android:textColor="@color/blanco"
-            android:textOff="@string/btnMaestroOFF"
-            android:textOn="@string/btnMaestroON" />
-
         <LinearLayout
             android:id="@+id/relativeLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/layoutBrujula"
+            android:layout_marginTop="120dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="122dp"
             android:orientation="horizontal" >
 
             <TextView
@@ -75,13 +31,12 @@
             <ImageView
                 android:id="@+id/imgEstadoServidor"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                 />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp" />
         </LinearLayout>
 
     </RelativeLayout>
-
+    
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
