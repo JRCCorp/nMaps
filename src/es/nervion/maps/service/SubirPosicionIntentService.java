@@ -249,10 +249,12 @@ public class SubirPosicionIntentService extends Service {
 				WifiManager manager = (WifiManager) SubirPosicionIntentService.this.getSystemService(Context.WIFI_SERVICE);
 				WifiInfo info = manager.getConnectionInfo();
 				String macAddress = Uri.encode(info.getMacAddress());
-				String fecha = Uri.encode(new SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(new Date()));
+				String fecha = Uri.encode(new SimpleDateFormat("yy/MM/dd HH:mm:ss", Locale.getDefault()).format(new Date()));
 				String url = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress+"&latitud="+latitud+"&longitud="+longitud+"&radio="+radio+"&fecha="+fecha+"&nombre="+nombre+"&mensaje="+mensaje+"&guardar=1";
+				Log.i("SubirPosiciones", url);
 				if(guardarPosicion(url)){
 					Log.d("Posicion Servicio", "Posicion guardada");
+					Log.i("SubirPosiciones", url);
 				}else{
 					Log.d("Posicion Servicio", "Posicion NO guardada");
 				}

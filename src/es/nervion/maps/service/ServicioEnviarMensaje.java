@@ -40,6 +40,7 @@ public class ServicioEnviarMensaje extends AsyncTask<Mensaje, Boolean, Boolean> 
 		boolean res = false;
 		try {
 			String url = "http://wmap.herobo.com/wmap/registro-test.php?id_usuario="+codigo+"&radio="+radio+"&nombre="+nombre+"&mensaje="+mensaje;
+			Log.d("_ ServicioEnviarMensaje", url);
 			response = httpclient.execute(new HttpGet(url));
 			StatusLine statusLine = response.getStatusLine();
 			if(statusLine.getStatusCode() == HttpStatus.SC_OK){	                

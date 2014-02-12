@@ -31,6 +31,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.content.BroadcastReceiver;
+import android.support.v4.content.WakefulBroadcastReceiver;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.common.ConnectionResult;
@@ -84,7 +86,6 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 		crearMapFragment();
 
-
 		ArrayList<Fragment> fragments = new ArrayList<Fragment>();
 		fragments.add(preferenciasFragment);
 		fragments.add(inicioFragment);		
@@ -101,7 +102,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 		mViewPager.setOnPageChangeListener(this);
 
-		servicioGuardarPosicion();
+		//servicioGuardarPosicion();
 
 		sp = (ServicioPosiciones) this.getLastNonConfigurationInstance();
 
@@ -109,6 +110,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		
 		GCMRegistrar.checkDevice(this);
 		GCMRegistrar.register(this, "834884443249");
+		
         servicioGuardarPosicion();
 	}
 
@@ -217,7 +219,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 	public String recuperarPreferenciaString(String campo){
 		SharedPreferences prefs = getSharedPreferences("es.nervion.maps.activity_preferences", Context.MODE_PRIVATE);
-		return String.valueOf(prefs.getString("pref_"+campo, ""));
+		return String.valueOf(prefs.getString("pref_"+campo, "wmaps"));
 	}
 
 	public int recuperarPreferenciaInteger(String campo){

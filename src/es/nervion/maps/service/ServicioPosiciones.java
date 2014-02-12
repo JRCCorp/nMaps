@@ -145,8 +145,6 @@ public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
 
 	private void obtenerNuevaLocalizacion(){
 		try{
-
-
 			Location location = mmf.getMyMap().getMyLocation();
 			String latitud = Uri.encode(location.getLatitude()+"");
 			String longitud = Uri.encode(location.getLongitude()+"");
@@ -162,6 +160,7 @@ public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
 			String fecha = Uri.encode(new SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(new Date()));
 
 			url = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?id_usuario="+macAddress+"&latitud="+latitud+"&longitud="+longitud+"&radio="+radio+"&fecha="+fecha+"&nombre="+nombre+"&mensaje="+mensaje+"&guardar=1&obtener=1";
+			Log.d("_ ServicioPosiciones", url);
 		}catch(Exception e){
 			Log.d("ServicioPosiciones", "mapa no cargado");
 			ServicioPosiciones.this.cancel(true);
