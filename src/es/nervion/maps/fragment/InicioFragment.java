@@ -12,6 +12,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import es.nervion.maps.activity.R;
 import es.nervion.maps.activity.TabsActivity;
@@ -31,6 +34,10 @@ public class InicioFragment extends Fragment{
 	private InicioListener inicioLoadedListener;
 	private MenuItem actualizarServidor;
 	private ImageView imgEstadoServidor;
+	
+	private ImageButton btnSwitch;
+	private boolean activo = true;
+	private MediaPlayer mp;
 
 
 
@@ -50,10 +57,42 @@ public class InicioFragment extends Fragment{
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
 		((TabsActivity) getActivity() ).getViewPager().setCurrentItem(1);
-		imgEstadoServidor = (ImageView) this.getActivity().findViewById(R.id.imgEstadoServidor);
+		//imgEstadoServidor = (ImageView) this.getActivity().findViewById(R.id.imgEstadoServidor);
+		btnSwitch = (ImageButton) this.getActivity().findViewById(R.id.btnSwitch);
+		
+		btnSwitch.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (activo) {
+					playSound();
+					activo = false;
+					btnSwitch.setImageResource(R.drawable.btn_switch_on);
+				} else {
+					playSound();
+					activo = true;
+					btnSwitch.setImageResource(R.drawable.btn_switch_off);
+				}
+			}
+		});
 	}
 
+	private void playSound(){
+		if(activo){
+			mp = MediaPlayer.create(getActivity(), R.raw.light_switch_off);
+		}else{
+			mp = MediaPlayer.create(getActivity(), R.raw.light_switch_on);
+		}
+		mp.setOnCompletionListener(new OnCompletionListener() {
 
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                // TODO Auto-generated method stub
+                mp.release();
+            }
+        }); 
+		mp.start();
+	}
 
 	public void   onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		menu.clear();
