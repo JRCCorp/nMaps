@@ -528,6 +528,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 					TabsActivity activity = (TabsActivity) context;
 					if(activity.getMyMapFragment()!=null && activity.getMyMapFragment().getDrawerList()!=null){
 						Bundle extras = intent.getExtras();
+						SimpleDateFormat dtf = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
 						Mensaje mensaje = new Mensaje(extras.getString("nombre"), extras.getString("mensaje"), new Date());
 						if(extras.getString("mensaje")!=null && !extras.getString("mensaje").equals("")){
 							activity.getMyMapFragment().getMensajes().add(0, mensaje);
