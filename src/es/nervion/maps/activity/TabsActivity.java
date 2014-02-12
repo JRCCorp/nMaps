@@ -111,6 +111,8 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		
 		GCMRegistrar.checkDevice(this);
 		GCMRegistrar.register(this, "834884443249");
+		
+		servicioGuardarPosicion();
 
 	}
 
@@ -190,7 +192,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 
 	public void servicioGuardarPosicion(){
-		if(recuperarPreferenciaBoolean("servicio1") && !recuperarPreferenciaBoolean("servicioActivo")){
+		if(recuperarPreferenciaBoolean("servicio1") && (!recuperarPreferenciaBoolean("servicioActivo")|| sp==null)){
 			Log.d("TabsActivity", "Activar servicio");
 			SharedPreferences sp = this.getSharedPreferences("es.nervion.maps.activity_preferences", Context.MODE_PRIVATE);
 			SharedPreferences.Editor spe = sp.edit();
