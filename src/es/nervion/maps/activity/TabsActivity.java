@@ -10,7 +10,6 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Fragment;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,7 +25,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.content.WakefulBroadcastReceiver;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
@@ -111,9 +109,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		
 		GCMRegistrar.checkDevice(this);
 		GCMRegistrar.register(this, "834884443249");
-		
-		servicioGuardarPosicion();
-
+        servicioGuardarPosicion();
 	}
 
 	@Override
@@ -192,7 +188,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 
 	public void servicioGuardarPosicion(){
-		if(recuperarPreferenciaBoolean("servicio1") && (!recuperarPreferenciaBoolean("servicioActivo")|| sp==null)){
+        if(recuperarPreferenciaBoolean("servicio1") && (!recuperarPreferenciaBoolean("servicioActivo")|| sp==null)){
 			Log.d("TabsActivity", "Activar servicio");
 			SharedPreferences sp = this.getSharedPreferences("es.nervion.maps.activity_preferences", Context.MODE_PRIVATE);
 			SharedPreferences.Editor spe = sp.edit();
@@ -220,12 +216,12 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 
 	public String recuperarPreferenciaString(String campo){
-		SharedPreferences prefs = getSharedPreferences("es.nervion.maps.activity_preferences",Context.MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences("es.nervion.maps.activity_preferences", Context.MODE_PRIVATE);
 		return String.valueOf(prefs.getString("pref_"+campo, ""));
 	}
 
 	public int recuperarPreferenciaInteger(String campo){
-		SharedPreferences prefs = getSharedPreferences("es.nervion.maps.activity_preferences",Context.MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences("es.nervion.maps.activity_preferences", Context.MODE_PRIVATE);
 		return prefs.getInt("pref_"+campo, 500);
 	}
 

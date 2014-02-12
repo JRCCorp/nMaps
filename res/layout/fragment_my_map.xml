@@ -18,12 +18,12 @@
             android:layout_height="match_parent"
             class="com.google.android.gms.maps.MapFragment" />
 
-        <ListView
+        <ListView      
             android:id="@+id/right_drawer"
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:background="#111"
+            android:background="@color/gris"
             android:choiceMode="singleChoice"
             android:divider="@android:color/transparent" />
     </android.support.v4.widget.DrawerLayout>

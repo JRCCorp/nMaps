@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_marginLeft="20dp"
-            android:textColor="#FF0000" />
+            android:textColor="#52736B" />
 
         <TextView
             android:id="@+id/txtFechaDrawerList"

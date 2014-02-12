@@ -48,10 +48,8 @@ public class TareaRegistroGCM extends AsyncTask<String,Integer,String>
 	protected String doInBackground(String... params)
 	{
 		String msg = "";
-
 		try
 		{
-
 			GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(activity);
 			//Nos registramos en los servidores de GCM
 			String regid = gcm.register("834884443249");

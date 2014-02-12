@@ -252,27 +252,21 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback, View
 		switch (v.getId()) {
 		case R.id.btnChat:			
 			
-			String men = etxtChat.getText().toString();
+			String sMensaje = etxtChat.getText().toString();
 			
-			Log.d("MyMapFragment","OnClickChat: "+men);
+			Log.d("MyMapFragment","OnClickChat: "+sMensaje);
 			
-			if(!men.equals("")){
-				SharedPreferences sp = getActivity().getPreferences(Context.MODE_PRIVATE);
-				
+			if(!sMensaje.equals("")){
 				WifiManager manager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
 				WifiInfo info = manager.getConnectionInfo();
 				String codigo = Uri.encode(info.getMacAddress());
-				
-				int radio = sp.getInt("pref_radio", 500);
-				
-				Mensaje mensaje = new Mensaje(sp.getString("pref_nombre", "usuario"), men, new Date());
+				int radio = recuperarPreferenciaInteger("radio");
+				String nombre = recuperarPreferenciaString("nombre");
+				Mensaje mensaje = new Mensaje(nombre, sMensaje, new Date());
 				enviarMensajeChat(codigo, radio, mensaje);
-				
 				etxtChat.setText("");
 			}
-			
-			
-			
+
 			break;
 
 		default:
@@ -282,13 +276,20 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback, View
 	}
 	
 	
-	public void enviarMensajeChat(String codigo, int radio, Mensaje m){
-		
+	public void enviarMensajeChat(String codigo, int radio, Mensaje m){		
 		ServicioEnviarMensaje sem = new ServicioEnviarMensaje(codigo, radio);
-		sem.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, m);
-		
+		sem.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, m);	
 	}
 	
+	public String recuperarPreferenciaString(String campo){
+		SharedPreferences prefs = this.getActivity().getSharedPreferences("es.nervion.maps.activity_preferences",Context.MODE_PRIVATE);
+		return String.valueOf(prefs.getString("pref_"+campo, "Anónimo"));
+	}
+
+	public int recuperarPreferenciaInteger(String campo){
+		SharedPreferences prefs = this.getActivity().getSharedPreferences("es.nervion.maps.activity_preferences",Context.MODE_PRIVATE);
+		return prefs.getInt("pref_"+campo, 500);
+	}
 
 
 

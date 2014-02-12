@@ -3,9 +3,9 @@
 
     <color name="blanco">#fff</color>
     <color name="negro">#000</color>
+    <color name="gris">#212121</color>
     
     <color name="fondoGris">#363942</color> 
-   
     <color name="azulDefecto">#33b5e5</color>
     <color name="verdeRadar">#5C832F</color>
     <color name="aguamarinaO">#52736B</color>
