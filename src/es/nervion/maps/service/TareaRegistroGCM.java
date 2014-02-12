@@ -140,7 +140,7 @@ public class TareaRegistroGCM extends AsyncTask<String,Integer,String>
 		editor.putString(TabsActivity.PROPERTY_USER, user);
 		editor.putString(TabsActivity.PROPERTY_REG_ID, regId);
 		editor.putInt(TabsActivity.PROPERTY_APP_VERSION, appVersion);
-		editor.putLong(TabsActivity.PROPERTY_EXPIRATION_TIME, System.currentTimeMillis() + 600000);
+		editor.putLong(TabsActivity.PROPERTY_EXPIRATION_TIME, System.currentTimeMillis() + 60000);
 
 		editor.commit();
 	}

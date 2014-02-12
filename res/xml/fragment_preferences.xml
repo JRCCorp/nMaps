@@ -15,7 +15,7 @@
             android:defaultValue="120"
             android:entries="@array/listaRefresco"
             android:entryValues="@array/valorRefresco"
-            android:key="listPref"
+            android:key="pref_refresco"
             android:title="Configurar tiempo de refresco" />
         <SwitchPreference
             android:defaultValue="true"

@@ -108,6 +108,9 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		sp = (ServicioPosiciones) this.getLastNonConfigurationInstance();
 
 		registroGCM();
+		
+		GCMRegistrar.checkDevice(this);
+		GCMRegistrar.register(this, "834884443249");
 
 	}
 
@@ -196,7 +199,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 			Intent msgIntent = new Intent(this, SubirPosicionIntentService.class);
 			msgIntent.setAction(SubirPosicionIntentService.BROADCAST_ACTION);
 			msgIntent.putExtra("vivo", true);
-			msgIntent.putExtra("refresco", 120000);
+			msgIntent.putExtra("refresco", 30000);
 			msgIntent.putExtra("nombre", recuperarPreferenciaString("nombre"));
 			msgIntent.putExtra("estado", recuperarPreferenciaString("estado"));
 			msgIntent.putExtra("radio", recuperarPreferenciaInteger("radio"));

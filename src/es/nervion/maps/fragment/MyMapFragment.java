@@ -1,9 +1,16 @@
 package es.nervion.maps.fragment;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
+import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -14,6 +21,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.android.gms.internal.dr;
@@ -30,9 +39,13 @@ import es.nervion.maps.activity.TabsActivity;
 import es.nervion.maps.adapter.MyDrawerListAdapter;
 import es.nervion.maps.clase.Mensaje;
 import es.nervion.maps.listener.MapListener;
+import es.nervion.maps.service.ServicioEnviarMensaje;
+
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 
-public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
+public class MyMapFragment extends Fragment implements OnMapLoadedCallback, View.OnClickListener{
 
 	private MapListener mapLoadedListener;
 	private ArrayList<Marker> marcadores;
@@ -42,6 +55,9 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 	private String[] opcionesMenu;
 	private DrawerLayout drawerLayout;
 	private ListView drawerList;
+	
+	private EditText etxtChat;
+	private Button btnChat;
 	
 	
 	public MyMapFragment(){
@@ -81,8 +97,7 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 		if(((TabsActivity) getActivity()).getServicioPosiciones()!=null){
 			((TabsActivity) getActivity()).getServicioPosiciones().cancel(true);
 		}
-
-
+		
 	}
 
 
@@ -136,7 +151,12 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 			}
 		}
 		Log.d("MyMapFragment", "Tamanio Marcadores: "+marcadores.size());
-        
+		
+		
+		etxtChat = (EditText) getActivity().findViewById(R.id.etxtChat);
+		
+		btnChat = (Button) getActivity().findViewById(R.id.btnChat);
+		btnChat.setOnClickListener(this);
 
 	}
 	
@@ -145,14 +165,19 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case R.id.action_chat:
-	    	if(this.getDrawerLayout().isDrawerOpen(Gravity.END)){
-	    		this.getDrawerLayout().closeDrawer(Gravity.END);
+	    	if(this.drawerLayout.isDrawerOpen(Gravity.END)){
+	    		this.drawerLayout.closeDrawer(Gravity.END);
 			}else{
-				this.getDrawerLayout().openDrawer(Gravity.END);
+				this.drawerLayout.openDrawer(Gravity.END);
 			}
 	    	break;
 	    }
 	    return true;
+	}
+	
+	
+	public void onPause(){
+		super.onPause();
 	}
 	
 	
@@ -207,10 +232,6 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 	}
 
 
-	public DrawerLayout getDrawerLayout(){
-		return drawerLayout;
-	}
-	
 	public ListView getDrawerList(){
 		return drawerList;
 	}
@@ -220,12 +241,52 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback {
 		return marcadores;
 	}
 	
-	public void setMarcadores(ArrayList<Marker> marcadores){
-		this.marcadores = marcadores;
-	}
-	
 	public ArrayList<Mensaje> getMensajes(){
 		return mensajes;
+	}
+
+
+	@Override
+	public void onClick(View v) {
+
+		switch (v.getId()) {
+		case R.id.btnChat:			
+			
+			String men = etxtChat.getText().toString();
+			
+			Log.d("MyMapFragment","OnClickChat: "+men);
+			
+			if(!men.equals("")){
+				SharedPreferences sp = getActivity().getPreferences(Context.MODE_PRIVATE);
+				
+				WifiManager manager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
+				WifiInfo info = manager.getConnectionInfo();
+				String codigo = Uri.encode(info.getMacAddress());
+				
+				int radio = sp.getInt("pref_radio", 500);
+				
+				Mensaje mensaje = new Mensaje(sp.getString("pref_nombre", "usuario"), men, new Date());
+				enviarMensajeChat(codigo, radio, mensaje);
+				
+				etxtChat.setText("");
+			}
+			
+			
+			
+			break;
+
+		default:
+			break;
+		}
+		
+	}
+	
+	
+	public void enviarMensajeChat(String codigo, int radio, Mensaje m){
+		
+		ServicioEnviarMensaje sem = new ServicioEnviarMensaje(codigo, radio);
+		sem.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, m);
+		
 	}
 	
 

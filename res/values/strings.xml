@@ -18,7 +18,7 @@
     <!-- MAPA -->
     <string name="action_chat">Chat</string>
     <!-- SERVICIO -->
-     <string name="lblServicioPrueba">Prueba label servicio</string>
+     <string name="lblServicioPrueba">WorstMap - Posicionamiento</string>
     <string name="lblServicioIniciado">Posicionamiento activado</string>
     <!-- PREFERENCIAS -->
     <string name="tituloPreferenciaNombre">Usuario</string>
