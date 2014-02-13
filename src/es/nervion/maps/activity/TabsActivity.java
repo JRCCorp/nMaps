@@ -171,7 +171,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 	}
 
 	public void peticionPost(){
-
+		
 		//Ejecutamos el servicio-obtener-posiciones
 		Log.d("TabsActivity", "Tab Actual: "+mViewPager.getCurrentItem());
 		if(recuperarPreferenciaBoolean("servicio2") && mViewPager.getCurrentItem()==2){

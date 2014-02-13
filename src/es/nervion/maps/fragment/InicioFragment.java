@@ -1,39 +1,25 @@
 package es.nervion.maps.fragment;
 
-import java.io.IOException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.ImageButton;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import es.nervion.maps.activity.R;
 import es.nervion.maps.activity.TabsActivity;
 import es.nervion.maps.listener.InicioListener;
+import android.graphics.Bitmap;
 
 public class InicioFragment extends Fragment{
 
 	private InicioListener inicioLoadedListener;
 	private WebView webview;
+	private ImageView imgLogo;
+
+	private boolean cargadoFinal = false, noCargado = true;
 
 
 
@@ -53,9 +39,52 @@ public class InicioFragment extends Fragment{
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
 		((TabsActivity) getActivity() ).getViewPager().setCurrentItem(1);
-		//imgEstadoServidor = (ImageView) this.getActivity().findViewById(R.id.imgEstadoServidor);
+		imgLogo = (ImageView) this.getActivity().findViewById(R.id.imgLogo);
 		webview = (WebView) this.getActivity().findViewById(R.id.webview);
+		
+		
+		webview.setWebViewClient(new WebViewClient(){
+			
+			@Override
+			public void onPageStarted(WebView view, String url, Bitmap c) {
+				super.onPageStarted(view, url, c);
+				cargadoFinal = false;
+				
+			}
+			
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String urlNewString) {
+				super.shouldOverrideUrlLoading(view, urlNewString);
+				if (!cargadoFinal) {
+					noCargado = true;
+				}
+
+				cargadoFinal = false;
+				webview.loadUrl(urlNewString);
+				return true;
+			}
+			
+			@Override
+			   public void onPageFinished(WebView view, String url) {
+			    super.onPageFinished(view, url);   
+				if(!noCargado){
+			          cargadoFinal = true;
+			       }
+
+			       if(cargadoFinal && !noCargado){
+			    	   imgLogo.setVisibility(4);
+			       } else{
+			    	   noCargado = false; 
+			       }
+
+			    }
+
+
+		});
+		
 		webview.loadUrl("http://wmap.herobo.com");
+
+
 	}
 
 

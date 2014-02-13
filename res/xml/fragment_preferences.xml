@@ -16,7 +16,7 @@
             android:entries="@array/listaRefresco"
             android:entryValues="@array/valorRefresco"
             android:key="pref_refresco"
-            android:title="Configurar tiempo de refresco" />
+            android:title="Tiempo de refresco" />
         <SwitchPreference
             android:defaultValue="false"
             android:icon="@drawable/icono_pref"

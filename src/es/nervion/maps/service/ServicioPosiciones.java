@@ -109,7 +109,6 @@ public class ServicioPosiciones extends AsyncTask<Void, JSONArray, JSONArray>{
 			JSONArray result = progress[0];
 			try {
 				if(mmf!=null && mmf.getMyMap()!=null){			
-
 					mmf.eliminarMarcadores();
 					mmf.getMyMap().clear();
 					if(result!=null){				

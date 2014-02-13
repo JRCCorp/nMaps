@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
@@ -37,8 +38,7 @@ public class PreferenciasFragment extends PreferenceFragment implements OnShared
    }
 	
 
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-        String key) {
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
       updatePreferences(findPreference(key));
       preferencesListener.onPreferencesChange();
     }
