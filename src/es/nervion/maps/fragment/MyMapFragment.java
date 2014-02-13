@@ -250,11 +250,8 @@ public class MyMapFragment extends Fragment implements OnMapLoadedCallback, View
 	public void onClick(View v) {
 
 		switch (v.getId()) {
-		case R.id.btnChat:			
-			
+		case R.id.btnChat:					
 			String sMensaje = etxtChat.getText().toString();
-			
-			Log.d("MyMapFragment","OnClickChat: "+sMensaje);
 			
 			if(!sMensaje.equals("")){
 				WifiManager manager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);

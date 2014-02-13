@@ -26,7 +26,6 @@ public class MyDrawerListAdapter extends ArrayAdapter<Mensaje> {
 
 	}
 
-
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent){
 		//View row = super.getView(position, convertView, parent); Para heredear la vista del padre

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 
@@ -24,7 +23,6 @@ public class GCMIntentService extends IntentService
 	@Override
 	protected void onHandleIntent(Intent intent)
 	{
-		//Log.d("GCMIntent", "Maneja Mensaje GCM");
 		GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
 
 		String messageType = gcm.getMessageType(intent);
@@ -33,10 +31,9 @@ public class GCMIntentService extends IntentService
 
 			if (!extras.isEmpty())
 			{
-				//Log.d("GCMIntent", "GCM tiene informacion");
 				if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType))
 				{
-					Log.d("GCMIntent", "GCM tiene MENSAJE: "+extras.getString("mensaje"));
+					//Log.d("GCMIntent", "GCM tiene MENSAJE: "+extras.getString("mensaje"));
 					//mostrarNotification(extras.getString("msg"));
 				}
 			}
@@ -45,25 +42,25 @@ public class GCMIntentService extends IntentService
 
 	}
 
-	private void mostrarNotification(String msg)
-	{
-		NotificationManager mNotificationManager =
-				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-		NotificationCompat.Builder mBuilder =
-				new NotificationCompat.Builder(this)
-		.setSmallIcon(android.R.drawable.stat_sys_warning)
-		.setContentTitle("Notificación GCM")
-		.setContentText(msg);
-
-		Intent notIntent =  new Intent(this, TabsActivity.class);
-		PendingIntent contIntent = PendingIntent.getActivity(
-				this, 0, notIntent, 0);
-
-		mBuilder.setContentIntent(contIntent);
-
-		mNotificationManager.notify(NOTIF_ALERTA_ID, mBuilder.build());
-	}
+//	private void mostrarNotification(String msg)
+//	{
+//		NotificationManager mNotificationManager =
+//				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//
+//		NotificationCompat.Builder mBuilder =
+//				new NotificationCompat.Builder(this)
+//		.setSmallIcon(android.R.drawable.stat_sys_warning)
+//		.setContentTitle("Notificación GCM")
+//		.setContentText(msg);
+//
+//		Intent notIntent =  new Intent(this, TabsActivity.class);
+//		PendingIntent contIntent = PendingIntent.getActivity(
+//				this, 0, notIntent, 0);
+//
+//		mBuilder.setContentIntent(contIntent);
+//
+//		mNotificationManager.notify(NOTIF_ALERTA_ID, mBuilder.build());
+//	}
 
 
 

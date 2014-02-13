@@ -31,8 +31,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.content.BroadcastReceiver;
-import android.support.v4.content.WakefulBroadcastReceiver;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.common.ConnectionResult;
@@ -98,11 +96,10 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
-		//		mViewPager.setCurrentItem(1);
+		//mViewPager.setCurrentItem(1);
 
 		mViewPager.setOnPageChangeListener(this);
 
-		//servicioGuardarPosicion();
 
 		registroGCM();
 		
@@ -305,7 +302,7 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 	@Override
 	public void onMapFragmentLoaded() {
-		// quitar splAsh
+		// page splash
 
 	}
 
@@ -324,7 +321,6 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 		};
 
 		handler.postDelayed(r, 1000);
-
 	}
 
 
@@ -526,7 +522,6 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 					TabsActivity activity = (TabsActivity) context;
 					if(activity.getMyMapFragment()!=null && activity.getMyMapFragment().getDrawerList()!=null){
 						Bundle extras = intent.getExtras();
-						SimpleDateFormat dtf = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
 						Mensaje mensaje = new Mensaje(extras.getString("nombre"), extras.getString("mensaje"), new Date());
 						if(extras.getString("mensaje")!=null && !extras.getString("mensaje").equals("")){
 							activity.getMyMapFragment().getMensajes().add(0, mensaje);

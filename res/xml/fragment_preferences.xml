@@ -11,12 +11,6 @@
             android:title="@string/pref_estado" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/tituloPreferenciaServicio" >
-        <ListPreference
-            android:defaultValue="120"
-            android:entries="@array/listaRefresco"
-            android:entryValues="@array/valorRefresco"
-            android:key="pref_refresco"
-            android:title="Tiempo de refresco" />
         <SwitchPreference
             android:defaultValue="false"
             android:icon="@drawable/icono_pref"
