@@ -46,38 +46,18 @@ public class InicioFragment extends Fragment{
 		webview.setWebViewClient(new WebViewClient(){
 			
 			@Override
-			public void onPageStarted(WebView view, String url, Bitmap c) {
-				super.onPageStarted(view, url, c);
-				cargadoFinal = false;
-				
+			public void onReceivedError(WebView view,int errorCode,String description,String failingUrl){
+				super.onReceivedError(view, errorCode, description, failingUrl);
+				webview.setVisibility(View.INVISIBLE);
+		    	imgLogo.setVisibility(View.VISIBLE);
 			}
 			
 			@Override
-			public boolean shouldOverrideUrlLoading(WebView view, String urlNewString) {
-				super.shouldOverrideUrlLoading(view, urlNewString);
-				if (!cargadoFinal) {
-					noCargado = true;
-				}
-
-				cargadoFinal = false;
-				webview.loadUrl(urlNewString);
-				return true;
+			public void onLoadResource(WebView view, String url){
+				super.onLoadResource(view, url);
+				imgLogo.setVisibility(View.INVISIBLE);
+				webview.setVisibility(View.VISIBLE);
 			}
-			
-			@Override
-			   public void onPageFinished(WebView view, String url) {
-			    super.onPageFinished(view, url);   
-				if(!noCargado){
-			          cargadoFinal = true;
-			       }
-
-			       if(cargadoFinal && !noCargado){
-			    	   imgLogo.setVisibility(4);
-			       } else{
-			    	   noCargado = false; 
-			       }
-
-			    }
 
 
 		});
