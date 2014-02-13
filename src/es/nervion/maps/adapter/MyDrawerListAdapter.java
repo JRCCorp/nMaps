@@ -49,18 +49,25 @@ public class MyDrawerListAdapter extends ArrayAdapter<Mensaje> {
 		holder.getNombre().setText(mensajes.get(position).getNombre());
 		//Date hoy = new Date();
 		Date fechaMensaje = mensajes.get(position).getFecha();
+		String tiempo = " hace ";
 		String unidad = " segundos";
 		Long mseg = segundosDiferencia(fechaMensaje);
-		if(mseg>60){
+		if(mseg>59){
 //			mseg = horasDiferencia(mseg);
 //			mseg -= mseg*3600;
 //			long minutos = mseg /60;
 //			mseg -= minutos*60;
 			mseg = mseg / 60;
 			unidad = " minutos";
+			if (mseg < 2){
+				unidad = " minuto";
+			}else if (mseg >59){
+				tiempo = " hace más de ";
+				unidad = " hora";
+			}
 		}
 		//holder.getFecha().setText(mensajes.get(position).getFecha().toLocaleString());
-		holder.getFecha().setText("  hace "+mseg.toString()+unidad);
+		holder.getFecha().setText(tiempo+mseg.toString()+unidad);
 		holder.getMensaje().setText(mensajes.get(position).getMensaje());
 
 		return row;
