@@ -33,8 +33,6 @@ import es.nervion.maps.listener.InicioListener;
 public class InicioFragment extends Fragment{
 
 	private InicioListener inicioLoadedListener;
-	private MenuItem actualizarServidor;
-	private ImageView imgEstadoServidor;
 	private WebView webview;
 
 
@@ -60,24 +58,6 @@ public class InicioFragment extends Fragment{
 		webview.loadUrl("http://wmap.herobo.com");
 	}
 
-	public void   onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		menu.clear();
-		inflater.inflate(R.menu.inicio, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_refresh:
-			actualizarServidor = item;
-			new SyncData().execute();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
 
 	public void onMyDestroy(){
 		if(getActivity()!=null){
@@ -95,69 +75,5 @@ public class InicioFragment extends Fragment{
 	public void setInicioLoadedListener(InicioListener ill){
 		inicioLoadedListener = ill;
 	}
-
-
-	private class SyncData extends AsyncTask<String, Void, Boolean> {
-
-		private String url = "http://wmap.herobo.com/wmap/servicio-obtener-posiciones.php?";
-
-
-		@SuppressLint("NewApi")
-		@Override
-		protected void onPreExecute() {
-			actualizarServidor.setActionView(R.layout.action_progressbar);
-			actualizarServidor.expandActionView();
-		}
-
-		@Override
-		protected Boolean doInBackground(String... params) {
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpResponse response;
-			Boolean resultado = false; // 0: ROJO, 1: VERDE, 2: AMARILLO
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-
-			}
-
-			try {
-				response = httpclient.execute(new HttpGet(url));
-				StatusLine statusLine = response.getStatusLine();
-				if(statusLine.getStatusCode() == HttpStatus.SC_OK){	                
-					resultado = true;
-				}else if(statusLine.getStatusCode() == HttpStatus.SC_BAD_REQUEST ){	   
-					resultado = false;
-				}else if(statusLine.getStatusCode() == HttpStatus.SC_MULTIPLE_CHOICES || statusLine.getStatusCode() == HttpStatus.SC_INTERNAL_SERVER_ERROR){	   
-					resultado = false;
-				} else{
-					//Closes the connection.
-					response.getEntity().getContent().close();
-					throw new IOException(statusLine.getReasonPhrase());
-				}
-			} catch (ClientProtocolException e) {
-				Log.d("AsyncDoIn", e.getMessage());
-			} catch (IOException e) {
-				Log.d("AsyncDoIn", e.getMessage());
-			}
-
-			return resultado;
-		}
-
-		@SuppressLint("NewApi")
-		protected void onPostExecute(Boolean result) {
-			super.onPostExecute(result);
-			actualizarServidor.collapseActionView();
-			actualizarServidor.setActionView(null);
-			if (result){
-				imgEstadoServidor.setImageResource(R.drawable.estado_on);
-			}else{
-				imgEstadoServidor.setImageResource(R.drawable.estado_off);
-			}
-		}
-	};
-
-
-
 
 }
