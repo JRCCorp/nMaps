@@ -104,8 +104,6 @@ public class TabsActivity extends Activity implements MapListener, InicioListene
 
 		//servicioGuardarPosicion();
 
-		sp = (ServicioPosiciones) this.getLastNonConfigurationInstance();
-
 		registroGCM();
 		
 		GCMRegistrar.checkDevice(this);
